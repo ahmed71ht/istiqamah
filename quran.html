@@ -1,0 +1,600 @@
+<!doctype html>
+<html lang="ar" dir="rtl">
+  <head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <title>المصحف الشريف</title>
+
+    <link
+      rel="stylesheet"
+      href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css"
+    />
+
+    <style>
+      @import url("https://fonts.googleapis.com/css2?family=Amiri:wght@400;700&family=Tajawal:wght@400;700&display=swap");
+
+      :root {
+        --green: #6baa5e;
+        --bg: #f4f7f4;
+        --border: #c4dbc1;
+        --primary-green: #6baa5e;
+        --white: #ffffff;
+      }
+
+      body {
+        font-family: "Tajawal", sans-serif;
+
+        /* خلفية متدرجة ناعمة */
+        background: linear-gradient(
+          135deg,
+          #f4f7f4 0%,
+          #e8f3e6 50%,
+          #f4f7f4 100%
+        );
+
+        /* نقش فوق الخلفية */
+        background-image: var(--pattern-url);
+
+        /* يخلي النقش ثابت */
+        background-attachment: fixed;
+
+        margin: 0;
+        display: flex;
+        flex-direction: column;
+        min-height: 100vh;
+        color: var(--text-main);
+      }
+
+      :root {
+        --green: #6baa5e;
+        --bg: #f4f7f4;
+        --border: #c4dbc1;
+        --primary-green: #6baa5e;
+        --white: #ffffff;
+
+        /* 🔥 هذا المهم */
+        --pattern-url: url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' width='60' height='60' viewBox='0 0 60 60'%3E%3Cpath d='M30 0l5 15 15 5-15 5-5 15-5-15-15-5 15-5z' fill='%236baa5e' fill-opacity='0.03'/%3E%3C/svg%3E");
+      }
+
+      a {
+        color: black;
+        text-decoration: none;
+      }
+
+      /* HEADER */
+      .main-header {
+        background: var(--white);
+        padding: 1rem 5%;
+        display: flex;
+        justify-content: space-between;
+        align-items: center;
+        box-shadow: 0 2px 10px rgba(0, 0, 0, 0.05);
+        position: sticky;
+        top: 0;
+        z-index: 1000;
+        border-bottom: 3px solid var(--primary-green);
+      }
+
+      .logo-area {
+        display: flex;
+        align-items: center;
+        gap: 12px;
+      }
+
+      .logo-area h1 {
+        font-size: 22px;
+        color: var(--primary-green);
+        margin: 0;
+      }
+
+      /* CONTENT */
+      .container {
+        max-width: 520px;
+        margin: auto;
+        padding: 15px;
+      }
+
+      #verses {
+        display: flex;
+        flex-direction: column;
+        gap: 15px;
+      }
+
+      .page {
+        background: white;
+        border: 2px solid var(--border);
+        border-radius: 12px;
+        padding: 15px;
+      }
+
+      .surah {
+        text-align: center;
+        margin-bottom: 10px;
+        font-size: 18px;
+        color: var(--green);
+        font-weight: bold;
+        border: 1px solid var(--border);
+        padding: 6px;
+        border-radius: 8px;
+        background: #eef5ed;
+      }
+
+      .ayah {
+        font-family: "Amiri", serif;
+        font-size: 22px;
+        line-height: 2.2;
+        text-align: center;
+        color: #222;
+      }
+
+      .num {
+        color: var(--green);
+        font-size: 14px;
+        margin: 0 4px;
+      }
+
+      #loadMore {
+        margin: 20px auto;
+        display: block;
+        padding: 12px 20px;
+        background: var(--green);
+        color: white;
+        border: none;
+        border-radius: 10px;
+        cursor: pointer;
+        font-weight: bold;
+      }
+
+      /* SIDES */
+      #side-menu,
+      #links-menu {
+        position: fixed;
+        top: 0;
+        width: 280px;
+        height: 100%;
+        background: white;
+        z-index: 3000;
+        padding: 15px;
+        transition: 0.3s;
+      }
+
+      #side-menu {
+        right: -100%;
+        box-shadow: -5px 0 20px rgba(0, 0, 0, 0.15);
+        display: flex;
+        flex-direction: column;
+        border-top-left-radius: 18px;
+        border-bottom-left-radius: 18px;
+      }
+
+      #links-menu {
+        left: -100%;
+        box-shadow: 5px 0 20px rgba(0, 0, 0, 0.15);
+      }
+
+      #surah-list {
+        flex: 1;
+        overflow-y: auto;
+        margin-top: 10px;
+        padding-right: 5px;
+      }
+
+      .surah-item {
+        display: flex;
+        align-items: center;
+        gap: 12px;
+        padding: 12px;
+        margin-bottom: 8px;
+        border-radius: 12px;
+        border: 1px solid #eee;
+        cursor: pointer;
+        transition: 0.2s;
+        background: #fff;
+      }
+
+      .surah-item:hover {
+        transform: translateX(-3px);
+        border-color: var(--green);
+        background: #f3fbf3;
+      }
+
+      .surah-icon {
+        width: 40px;
+        height: 40px;
+        border-radius: 50%;
+        border: 2px solid var(--green);
+        display: flex;
+        align-items: center;
+        justify-content: center;
+        color: var(--green);
+      }
+
+      /* overlay */
+      #overlay {
+        position: fixed;
+        inset: 0;
+        background: rgba(0, 0, 0, 0.4);
+        display: none;
+        z-index: 2500;
+      }
+
+      /* LINKS */
+      .link-item {
+        display: flex;
+        align-items: center;
+        gap: 12px;
+        padding: 12px;
+        border-bottom: 1px solid #eee;
+        text-decoration: none;
+        color: black;
+        transition: 0.2s;
+      }
+
+      .link-item:hover {
+        background: var(--light-green);
+        padding-right: 18px;
+      }
+
+      .link-circle {
+        width: 42px;
+        height: 42px;
+        border-radius: 50%;
+        border: 2px solid var(--green);
+        display: flex;
+        align-items: center;
+        justify-content: center;
+        color: var(--green);
+      }
+
+      .surah-item.active {
+        border-color: var(--green);
+        background: #eaf7ea;
+        transform: translateX(-3px);
+      }
+
+      /* هايلايت رابط القرآن */
+      #links-menu a[href="quran.html"] {
+        background: #f0f8f0;
+        border-right: 4px solid var(--primary-green);
+        color: var(--primary-green);
+        font-weight: bold;
+      }
+
+      #links-menu a[href="quran.html"] .link-circle {
+        background: var(--primary-green);
+        color: white;
+      }
+    </style>
+  </head>
+
+  <body>
+    <!-- HEADER -->
+    <header class="main-header">
+      <div class="logo-area">
+        <i class="fa-solid fa-mosque" style="color: var(--primary-green)"></i>
+        <h1>المصحف الشريف</h1>
+      </div>
+
+      <div style="display: flex; gap: 15px">
+        <i
+          class="fa-solid fa-magnifying-glass"
+          onclick="toggleSurah()"
+          style="cursor: pointer"
+        ></i>
+        <i
+          class="fa-solid fa-bars"
+          onclick="toggleLinks()"
+          style="cursor: pointer"
+        ></i>
+      </div>
+    </header>
+
+    <!-- OVERLAY -->
+    <div id="overlay" onclick="closeAll()"></div>
+
+    <!-- SURAH MENU -->
+    <div id="side-menu">
+      <h3 style="color: var(--green)">السور</h3>
+      <div id="surah-list"></div>
+    </div>
+
+    <!-- LINKS MENU -->
+    <div id="links-menu">
+      <a href="azkar.html" class="link-item">
+        <div class="link-circle">
+          <i class="fa-solid fa-hands-praying"></i>
+        </div>
+        الأذكار
+      </a>
+
+      <a href="quran.html" class="link-item">
+        <div class="link-circle"><i class="fa-solid fa-book"></i></div>
+        القرآن
+      </a>
+
+      <a href="prayertime.html" class="link-item">
+        <div class="link-circle"><i class="fa-solid fa-mosque"></i></div>
+        أوقات الصلاة
+      </a>
+
+      <a href="hadith.html" class="link-item">
+        <div class="link-circle"><i class="fa-solid fa-book-open"></i></div>
+        الأحاديث
+      </a>
+      <a href="qipla-direction.html" class="link-item active-link">
+        <div class="link-circle">
+          <i class="fa-solid fa-location-arrow"></i>
+        </div>
+        إتجاه القبلة
+      </a>
+      <a href="about.html" class="link-item active">
+        <div class="link-circle"><i class="fa-solid fa-circle-info"></i></div>
+        حول التطبيق
+      </a>
+    </div>
+
+    <!-- CONTENT -->
+    <div class="container">
+      <div id="verses">جاري التحميل...</div>
+      <button id="loadMore">تحميل 5 صفحات إضافية</button>
+    </div>
+
+    <script>
+      const display = document.getElementById("verses");
+      const btn = document.getElementById("loadMore");
+
+      let currentPage = 1;
+      let loading = false;
+      let lastSurah = null;
+
+      /* ===== تحميل الصفحة ===== */
+      async function loadPage(p) {
+        const res = await fetch(
+          `https://api.alquran.cloud/v1/page/${p}/quran-uthmani`,
+        );
+        const data = await res.json();
+
+        let html = `<div class="page">`;
+
+        data.data.ayahs.forEach((a) => {
+          if (lastSurah !== a.surah.number) {
+            html += `<div class="surah">${a.surah.name}</div>`;
+            lastSurah = a.surah.number;
+          }
+
+          html += `
+      <div class="ayah">
+        ${a.text}
+        <span class="num">(${a.numberInSurah})</span>
+      </div>
+    `;
+        });
+
+        html += `</div>`;
+        display.insertAdjacentHTML("beforeend", html);
+      }
+
+      /* ===== تحميل أولي ===== */
+      async function loadInitial() {
+        display.innerHTML = "";
+        for (let i = 0; i < 5; i++) {
+          await loadPage(currentPage);
+          currentPage++;
+        }
+      }
+
+      /* ===== تحميل المزيد ===== */
+      async function loadMore() {
+        if (loading) return;
+        loading = true;
+
+        for (let i = 0; i < 5; i++) {
+          await loadPage(currentPage);
+          currentPage++;
+        }
+
+        loading = false;
+      }
+
+      btn.addEventListener("click", loadMore);
+      loadInitial();
+
+      /* ===== القوائم ===== */
+      const sideMenu = document.getElementById("side-menu");
+      const linksMenu = document.getElementById("links-menu");
+      const overlay = document.getElementById("overlay");
+
+      function toggleSurah() {
+        closeAll();
+        sideMenu.style.right = "0";
+        overlay.style.display = "block";
+      }
+
+      function toggleLinks() {
+        closeAll();
+        linksMenu.style.left = "0";
+        overlay.style.display = "block";
+      }
+
+      function closeAll() {
+        sideMenu.style.right = "-100%";
+        linksMenu.style.left = "-100%";
+        overlay.style.display = "none";
+      }
+
+      /* ===== ربط السور بالصفحات ===== */
+      const surahPages = [
+        1, 2, 50, 77, 106, 128, 151, 177, 187, 208, 221, 235, 249, 255, 262,
+        267, 282, 293, 305, 312, 322, 332, 342, 350, 359, 367, 377, 385, 396,
+        404, 411, 415, 418, 428, 434, 440, 446, 453, 458, 467, 477, 483, 489,
+        496, 499, 507, 511, 515, 518, 520, 523, 526, 528, 531, 534, 537, 541,
+        544, 547, 549, 551, 553, 555, 558, 560, 562, 564, 566, 568, 570, 572,
+        574, 575, 577, 578, 580, 582, 583, 585, 586, 587, 589, 590, 591, 592,
+        593, 594, 595, 596, 597, 598, 599, 600, 601, 602, 603, 604,
+      ];
+
+      /* ===== قائمة السور ===== */
+      const surahs = [
+        "الفاتحة",
+        "البقرة",
+        "آل عمران",
+        "النساء",
+        "المائدة",
+        "الأنعام",
+        "الأعراف",
+        "الأنفال",
+        "التوبة",
+        "يونس",
+        "هود",
+        "يوسف",
+        "الرعد",
+        "إبراهيم",
+        "الحجر",
+        "النحل",
+        "الإسراء",
+        "الكهف",
+        "مريم",
+        "طه",
+        "الأنبياء",
+        "الحج",
+        "المؤمنون",
+        "النور",
+        "الفرقان",
+        "الشعراء",
+        "النمل",
+        "القصص",
+        "العنكبوت",
+        "الروم",
+        "لقمان",
+        "السجدة",
+        "الأحزاب",
+        "سبأ",
+        "فاطر",
+        "يس",
+        "الصافات",
+        "ص",
+        "الزمر",
+        "غافر",
+        "فصلت",
+        "الشورى",
+        "الزخرف",
+        "الدخان",
+        "الجاثية",
+        "الأحقاف",
+        "محمد",
+        "الفتح",
+        "الحجرات",
+        "ق",
+        "الذاريات",
+        "الطور",
+        "النجم",
+        "القمر",
+        "الرحمن",
+        "الواقعة",
+        "الحديد",
+        "المجادلة",
+        "الحشر",
+        "الممتحنة",
+        "الصف",
+        "الجمعة",
+        "المنافقون",
+        "التغابن",
+        "الطلاق",
+        "التحريم",
+        "الملك",
+        "القلم",
+        "الحاقة",
+        "المعارج",
+        "نوح",
+        "الجن",
+        "المزمل",
+        "المدثر",
+        "القيامة",
+        "الإنسان",
+        "المرسلات",
+        "النبأ",
+        "النازعات",
+        "عبس",
+        "التكوير",
+        "الانفطار",
+        "المطففين",
+        "الانشقاق",
+        "البروج",
+        "الطارق",
+        "الأعلى",
+        "الغاشية",
+        "الفجر",
+        "البلد",
+        "الشمس",
+        "الليل",
+        "الضحى",
+        "الشرح",
+        "التين",
+        "العلق",
+        "القدر",
+        "البينة",
+        "الزلزلة",
+        "العاديات",
+        "القارعة",
+        "التكاثر",
+        "العصر",
+        "الهمزة",
+        "الفيل",
+        "قريش",
+        "الماعون",
+        "الكوثر",
+        "الكافرون",
+        "النصر",
+        "المسد",
+        "الإخلاص",
+        "الفلق",
+        "الناس",
+      ];
+
+      const list = document.getElementById("surah-list");
+
+      /* ===== بناء القائمة ===== */
+      let activeSurah = null;
+
+      surahs.forEach((s, i) => {
+        list.innerHTML += `
+    <div class="surah-item" id="surah-${i}" onclick="goToSurah(${i})">
+      <div class="surah-icon">
+        <i class="fa-solid fa-book-open"></i>
+      </div>
+      <div>${i + 1}. ${s}</div>
+    </div>
+  `;
+      });
+
+      /* ===== الانتقال للسورة ===== */
+      async function goToSurah(index) {
+        const page = surahPages[index];
+
+        display.innerHTML = "";
+        currentPage = page;
+        lastSurah = null;
+
+        // 🔥 إزالة التحديد القديم
+        if (activeSurah !== null) {
+          document
+            .getElementById(`surah-${activeSurah}`)
+            ?.classList.remove("active");
+        }
+
+        // 🔥 إضافة التحديد الجديد
+        document.getElementById(`surah-${index}`)?.classList.add("active");
+        activeSurah = index;
+
+        // تحميل السورة
+        for (let i = 0; i < 5; i++) {
+          await loadPage(currentPage + i);
+        }
+
+        currentPage = page + 5;
+
+        closeAll();
+      }
+    </script>
+  </body>
+</html>

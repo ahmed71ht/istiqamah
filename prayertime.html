@@ -1,0 +1,429 @@
+<!doctype html>
+<html lang="ar" dir="rtl">
+  <head>
+    <meta charset="UTF-8" />
+    <meta
+      name="viewport"
+      content="width=device-width, initial-scale=1.0, viewport-fit=cover"
+    />
+    <title>تطبيق استقامة - أوقات الصلاة</title>
+    <link
+      rel="stylesheet"
+      href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css"
+    />
+    <style>
+      @import url("https://fonts.googleapis.com/css2?family=Tajawal:wght@400;500;700&display=swap");
+
+      :root {
+        --primary-green: #6baa5e;
+        --dark-green: #4a7c3f;
+        --soft-bg: #f4f7f4;
+        --white: #ffffff;
+        --text-main: #333;
+        --pattern-url: url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' width='60' height='60' viewBox='0 0 60 60'%3E%3Cpath d='M30 0l5 15 15 5-15 5-5 15-5-15-15-5 15-5z' fill='%236baa5e' fill-opacity='0.03'/%3E%3C/svg%3E");
+      }
+
+      * {
+        margin: 0;
+        padding: 0;
+        box-sizing: border-box;
+      }
+
+      body {
+        font-family: "Tajawal", sans-serif;
+        background: linear-gradient(
+          135deg,
+          #f4f7f4 0%,
+          #e8f3e6 50%,
+          #f4f7f4 100%
+        );
+        background-image: var(--pattern-url);
+        background-attachment: fixed;
+        margin: 0;
+        display: flex;
+        flex-direction: column;
+        min-height: 100vh;
+        color: var(--text-main);
+      }
+
+      /* ===== الهيدر العلوي ===== */
+      .main-header {
+        background: var(--white);
+        padding: 1rem 5%;
+        display: flex;
+        justify-content: space-between;
+        align-items: center;
+        box-shadow: 0 2px 10px rgba(0, 0, 0, 0.05);
+        position: sticky;
+        top: 0;
+        z-index: 1000;
+        border-bottom: 3px solid var(--primary-green);
+      }
+
+      .logo-area {
+        display: flex;
+        align-items: center;
+        gap: 12px;
+      }
+
+      .logo-area h1 {
+        font-size: 22px;
+        color: var(--primary-green);
+        margin: 0;
+      }
+
+      /* ===== القائمة الجانبية ===== */
+      #overlay {
+        position: fixed;
+        inset: 0;
+        background: rgba(0, 0, 0, 0.4);
+        display: none;
+        z-index: 2500;
+      }
+
+      #links-menu {
+        position: fixed;
+        top: 0;
+        left: -100%;
+        width: 280px;
+        height: 100%;
+        background: white;
+        z-index: 3000;
+        padding: 20px 15px;
+        transition: 0.3s ease;
+        box-shadow: 5px 0 20px rgba(0, 0, 0, 0.15);
+      }
+
+      .link-item {
+        display: flex;
+        align-items: center;
+        gap: 12px;
+        padding: 12px;
+        border-bottom: 1px solid #eee;
+        text-decoration: none;
+        color: black;
+        transition: 0.2s;
+      }
+
+      .link-item:hover {
+        background: #f0f7ef;
+        padding-right: 18px;
+      }
+
+      .link-circle {
+        width: 42px;
+        height: 42px;
+        border-radius: 50%;
+        border: 2px solid var(--primary-green);
+        display: flex;
+        align-items: center;
+        justify-content: center;
+        color: var(--primary-green);
+        background: white;
+      }
+
+      /* تمييز رابط الصفحة الحالية */
+      #links-menu a[href="prayertime.html"] {
+        background: #f0f7ef;
+        border-right: 4px solid var(--primary-green);
+        color: var(--primary-green);
+        font-weight: bold;
+      }
+      #links-menu a[href="prayertime.html"] .link-circle {
+        background: var(--primary-green);
+        color: white;
+      }
+
+      /* ===== الحاوية الرئيسية ===== */
+      .container {
+        max-width: 1000px;
+        margin: 40px auto;
+        padding: 0 20px;
+        flex: 1;
+        width: 100%;
+      }
+
+      .section-title {
+        display: flex;
+        align-items: center;
+        gap: 15px;
+        margin-bottom: 30px;
+      }
+
+      #menu-btn {
+        background: var(--white);
+        border: 1px solid var(--primary-green);
+        color: var(--primary-green);
+        width: 40px;
+        height: 40px;
+        border-radius: 50%;
+        display: flex;
+        align-items: center;
+        justify-content: center;
+        cursor: pointer;
+        transition: 0.3s;
+      }
+      #menu-btn:hover {
+        background: var(--primary-green);
+        color: white;
+      }
+
+      #header-title {
+        color: var(--dark-green);
+        font-size: 24px;
+      }
+
+      /* صندوق تحديد الموقع */
+      .location-box {
+        text-align: center;
+        background: var(--white);
+        padding: 30px;
+        border-radius: 20px;
+        cursor: pointer;
+        transition: 0.3s;
+        border: 1px solid #e0eadd;
+        margin-bottom: 20px;
+      }
+      .location-box:hover {
+        transform: translateY(-5px);
+        border-color: var(--primary-green);
+        box-shadow: 0 10px 20px rgba(107, 170, 94, 0.1);
+      }
+
+      /* صندوق العد التنازلي */
+      #nextBox {
+        text-align: center;
+        margin-bottom: 25px;
+        display: none;
+        background: var(--white);
+        padding: 20px;
+        border-radius: 15px;
+        border-right: 6px solid var(--primary-green);
+      }
+      #timer {
+        font-size: 35px;
+        font-weight: bold;
+        color: var(--dark-green);
+      }
+      #today-date {
+        margin-top: 8px;
+        font-size: 13px;
+        color: #888;
+        font-weight: 400;
+      }
+
+      /* شبكة بطاقات الصلوات */
+      .grid {
+        display: grid;
+        grid-template-columns: repeat(auto-fill, minmax(220px, 1fr));
+        gap: 20px;
+      }
+      .card {
+        background: var(--white);
+        padding: 25px;
+        border-radius: 20px;
+        text-align: center;
+        cursor: pointer;
+        transition: 0.3s;
+        border: 1px solid #e0eadd;
+      }
+      .card:hover {
+        transform: translateY(-5px);
+        border-color: var(--primary-green);
+        box-shadow: 0 10px 20px rgba(107, 170, 94, 0.1);
+      }
+      .card.active {
+        background: #f0f8f0;
+        border-color: var(--primary-green);
+      }
+
+      /* responsive */
+      @media (max-width: 768px) {
+        .grid {
+          grid-template-columns: 1fr;
+        }
+        .container {
+          margin: 20px auto;
+        }
+      }
+    </style>
+  </head>
+  <body>
+    <div id="overlay" onclick="closeMenu()"></div>
+
+    <div id="links-menu">
+      <a href="azkar.html" class="link-item"
+        ><div class="link-circle">
+          <i class="fa-solid fa-hands-praying"></i>
+        </div>
+        الأذكار
+      </a>
+      <a href="quran.html" class="link-item"
+        ><div class="link-circle"><i class="fa-solid fa-book-quran"></i></div>
+        القرآن
+      </a>
+      <a href="prayertime.html" class="link-item"
+        ><div class="link-circle"><i class="fa-solid fa-mosque"></i></div>
+        أوقات الصلاة
+      </a>
+      <a href="hadith.html" class="link-item"
+        ><div class="link-circle"><i class="fa-solid fa-book-open"></i></div>
+        الأحاديث
+      </a>
+      <a href="qipla-direction.html" class="link-item"
+        ><div class="link-circle">
+          <i class="fa-solid fa-location-arrow"></i>
+        </div>
+        إتجاه القبلة
+      </a>
+      <a href="about.html" class="link-item"
+        ><div class="link-circle"><i class="fa-solid fa-circle-info"></i></div>
+        حول التطبيق
+      </a>
+    </div>
+
+    <header class="main-header">
+      <div class="logo-area">
+        <i
+          class="fa-solid fa-mosque"
+          style="color: var(--primary-green); font-size: 24px"
+        ></i>
+        <h1>تطبيق استقامة</h1>
+      </div>
+      <i
+        class="fa-solid fa-bars"
+        onclick="openMenu()"
+        style="font-size: 20px; cursor: pointer"
+      ></i>
+    </header>
+
+    <div class="container">
+      <div class="section-title">
+        <div id="menu-btn" onclick="openMenu()">
+          <i class="fa-solid fa-bars"></i>
+        </div>
+        <h2 id="header-title">أوقات الصلاة</h2>
+      </div>
+
+      <div id="locationBox" class="location-box" onclick="getLocation()">
+        <i class="fa-solid fa-location-dot"></i>
+        <h3>اضغط لتحديد موقعك</h3>
+      </div>
+
+      <div id="nextBox">
+        <div>المتبقي لـ <strong id="name"></strong></div>
+        <div id="timer">00:00:00</div>
+        <div id="today-date"></div>
+      </div>
+
+      <div id="grid" class="grid"></div>
+    </div>
+
+    <script>
+      const names = {
+        Fajr: "الفجر",
+        Dhuhr: "الظهر",
+        Asr: "العصر",
+        Maghrib: "المغرب",
+        Isha: "العشاء",
+      };
+
+      let timings = null;
+      let selected = null;
+
+      function getLocation() {
+        if (navigator.geolocation) {
+          navigator.geolocation.getCurrentPosition(success, () => {
+            alert("لم نتمكن من تحديد موقعك. تأكد من تفعيل خدمات الموقع.");
+          });
+        } else {
+          alert("المتصفح لا يدعم تحديد الموقع");
+        }
+      }
+
+      function success(pos) {
+        const { latitude, longitude } = pos.coords;
+        fetch(
+          `https://api.aladhan.com/v1/timings?latitude=${latitude}&longitude=${longitude}&method=4`,
+        )
+          .then((r) => r.json())
+          .then((data) => {
+            timings = data.data.timings;
+            document.getElementById("locationBox").style.display = "none";
+            document.getElementById("nextBox").style.display = "block";
+            render();
+            update();
+            setInterval(update, 1000);
+          })
+          .catch(() => alert("خطأ في تحميل أوقات الصلاة"));
+      }
+
+      function render() {
+        const grid = document.getElementById("grid");
+        grid.innerHTML = "";
+        for (let key of Object.keys(names)) {
+          const card = document.createElement("div");
+          card.className = "card";
+          card.innerHTML = `<strong>${names[key]}</strong><div>${timings[key]}</div>`;
+          card.onclick = () => {
+            selected = key;
+            update();
+          };
+          grid.appendChild(card);
+        }
+      }
+
+      function update() {
+        if (!timings) return;
+        const now = new Date();
+        let key = selected || getNext();
+        const [h, m] = timings[key].split(":").map(Number);
+        let target = new Date();
+        target.setHours(h, m, 0);
+        let diff = target - now;
+        if (diff < 0) diff = 0;
+        const hh = Math.floor(diff / 3600000);
+        const mm = Math.floor((diff % 3600000) / 60000);
+        const ss = Math.floor((diff % 60000) / 1000);
+        document.getElementById("name").innerText = names[key];
+        document.getElementById("timer").innerText =
+          `${hh.toString().padStart(2, "0")}:${mm.toString().padStart(2, "0")}:${ss.toString().padStart(2, "0")}`;
+      }
+
+      function getNext() {
+        const now = new Date();
+        for (let key of ["Fajr", "Dhuhr", "Asr", "Maghrib", "Isha"]) {
+          const [h, m] = timings[key].split(":").map(Number);
+          const t = new Date();
+          t.setHours(h, m, 0);
+          if (t > now) return key;
+        }
+        return "Fajr";
+      }
+
+      function setTodayDate() {
+        const el = document.getElementById("today-date");
+        if (el) {
+          const now = new Date();
+          el.innerText = now.toLocaleDateString("ar-EG", {
+            weekday: "long",
+            year: "numeric",
+            month: "long",
+            day: "numeric",
+          });
+        }
+      }
+
+      function openMenu() {
+        document.getElementById("links-menu").style.left = "0";
+        document.getElementById("overlay").style.display = "block";
+      }
+      function closeMenu() {
+        document.getElementById("links-menu").style.left = "-100%";
+        document.getElementById("overlay").style.display = "none";
+      }
+
+      setTodayDate();
+    </script>
+  </body>
+</html>

@@ -1,0 +1,670 @@
+<!doctype html>
+<html lang="ar" dir="rtl">
+  <head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <title>تطبيق استقامة - الأحاديث النبوية</title>
+    <link
+      rel="stylesheet"
+      href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css"
+    />
+    <style>
+      @import url("https://fonts.googleapis.com/css2?family=Tajawal:wght@400;500;700&display=swap");
+
+      :root {
+        --primary-green: #6baa5e;
+        --dark-green: #4a7c3f;
+        --soft-bg: #f4f7f4;
+        --white: #ffffff;
+        --text-main: #333;
+        --pattern-url: url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' width='60' height='60' viewBox='0 0 60 60'%3E%3Cpath d='M30 0l5 15 15 5-15 5-5 15-5-15-15-5 15-5z' fill='%236baa5e' fill-opacity='0.03'/%3E%3C/svg%3E");
+      }
+
+      * {
+        box-sizing: border-box;
+        margin: 0;
+        padding: 0;
+      }
+
+      body {
+        font-family: "Tajawal", sans-serif;
+        background: linear-gradient(
+          135deg,
+          #f4f7f4 0%,
+          #e8f3e6 50%,
+          #f4f7f4 100%
+        );
+        background-image: var(--pattern-url);
+        background-attachment: fixed;
+        min-height: 100vh;
+        color: var(--text-main);
+      }
+
+      /* Header */
+      .main-header {
+        background: var(--white);
+        padding: 1rem 5%;
+        display: flex;
+        justify-content: space-between;
+        align-items: center;
+        box-shadow: 0 2px 10px rgba(0, 0, 0, 0.05);
+        position: sticky;
+        top: 0;
+        z-index: 1000;
+        border-bottom: 3px solid var(--primary-green);
+      }
+
+      .logo-area {
+        display: flex;
+        align-items: center;
+        gap: 12px;
+      }
+
+      .logo-area h1 {
+        font-size: 22px;
+        color: var(--primary-green);
+        margin: 0;
+      }
+
+      /* Container */
+      .container {
+        max-width: 1000px;
+        margin: 40px auto;
+        padding: 0 20px;
+        min-height: calc(100vh - 120px);
+      }
+
+      /* Section Title */
+      .section-title {
+        display: flex;
+        align-items: center;
+        gap: 15px;
+        margin-bottom: 30px;
+        flex-wrap: wrap;
+      }
+
+      #menu-btn,
+      #back-btn {
+        background: var(--white);
+        border: 1px solid var(--primary-green);
+        color: var(--primary-green);
+        width: 40px;
+        height: 40px;
+        border-radius: 50%;
+        display: flex;
+        align-items: center;
+        justify-content: center;
+        cursor: pointer;
+        transition: 0.3s;
+        font-size: 18px;
+      }
+
+      #menu-btn:hover,
+      #back-btn:hover {
+        background: var(--primary-green);
+        color: white;
+      }
+
+      #back-btn {
+        display: none;
+      }
+
+      #header-title {
+        color: var(--dark-green);
+        font-size: 24px;
+      }
+
+      /* Categories Grid */
+      .categories-grid {
+        display: grid;
+        grid-template-columns: repeat(auto-fill, minmax(280px, 1fr));
+        gap: 20px;
+      }
+
+      .category-card {
+        background: var(--white);
+        padding: 30px;
+        border-radius: 20px;
+        text-align: center;
+        cursor: pointer;
+        transition: 0.3s ease;
+        border: 1px solid #e0eadd;
+      }
+
+      .category-card:hover {
+        transform: translateY(-5px);
+        border-color: var(--primary-green);
+        box-shadow: 0 10px 20px rgba(107, 170, 94, 0.1);
+      }
+
+      .category-icon {
+        font-size: 40px;
+        color: var(--primary-green);
+        margin-bottom: 15px;
+      }
+
+      .category-card strong {
+        display: block;
+        font-size: 18px;
+        color: var(--dark-green);
+      }
+
+      .category-count {
+        display: block;
+        font-size: 13px;
+        color: #888;
+        margin-top: 8px;
+      }
+
+      /* Hadith Cards */
+      .hadith-card {
+        background: var(--white);
+        margin-bottom: 25px;
+        border-radius: 20px;
+        border-right: 6px solid var(--primary-green);
+        box-shadow: 0 4px 12px rgba(0, 0, 0, 0.05);
+        overflow: hidden;
+      }
+
+      .hadith-header {
+        background: #f9faf8;
+        padding: 15px 20px;
+        border-bottom: 1px solid #eee;
+        display: flex;
+        flex-wrap: wrap;
+        gap: 15px;
+        font-size: 13px;
+        color: #666;
+        align-items: center;
+      }
+
+      .hadith-source {
+        background: var(--primary-green);
+        color: white;
+        padding: 4px 12px;
+        border-radius: 20px;
+        font-weight: 500;
+      }
+
+      .hadith-rawi {
+        color: var(--dark-green);
+        font-weight: 500;
+      }
+
+      .hadith-sanad {
+        color: #888;
+        font-size: 12px;
+        word-break: break-word;
+        flex: 1;
+      }
+
+      .hadith-content {
+        font-size: 18px;
+        line-height: 1.8;
+        padding: 20px;
+        color: #222;
+      }
+
+      .topic-badges {
+        padding: 0 20px 15px 20px;
+        display: flex;
+        flex-wrap: wrap;
+        gap: 8px;
+      }
+
+      .topic-badge {
+        background: #e8f3e6;
+        color: var(--dark-green);
+        padding: 4px 12px;
+        border-radius: 20px;
+        font-size: 12px;
+      }
+
+      .explanation-section {
+        padding: 0 20px 20px 20px;
+        border-top: 1px solid #eee;
+      }
+
+      .explanation-title {
+        font-size: 14px;
+        font-weight: bold;
+        color: var(--dark-green);
+        margin: 15px 0 8px 0;
+        display: flex;
+        align-items: center;
+        gap: 8px;
+      }
+
+      .explanation-text {
+        font-size: 14px;
+        line-height: 1.7;
+        color: #555;
+        background: #f9faf8;
+        padding: 12px 15px;
+        border-radius: 12px;
+      }
+
+      .copy-btn {
+        background: none;
+        border: none;
+        color: var(--primary-green);
+        cursor: pointer;
+        font-size: 16px;
+        padding: 5px;
+        transition: 0.2s;
+      }
+
+      .copy-btn:hover {
+        color: var(--dark-green);
+      }
+
+      .tooltip-msg {
+        position: fixed;
+        bottom: 20px;
+        left: 50%;
+        transform: translateX(-50%);
+        background: var(--dark-green);
+        color: white;
+        padding: 8px 20px;
+        border-radius: 30px;
+        font-size: 14px;
+        z-index: 2000;
+        opacity: 0;
+        transition: 0.3s;
+        pointer-events: none;
+      }
+
+      /* Loading Spinner */
+      .loading-spinner {
+        text-align: center;
+        padding: 50px;
+        font-size: 18px;
+        color: var(--primary-green);
+      }
+
+      .loading-spinner i {
+        font-size: 40px;
+        margin-bottom: 15px;
+      }
+
+      .error-message {
+        text-align: center;
+        padding: 50px;
+        color: #c62828;
+        background: #ffebee;
+        border-radius: 20px;
+      }
+
+      /* Side Menu */
+      #overlay {
+        position: fixed;
+        inset: 0;
+        background: rgba(0, 0, 0, 0.4);
+        display: none;
+        z-index: 2500;
+      }
+
+      #links-menu {
+        position: fixed;
+        top: 0;
+        left: -100%;
+        width: 280px;
+        height: 100%;
+        background: white;
+        z-index: 3000;
+        padding: 15px;
+        transition: 0.3s;
+        box-shadow: 5px 0 20px rgba(0, 0, 0, 0.15);
+      }
+
+      .link-item {
+        display: flex;
+        align-items: center;
+        gap: 12px;
+        padding: 12px;
+        border-bottom: 1px solid #eee;
+        text-decoration: none;
+        color: black;
+        transition: 0.2s;
+        cursor: pointer;
+      }
+
+      .link-item:hover {
+        background: var(--light-green);
+        padding-right: 18px;
+      }
+
+      .link-circle {
+        width: 42px;
+        height: 42px;
+        border-radius: 50%;
+        border: 2px solid var(--primary-green);
+        display: flex;
+        align-items: center;
+        justify-content: center;
+        color: var(--primary-green);
+      }
+
+      .active-link .link-circle {
+        background: var(--primary-green);
+        color: white;
+      }
+
+      /* هايلايت رابط الأذكار */
+      #links-menu a[href="hadith.html"] {
+        background: #f0f8f0;
+        border-right: 4px solid var(--primary-green);
+        color: var(--primary-green);
+        font-weight: bold;
+      }
+
+      #links-menu a[href="hadith.html"] .link-circle {
+        background: var(--primary-green);
+        color: white;
+      }
+
+      @media (max-width: 768px) {
+        .categories-grid {
+          grid-template-columns: 1fr;
+        }
+        .hadith-content {
+          font-size: 16px;
+        }
+        .hadith-header {
+          flex-direction: column;
+          align-items: flex-start;
+        }
+      }
+    </style>
+  </head>
+  <body>
+    <div id="overlay" onclick="closeMenu()"></div>
+
+    <div id="links-menu">
+      <a href="azkar.html" class="link-item" onclick="closeMenu()">
+        <div class="link-circle"><i class="fa-solid fa-hands-praying"></i></div>
+        الأذكار
+      </a>
+      <a href="quran.html" class="link-item" onclick="closeMenu()">
+        <div class="link-circle"><i class="fa-solid fa-book"></i></div>
+        القرآن
+      </a>
+      <a href="prayertime.html" class="link-item" onclick="closeMenu()">
+        <div class="link-circle"><i class="fa-solid fa-mosque"></i></div>
+        أوقات الصلاة
+      </a>
+      <a href="hadith.html" class="link-item active-link" onclick="closeMenu()">
+        <div class="link-circle"><i class="fa-solid fa-book-open"></i></div>
+        الأحاديث
+      </a>
+      <a href="qipla-direction.html" class="link-item" onclick="closeMenu()">
+        <div class="link-circle">
+          <i class="fa-solid fa-location-arrow"></i>
+        </div>
+        إتجاه القبلة
+      </a>
+      <a href="about.html" class="link-item active">
+        <div class="link-circle"><i class="fa-solid fa-circle-info"></i></div>
+        حول التطبيق
+      </a>
+    </div>
+
+    <header class="main-header">
+      <div class="logo-area">
+        <i
+          class="fa-solid fa-mosque"
+          style="color: var(--primary-green); font-size: 24px"
+        ></i>
+        <h1>تطبيق استقامة</h1>
+      </div>
+      <nav>
+        <i
+          class="fa-solid fa-bars"
+          onclick="toggleMenu()"
+          style="font-size: 20px; cursor: pointer"
+        ></i>
+      </nav>
+    </header>
+
+    <div class="container">
+      <div class="section-title">
+        <button id="menu-btn" onclick="toggleMenu()">
+          <i class="fa-solid fa-bars"></i>
+        </button>
+        <button id="back-btn" onclick="loadCategories()">
+          <i class="fa-solid fa-arrow-right"></i>
+        </button>
+        <h2 id="header-title">الأحاديث النبوية</h2>
+      </div>
+      <div id="main-content">
+        <div class="loading-spinner">
+          <i class="fa-solid fa-spinner fa-spin"></i><br />
+          جاري تحميل الأحاديث...
+        </div>
+      </div>
+    </div>
+
+    <div id="tooltip" class="tooltip-msg">📋 تم نسخ الحديث</div>
+
+    <script>
+      let allHadiths = [];
+      let categoriesMap = new Map(); // اسم القسم -> قائمة الأحاديث
+
+      // عناصر DOM
+      const mainContent = document.getElementById("main-content");
+      const headerTitle = document.getElementById("header-title");
+      const backBtn = document.getElementById("back-btn");
+      const menuBtn = document.getElementById("menu-btn");
+
+      // دالة عرض رسالة منبثقة
+      function showTooltip(msg) {
+        const tooltip = document.getElementById("tooltip");
+        tooltip.textContent = msg || "📋 تم النسخ";
+        tooltip.style.opacity = "1";
+        setTimeout(() => {
+          tooltip.style.opacity = "0";
+        }, 1500);
+      }
+
+      // دالة نسخ النص
+      async function copyText(text) {
+        try {
+          await navigator.clipboard.writeText(text);
+          showTooltip("📋 تم نسخ الحديث");
+        } catch (err) {
+          showTooltip("❌ فشل النسخ");
+        }
+      }
+
+      // بناء خريطة الأقسام من التوبيكات
+      function buildCategoriesMap(hadiths) {
+        const map = new Map();
+
+        hadiths.forEach((hadith) => {
+          if (hadith.topic && Array.isArray(hadith.topic)) {
+            hadith.topic.forEach((category) => {
+              if (!map.has(category)) {
+                map.set(category, []);
+              }
+              map.get(category).push(hadith);
+            });
+          }
+        });
+
+        return map;
+      }
+
+      // عرض شاشة الأقسام (التصنيفات)
+      function loadCategories() {
+        headerTitle.innerText = "الأحاديث النبوية";
+        backBtn.style.display = "none";
+        menuBtn.style.display = "flex";
+        closeMenu();
+
+        if (categoriesMap.size === 0) {
+          mainContent.innerHTML =
+            '<div class="loading-spinner"><i class="fa-solid fa-spinner fa-spin"></i><br>جاري التحميل...</div>';
+          return;
+        }
+
+        let html = '<div class="categories-grid">';
+
+        // ترتيب الأقسام حسب عدد الأحاديث
+        const sortedCategories = Array.from(categoriesMap.keys()).sort(
+          (a, b) => {
+            return categoriesMap.get(b).length - categoriesMap.get(a).length;
+          },
+        );
+
+        for (const category of sortedCategories) {
+          const count = categoriesMap.get(category).length;
+          let icon = "fa-book";
+
+          // تحديد أيقونة مناسبة لكل قسم
+          if (category.includes("صلاة")) icon = "fa-mosque";
+          else if (category.includes("زكاة")) icon = "fa-hand-holding-heart";
+          else if (category.includes("صوم") || category.includes("رمضان"))
+            icon = "fa-moon";
+          else if (category.includes("حج")) icon = "fa-kaaba";
+          else if (category.includes("جنة")) icon = "fa-tree";
+          else if (category.includes("نار")) icon = "fa-fire";
+          else if (category.includes("توحيد") || category.includes("عقيدة"))
+            icon = "fa-star-of-life";
+          else if (category.includes("أخلاق")) icon = "fa-heart";
+          else if (category.includes("سيرة")) icon = "fa-landmark";
+          else if (category.includes("قدر")) icon = "fa-clock";
+          else icon = "fa-book";
+
+          html += `
+        <div class="category-card" onclick="loadCategoryHadiths('${category.replace(/'/g, "\\'")}')">
+          <div class="category-icon">
+            <i class="fa-solid ${icon}"></i>
+          </div>
+          <strong>${category}</strong>
+          <div class="category-count">${count} حديث</div>
+        </div>
+      `;
+        }
+
+        html += "</div>";
+        mainContent.innerHTML = html;
+      }
+
+      // عرض أحاديث قسم معين
+      function loadCategoryHadiths(categoryName) {
+        headerTitle.innerText = categoryName;
+        backBtn.style.display = "flex";
+        menuBtn.style.display = "none";
+        closeMenu();
+
+        const hadiths = categoriesMap.get(categoryName);
+
+        if (!hadiths || hadiths.length === 0) {
+          mainContent.innerHTML =
+            '<div class="error-message"><i class="fa-solid fa-circle-exclamation"></i><br>لا توجد أحاديث في هذا القسم</div>';
+          return;
+        }
+
+        let html = "";
+
+        hadiths.forEach((hadith, idx) => {
+          // عرض التوبيكات (الأقسام الفرعية)
+          const topics = hadith.topic || [];
+          const topicsHtml =
+            topics.length > 0
+              ? `
+        <div class="topic-badges">
+          ${topics.map((t) => `<span class="topic-badge">${t}</span>`).join("")}
+        </div>
+      `
+              : "";
+
+          html += `
+        <div class="hadith-card" id="hadith-${hadith.id}">
+          <div class="hadith-header">
+            <span class="hadith-source">${hadith.source}</span>
+            <span class="hadith-rawi">👤 ${hadith.rawi}</span>
+            <span class="hadith-sanad" title="اضغط لنسخ السند" style="cursor:pointer" onclick="copyText('${hadith.sanad.replace(/'/g, "\\'")}')">📜 السند: ${hadith.sanad.substring(0, 80)}${hadith.sanad.length > 80 ? "..." : ""}</span>
+            <button class="copy-btn" onclick="copyText('${hadith.hadith.replace(/'/g, "\\'")}')" title="نسخ المتن"><i class="fa-regular fa-copy"></i></button>
+          </div>
+          <div class="hadith-content">
+            ${hadith.hadith}
+          </div>
+          ${topicsHtml}
+          <div class="explanation-section">
+            <div class="explanation-title">
+              <i class="fa-solid fa-circle-info"></i>
+              شرح الحديث
+            </div>
+            <div class="explanation-text">
+              ${hadith.explanation || "لا يوجد شرح لهذا الحديث حالياً."}
+            </div>
+          </div>
+        </div>
+      `;
+        });
+
+        mainContent.innerHTML = html;
+      }
+
+      // تحميل البيانات من ملف JSON
+      async function loadData() {
+        try {
+          mainContent.innerHTML =
+            '<div class="loading-spinner"><i class="fa-solid fa-spinner fa-spin"></i><br>جاري تحميل الأحاديث...</div>';
+
+          const response = await fetch("muslim.json");
+
+          if (!response.ok) {
+            throw new Error(`HTTP ${response.status} - فشل تحميل الملف`);
+          }
+
+          allHadiths = await response.json();
+
+          if (!allHadiths || allHadiths.length === 0) {
+            throw new Error("لا توجد بيانات في الملف");
+          }
+
+          // بناء خريطة الأقسام
+          categoriesMap = buildCategoriesMap(allHadiths);
+
+          // عرض الأقسام
+          loadCategories();
+        } catch (error) {
+          console.error("خطأ:", error);
+          mainContent.innerHTML = `
+        <div class="error-message">
+          <i class="fa-solid fa-circle-exclamation" style="font-size: 40px; margin-bottom: 15px; display: block;"></i>
+          <strong>حدث خطأ في تحميل البيانات</strong><br><br>
+          ${error.message}<br><br>
+          تأكد من وجود ملف <strong style="color:var(--primary-green)">muslim.json</strong> في نفس المجلد.
+        </div>
+      `;
+        }
+      }
+
+      // قائمة جانبية
+      function toggleMenu() {
+        const menu = document.getElementById("links-menu");
+        const overlay = document.getElementById("overlay");
+        if (menu.style.left === "0px") {
+          menu.style.left = "-100%";
+          overlay.style.display = "none";
+        } else {
+          menu.style.left = "0px";
+          overlay.style.display = "block";
+        }
+      }
+
+      function closeMenu() {
+        const menu = document.getElementById("links-menu");
+        const overlay = document.getElementById("overlay");
+        menu.style.left = "-100%";
+        overlay.style.display = "none";
+      }
+
+      // بدء التحميل
+      loadData();
+    </script>
+  </body>
+</html>
