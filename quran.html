@@ -584,7 +584,7 @@
         document.getElementById("contextMenu").style.display = "none";
       }
 
-      // =============== منطق المصحف والتلاوة (باستخدام Quran.com API الموثوق) ===============
+      // =============== منطق المصحف والتلاوة (باستخدام Quran.com + MP3Quran APIs الموثوقة) ===============
       (function () {
         const display = document.getElementById("verses");
         const btn = document.getElementById("loadMore");
@@ -751,42 +751,110 @@
           return text.trim();
         }
 
-        // ---------- جلب القراء من Quran.com API (موثوق) ----------
-        async function loadReciters() {
-          reciterSelect.innerHTML =
-            '<option value="">جار تحميل القراء...</option>';
+        // ---------- جلب القراء من Quran.com API ----------
+        async function loadRecitersFromQuranCom() {
           try {
             const res = await fetch(
               "https://api.quran.com/api/v4/resources/chapter_reciters?language=ar",
             );
             const data = await res.json();
-            if (data.reciters && data.reciters.length) {
-              reciterSelect.innerHTML =
-                '<option value="">اختر القارئ...</option>';
-              for (const rec of data.reciters) {
-                const opt = document.createElement("option");
-                opt.value = JSON.stringify({
-                  id: rec.id,
-                  source: "quran",
-                  name: rec.reciter_name,
-                });
-                opt.textContent = `${rec.reciter_name} (ترتيل)`;
-                reciterSelect.appendChild(opt);
-              }
-              // اختيار السديس بشكل افتراضي إن وجد
-              const defaultOpt = Array.from(reciterSelect.options).find(
-                (opt) =>
-                  opt.text.includes("السديس") ||
-                  opt.text.includes("Abdul Rahman Al-Sudais"),
-              );
-              if (defaultOpt) reciterSelect.value = defaultOpt.value;
-              else reciterSelect.selectedIndex = 1;
-            } else throw new Error("لا توجد قراء");
+            return (data.reciters || []).map((r) => ({
+              id: r.id,
+              name: r.reciter_name,
+              source: "quran",
+            }));
           } catch (e) {
-            console.warn(
-              "فشل جلب القراء من Quran.com، استخدام قائمة احتياطية.",
-              e,
+            return [
+              { id: 7, name: "ماهر المعيقلي", source: "quran" },
+              { id: 3, name: "مشاري العفاسي", source: "quran" },
+            ];
+          }
+        }
+
+        // ---------- جلب القراء من MP3Quran API ----------
+        async function loadRecitersFromMp3Quran() {
+          try {
+            const res = await fetch(
+              "https://www.mp3quran.net/api/v3/ayat_timing/reads",
             );
+            const data = await res.json();
+            return data.map((r) => ({
+              id: r.id,
+              name: r.name,
+              source: "mp3quran",
+              folder_url: r.folder_url,
+            }));
+          } catch (e) {
+            return [];
+          }
+        }
+
+        async function loadReciters() {
+          reciterSelect.innerHTML =
+            '<option value="">جار تحميل القراء...</option>';
+          try {
+            const [quranReciters, mp3Reciters] = await Promise.all([
+              loadRecitersFromQuranCom(),
+              loadRecitersFromMp3Quran(),
+            ]);
+
+            reciterSelect.innerHTML =
+              '<option value="">اختر القارئ...</option>';
+
+            // إضافة قراء Quran.com
+            quranReciters.forEach((r) => {
+              const opt = document.createElement("option");
+              opt.value = JSON.stringify({ id: r.id, source: "quran" });
+              opt.textContent = r.name + " (Q)";
+              reciterSelect.appendChild(opt);
+            });
+
+            // إضافة قراء MP3Quran
+            mp3Reciters.forEach((r) => {
+              const opt = document.createElement("option");
+              opt.value = JSON.stringify({
+                id: r.id,
+                source: "mp3quran",
+                folder_url: r.folder_url,
+              });
+              opt.textContent = r.name + " (MP3)";
+              reciterSelect.appendChild(opt);
+            });
+
+            // ✅ إضافة القراء الاحتياطيين
+            const fallbackReciters = [
+              { id: 7, name: "عبد الرحمن السديس" },
+              { id: 8, name: "سعود الشريم" },
+              { id: 9, name: "مشاري العفاسي" },
+              { id: 10, name: "ماهر المعيقلي" },
+              { id: 11, name: "عبد الله الجهني" },
+              { id: 12, name: "محمد أيوب" },
+              { id: 13, name: "ناصر القطامي" },
+              { id: 14, name: "ياسر الدوسري" },
+              { id: 15, name: "علي جابر" },
+              { id: 16, name: "محمود خليل الحصري" },
+              { id: 17, name: "محمد صديق المنشاوي" },
+              { id: 18, name: "أحمد العجمي" },
+            ];
+            fallbackReciters.forEach((rec) => {
+              const opt = document.createElement("option");
+              opt.value = JSON.stringify({
+                id: rec.id,
+                source: "quran_fallback",
+                name: rec.name,
+              });
+              opt.textContent = rec.name + " (احتياطي)";
+              reciterSelect.appendChild(opt);
+            });
+
+            // اختيار افتراضي
+            const defaultOpt = Array.from(reciterSelect.options).find((o) =>
+              o.text.includes("ماهر"),
+            );
+            if (defaultOpt) reciterSelect.value = defaultOpt.value;
+            else reciterSelect.selectedIndex = 1;
+          } catch (e) {
+            console.warn("فشل تحميل القرّاء، استخدام قائمة احتياطية فقط.");
             reciterSelect.innerHTML =
               '<option value="">اختر القارئ (احتياطي)</option>';
             const fallbackList = [
@@ -803,18 +871,18 @@
               { id: 17, name: "محمد صديق المنشاوي" },
               { id: 18, name: "أحمد العجمي" },
             ];
-            for (const rec of fallbackList) {
+            fallbackList.forEach((rec) => {
               const opt = document.createElement("option");
               opt.value = JSON.stringify({
                 id: rec.id,
                 source: "quran_fallback",
                 name: rec.name,
               });
-              opt.textContent = `${rec.name} (ترتيل)`;
+              opt.textContent = rec.name + " (احتياطي)";
               reciterSelect.appendChild(opt);
-            }
-            const defaultOpt = Array.from(reciterSelect.options).find((opt) =>
-              opt.text.includes("السديس"),
+            });
+            const defaultOpt = Array.from(reciterSelect.options).find((o) =>
+              o.text.includes("السديس"),
             );
             if (defaultOpt) reciterSelect.value = defaultOpt.value;
           }
@@ -832,6 +900,7 @@
         async function loadSurahTimings(surahNumber) {
           const info = getSelectedReciterInfo();
           if (!info) return false;
+
           if (info.source === "quran" || info.source === "quran_fallback") {
             const recitationId = info.id;
             try {
@@ -855,6 +924,25 @@
               }
             } catch (e) {
               console.warn("فشل تحميل التلاوة من quran.com", e);
+            }
+          } else if (info.source === "mp3quran") {
+            try {
+              const res = await fetch(
+                `https://www.mp3quran.net/api/v3/ayat_timing?surah=${surahNumber}&read=${info.id}`,
+              );
+              const data = await res.json();
+              if (data && data.length > 0) {
+                currentTimings = data.map((t) => ({
+                  verse_key: `${surahNumber}:${t.ayah}`,
+                  start: t.start_time / 1000,
+                  end: t.end_time / 1000,
+                }));
+                const paddedSurah = String(surahNumber).padStart(3, "0");
+                currentAudioUrl = info.folder_url + paddedSurah + ".mp3";
+                return true;
+              }
+            } catch (e) {
+              console.warn("فشل تحميل التلاوة من mp3quran", e);
             }
           }
           return false;

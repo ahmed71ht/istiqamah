@@ -6,6 +6,7 @@ const urlsToCache = [
   "/azkar.html",
   "/quran.html",
   "/hadith.html",
+  "/offline.html", // ← أضفنا صفحة وضع عدم الاتصال
   "/manifest.json",
   "/icons/icon-72.png",
   "/icons/icon-96.png",
@@ -17,42 +18,45 @@ const urlsToCache = [
   "/icons/icon-512.png",
 ];
 
-// تثبيت Service Worker وتخزين الملفات
+// التثبيت: تخزين الملفات الأساسية وتفعيل الـ Service Worker الجديد فوراً
 self.addEventListener("install", (event) => {
   event.waitUntil(
-    caches.open(CACHE_NAME).then((cache) => {
-      console.log("Cache opened");
-      return cache.addAll(urlsToCache);
-    }),
+    caches.open(CACHE_NAME).then((cache) => cache.addAll(urlsToCache)),
   );
+  self.skipWaiting(); // تفعيل فوري بمجرد التثبيت
 });
 
-// جلب الملفات من الكاش أو من الشبكة
-self.addEventListener("fetch", (event) => {
-  event.respondWith(
-    caches.match(event.request).then((response) => {
-      // إذا وجد في الكاش، أرجع منه
-      if (response) {
-        return response;
-      }
-      // وإلا، أجلب من الشبكة
-      return fetch(event.request);
-    }),
-  );
-});
-
-// تحديث الكاش عند تفعيل Service Worker جديد
+// التفعيل: تنظيف الكاش القديم والسيطرة على الصفحات المفتوحة
 self.addEventListener("activate", (event) => {
-  const cacheWhitelist = [CACHE_NAME];
   event.waitUntil(
-    caches.keys().then((cacheNames) => {
-      return Promise.all(
-        cacheNames.map((cacheName) => {
-          if (cacheWhitelist.indexOf(cacheName) === -1) {
-            return caches.delete(cacheName);
-          }
-        }),
-      );
-    }),
+    caches
+      .keys()
+      .then((keys) =>
+        Promise.all(
+          keys
+            .filter((key) => key !== CACHE_NAME)
+            .map((key) => caches.delete(key)),
+        ),
+      ),
   );
+  self.clients.claim(); // السيطرة على جميع العملاء بدون انتظار إعادة تحميل
+});
+
+// الجلب: استراتيجية مزدوجة (Network-first للصفحات، Cache-first للأصول)
+self.addEventListener("fetch", (event) => {
+  if (event.request.mode === "navigate") {
+    // التنقل بين الصفحات: الشبكة أولاً، وعند الفشل الرجوع للكاش أو صفحة offline
+    event.respondWith(
+      fetch(event.request).catch(() => {
+        return caches.match(event.request) || caches.match("/offline.html");
+      }),
+    );
+  } else {
+    // باقي الأصول (أيقونات، CSS، JS...): الكاش أولاً ثم الشبكة
+    event.respondWith(
+      caches.match(event.request).then((cachedResponse) => {
+        return cachedResponse || fetch(event.request);
+      }),
+    );
+  }
 });
