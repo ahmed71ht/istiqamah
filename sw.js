@@ -1,34 +1,34 @@
 const CACHE_NAME = "istiqamah-v1.0.0";
+const BASE = "/istiqamah"; // اسم المستودع
+
 const urlsToCache = [
-  "/",
-  "/index.html",
-  "/about.html",
-  "/azkar.html",
-  "/quran.html",
-  "/hadith.html",
-  "/offline.html", // ← أضفنا صفحة وضع عدم الاتصال
-  "/manifest.json",
-  "/icons/icon-72.png",
-  "/icons/icon-96.png",
-  "/icons/icon-128.png",
-  "/icons/icon-144.png",
-  "/icons/icon-152.png",
-  "/icons/icon-192.png",
-  "/icons/icon-384.png",
-  "/icons/icon-512.png",
+  `${BASE}/`,
+  `${BASE}/index.html`,
+  `${BASE}/about.html`,
+  `${BASE}/azkar.html`,
+  `${BASE}/quran.html`,
+  `${BASE}/hadith.html`,
+  `${BASE}/offline.html`,
+  `${BASE}/manifest.json`,
+  `${BASE}/icons/icon-72.png`,
+  `${BASE}/icons/icon-96.png`,
+  `${BASE}/icons/icon-128.png`,
+  `${BASE}/icons/icon-144.png`,
+  `${BASE}/icons/icon-152.png`,
+  `${BASE}/icons/icon-192.png`,
+  `${BASE}/icons/icon-384.png`,
+  `${BASE}/icons/icon-512.png`,
 ];
 
-// التثبيت: تخزين الملفات الأساسية وتفعيل الـ Service Worker الجديد فوراً
-self.addEventListener("install", (event) => {
-  event.waitUntil(
+self.addEventListener("install", (e) => {
+  e.waitUntil(
     caches.open(CACHE_NAME).then((cache) => cache.addAll(urlsToCache)),
   );
-  self.skipWaiting(); // تفعيل فوري بمجرد التثبيت
+  self.skipWaiting();
 });
 
-// التفعيل: تنظيف الكاش القديم والسيطرة على الصفحات المفتوحة
-self.addEventListener("activate", (event) => {
-  event.waitUntil(
+self.addEventListener("activate", (e) => {
+  e.waitUntil(
     caches
       .keys()
       .then((keys) =>
@@ -39,24 +39,21 @@ self.addEventListener("activate", (event) => {
         ),
       ),
   );
-  self.clients.claim(); // السيطرة على جميع العملاء بدون انتظار إعادة تحميل
+  self.clients.claim();
 });
 
-// الجلب: استراتيجية مزدوجة (Network-first للصفحات، Cache-first للأصول)
-self.addEventListener("fetch", (event) => {
-  if (event.request.mode === "navigate") {
-    // التنقل بين الصفحات: الشبكة أولاً، وعند الفشل الرجوع للكاش أو صفحة offline
-    event.respondWith(
-      fetch(event.request).catch(() => {
-        return caches.match(event.request) || caches.match("/offline.html");
+self.addEventListener("fetch", (e) => {
+  if (e.request.mode === "navigate") {
+    // network-first للصفحات
+    e.respondWith(
+      fetch(e.request).catch(() => {
+        return caches.match(e.request) || caches.match(`${BASE}/offline.html`);
       }),
     );
   } else {
-    // باقي الأصول (أيقونات، CSS، JS...): الكاش أولاً ثم الشبكة
-    event.respondWith(
-      caches.match(event.request).then((cachedResponse) => {
-        return cachedResponse || fetch(event.request);
-      }),
+    // cache-first للأصول الثابتة
+    e.respondWith(
+      caches.match(e.request).then((cached) => cached || fetch(e.request)),
     );
   }
 });
