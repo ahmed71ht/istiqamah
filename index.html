@@ -201,15 +201,40 @@
         font-size: 0.9rem;
       }
 
-      @media (max-width: 768px) {
-        .features {
-          grid-template-columns: 1fr;
-          padding: 1rem;
-        }
-        .hero h2 {
-          font-size: 1.5rem;
-        }
-      }
+@media (max-width: 768px) {
+  .features {
+    grid-template-columns: repeat(2, 1fr);
+    padding: 1rem;
+  }
+
+  .feature-card {
+    padding: 10px;
+  }
+
+  .feature-card i {
+    font-size: 20px;
+  }
+
+  .feature-card h3 {
+    font-size: 14px;
+  }
+
+  .feature-card p {
+    font-size: 11px;
+  }
+
+  .hero h2 {
+    font-size: 1.5rem;
+  }
+}
+
+@media (max-width: 480px) {
+  .features {
+    grid-template-columns: repeat(3, 1fr);
+  }
+}
+
+      
     </style>
   </head>
   <body>
