@@ -94,7 +94,7 @@
       #links-menu {
         position: fixed;
         top: 0;
-        right: -100%;
+        left: -100%;
         width: 280px;
         height: 100%;
         background: white;
@@ -141,7 +141,6 @@
       .fa-bars {
         font-size: 26px;
         cursor: pointer;
-        color: var(--primary-green);
       }
 
       /* المحتوى الرئيسي */
@@ -228,17 +227,28 @@
         الأذكار
       </a>
       <a href="quran.html" class="link-item" onclick="closeMenu()">
-        <div class="link-circle"><i class="fa-solid fa-book-quran"></i></div>
+        <div class="link-circle"><i class="fa-solid fa-book"></i></div>
         القرآن
       </a>
-      <a href="hadith.html" class="link-item" onclick="closeMenu()">
+      <a href="prayertime.html" class="link-item" onclick="closeMenu()">
+        <div class="link-circle"><i class="fa-solid fa-mosque"></i></div>
+        أوقات الصلاة
+      </a>
+      <a href="hadith.html" class="link-item active-link" onclick="closeMenu()">
         <div class="link-circle"><i class="fa-solid fa-book-open"></i></div>
         الأحاديث
       </a>
-      <a href="about.html" class="link-item" onclick="closeMenu()">
+      <a href="qipla-direction.html" class="link-item" onclick="closeMenu()">
+        <div class="link-circle">
+          <i class="fa-solid fa-location-arrow"></i>
+        </div>
+        إتجاه القبلة
+      </a>
+      <a href="about.html" class="link-item">
         <div class="link-circle"><i class="fa-solid fa-circle-info"></i></div>
         حول التطبيق
       </a>
+    </div>
     </div>
 
     <!-- الهيدر -->
@@ -248,9 +258,15 @@
           class="fa-solid fa-mosque"
           style="color: var(--primary-green); font-size: 24px"
         ></i>
-        <h1>استقامة</h1>
+        <h1>تطبيق استقامة</h1>
       </div>
-      <i class="fa-solid fa-bars" onclick="toggleMenu()"></i>
+      <nav>
+        <i
+          class="fa-solid fa-bars"
+          onclick="toggleMenu()"
+          style="font-size: 20px; cursor: pointer"
+        ></i>
+      </nav>
     </header>
 
     <!-- المحتوى -->
@@ -265,6 +281,11 @@
         <h3>الأذكار</h3>
         <p>أذكار الصباح والمساء، أذكار النوم، وأذكار اليوم والليلة</p>
       </div>
+      <div class="feature-card" onclick="location.href = 'prayertime.html'">
+        <i class="fa-solid fa-mosque"></i>
+        <h3>أوقات الصلاة</h3>
+        <p>أوقات الصلاوات الخمس حسب منطقتك</p>
+      </div>
       <div class="feature-card" onclick="location.href = 'quran.html'">
         <i class="fa-solid fa-book-quran"></i>
         <h3>القرآن الكريم</h3>
@@ -275,6 +296,14 @@
         <h3>الأحاديث النبوية</h3>
         <p>مجموعة من الأحاديث الصحيحة مع شرحها</p>
       </div>
+      <div
+        class="feature-card"
+        onclick="location.href = 'qipla-direction.html'"
+      >
+        <i class="fa-solid fa-location-arrow"></i>
+        <h3>إتجاه القبلة</h3>
+        <p>إتجاه القبلة حسب منطقتك</p>
+      </div>
       <div class="feature-card" onclick="location.href = 'about.html'">
         <i class="fa-solid fa-circle-info"></i>
         <h3>عن التطبيق</h3>
@@ -284,12 +313,12 @@
 
     <script>
       function toggleMenu() {
-        document.getElementById("links-menu").style.right = "0";
+        document.getElementById("links-menu").style.left = "0";
         document.getElementById("overlay").style.display = "block";
       }
 
       function closeMenu() {
-        document.getElementById("links-menu").style.right = "-100%";
+        document.getElementById("links-menu").style.left = "-100%";
         document.getElementById("overlay").style.display = "none";
       }
 
