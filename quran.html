@@ -325,7 +325,6 @@
         border-radius: 28px 0 0 28px;
         overflow-y: auto;
       }
-
       #links-menu {
         position: fixed;
         top: 0;
@@ -339,7 +338,6 @@
         box-shadow: -5px 0 20px rgba(0, 0, 0, 0.15);
         border-radius: 28px 0 0 28px;
       }
-
       #surah-list {
         margin-top: 18px;
         display: flex;
@@ -367,7 +365,6 @@
         background: #e0f0da;
         border-right: 4px solid var(--primary-green);
       }
-
       #overlay {
         position: fixed;
         inset: 0;
@@ -375,7 +372,6 @@
         display: none;
         z-index: 2500;
       }
-
       .link-item {
         display: flex;
         align-items: center;
@@ -471,55 +467,45 @@
           class="fa-solid fa-magnifying-glass"
           onclick="toggleSurah()"
           style="cursor: pointer"
-        ></i>
-        <i
+        ></i
+        ><i
           class="fa-solid fa-bars"
           onclick="toggleLinks()"
           style="cursor: pointer"
         ></i>
       </div>
     </header>
-
     <div id="overlay" onclick="closeAll()"></div>
-
     <div id="side-menu">
       <h3 style="color: var(--primary-green)">فهرس السور</h3>
       <div id="surah-list"></div>
     </div>
-
     <div id="links-menu">
-      <a href="index.html" class="link-item">
-        <div class="link-circle"><i class="fa-solid fa-house"></i></div>
-        الرئيسية
-      </a>
-      <a href="azkar.html" class="link-item">
-        <div class="link-circle"><i class="fa-solid fa-hands-praying"></i></div>
-        الأذكار
-      </a>
-      <a href="#" class="link-item">
-        <div class="link-circle"><i class="fa-solid fa-book"></i></div>
-        القرآن
-      </a>
-      <a href="prayertime.html" class="link-item">
-        <div class="link-circle"><i class="fa-solid fa-clock"></i></div>
-        أوقات الصلاة
-      </a>
-      <a href="hadith.html" class="link-item">
-        <div class="link-circle"><i class="fa-solid fa-book-open"></i></div>
-        الأحاديث
-      </a>
-      <a href="qipla-direction.html" class="link-item active-link">
-        <div class="link-circle">
+      <a href="#" class="link-item"
+        ><div class="link-circle"><i class="fa-solid fa-book"></i></div>
+        القرآن</a
+      >
+      <a href="#" class="link-item" id="azkarLink"
+        ><div class="link-circle">
+          <i class="fa-solid fa-hands-praying"></i>
+        </div>
+        الأذكار</a
+      >
+      <a href="#" class="link-item" id="prayerLink"
+        ><div class="link-circle"><i class="fa-regular fa-clock"></i></div>
+        أوقات الصلاة</a
+      >
+      <a href="#" class="link-item" id="hadithLink"
+        ><div class="link-circle"><i class="fa-regular fa-message"></i></div>
+        الأحاديث</a
+      >
+      <a href="#" class="link-item" id="qiblaLink"
+        ><div class="link-circle">
           <i class="fa-solid fa-location-arrow"></i>
         </div>
-        إتجاه القبلة
-      </a>
-      <a href="about.html" class="link-item active">
-        <div class="link-circle"><i class="fa-solid fa-circle-info"></i></div>
-        حول التطبيق
-      </a>
+        اتجاه القبلة</a
+      >
     </div>
-
     <div class="container">
       <div class="reciter-panel">
         <div class="reciter-icon">
@@ -533,12 +519,10 @@
         </button>
       </div>
     </div>
-
     <div class="container" style="padding-top: 0">
       <div id="verses">جاري التحميل...</div>
       <button id="loadMore"></button>
     </div>
-
     <div class="audio-bar hidden" id="audioBar">
       <button class="play-btn" id="playPauseBtn" onclick="togglePlay()">
         <i class="fa-solid fa-play"></i>
@@ -549,7 +533,6 @@
       </div>
     </div>
     <audio id="audioPlayer" preload="auto"></audio>
-
     <div id="contextMenu" class="context-menu">
       <div class="menu-item" onclick="playFromAyah()">
         <i class="fa-solid fa-headphones"></i> استماع من هذه الآية
@@ -563,28 +546,28 @@
     </div>
 
     <script>
-      // =============== دوال فتح وإغلاق القوائم ===============
+      // =============== دوال القوائم ===============
       function toggleSurah() {
-        let menu = document.getElementById("side-menu");
-        let overlay = document.getElementById("overlay");
-        if (menu.style.right === "0px") {
-          menu.style.right = "-100%";
-          overlay.style.display = "none";
+        let m = document.getElementById("side-menu"),
+          ov = document.getElementById("overlay");
+        if (m.style.right === "0px") {
+          m.style.right = "-100%";
+          ov.style.display = "none";
         } else {
-          menu.style.right = "0px";
-          overlay.style.display = "block";
+          m.style.right = "0px";
+          ov.style.display = "block";
           document.getElementById("links-menu").style.left = "-100%";
         }
       }
       function toggleLinks() {
-        let menu = document.getElementById("links-menu");
-        let overlay = document.getElementById("overlay");
-        if (menu.style.left === "0px") {
-          menu.style.left = "-100%";
-          overlay.style.display = "none";
+        let m = document.getElementById("links-menu"),
+          ov = document.getElementById("overlay");
+        if (m.style.left === "0px") {
+          m.style.left = "-100%";
+          ov.style.display = "none";
         } else {
-          menu.style.left = "0px";
-          overlay.style.display = "block";
+          m.style.left = "0px";
+          ov.style.display = "block";
           document.getElementById("side-menu").style.right = "-100%";
         }
       }
@@ -595,7 +578,7 @@
         document.getElementById("contextMenu").style.display = "none";
       }
 
-      // =============== منطق المصحف والتلاوة مع قائمة قراء ثابتة ===============
+      // =============== منطق المصحف والتلاوة (باستخدام Quran.com API الموثوق) ===============
       (function () {
         const display = document.getElementById("verses");
         const btn = document.getElementById("loadMore");
@@ -619,10 +602,9 @@
         let currentTimings = [],
           currentAudioUrl = "";
         let globalLastSurahId = null;
+        const TOTAL_PAGES = 604;
 
-        const TOTAL_PAGES = 604; // آخر صفحة في المصحف
-
-        // أسماء السور (114)
+        // أسماء السور
         const surahNames = [
           "الفاتحة",
           "البقرة",
@@ -742,7 +724,6 @@
         function getSurahName(n) {
           return surahNames[n - 1] || "";
         }
-
         const surahPages = [
           1, 2, 50, 77, 106, 128, 151, 177, 187, 208, 221, 235, 249, 255, 262,
           267, 282, 293, 305, 312, 322, 332, 342, 350, 359, 367, 377, 385, 396,
@@ -752,7 +733,6 @@
           574, 575, 577, 578, 580, 582, 583, 585, 586, 587, 589, 590, 591, 592,
           593, 594, 595, 596, 597, 598, 599, 600, 601, 602, 603, 604,
         ];
-
         function stripBasmala(text) {
           const patterns = [
             "بِسْمِ ٱللَّهِ ٱلرَّحْمَٰنِ ٱلرَّحِيمِ ",
@@ -765,69 +745,73 @@
           return text.trim();
         }
 
-        // قائمة القراء الثابتة (أكثر من 40 قارئ)
-        const FALLBACK_RECITERS = [
-          { id: 1, name: "عبد الرحمن السديس", folder: "sds" },
-          { id: 2, name: "سعود الشريم", folder: "shreem" },
-          { id: 3, name: "مشاري راشد العفاسي", folder: "mrsh" },
-          { id: 4, name: "ماهر المعيقلي", folder: "maher" },
-          { id: 5, name: "عبد الله الجهني", folder: "aljzh" },
-          { id: 6, name: "علي جابر", folder: "jbr" },
-          { id: 7, name: "محمد أيوب", folder: "ayub" },
-          { id: 8, name: "محمد صديق المنشاوي", folder: "mnshwy" },
-          { id: 9, name: "محمود خليل الحصري", folder: "hussary" },
-          { id: 10, name: "محمد عبد العزيز الزيات", folder: "zyat" },
-          { id: 11, name: "أحمد خليل شاهين", folder: "shahin" },
-          { id: 12, name: "أحمد علي عجمي", folder: "ajmy" },
-          { id: 13, name: "ياسر الدوسري", folder: "yasser" },
-          { id: 14, name: "هاني الرفاعي", folder: "hr" },
-          { id: 15, name: "أحمد نعينع", folder: "neina" },
-          { id: 16, name: "محمد الطبلاوي", folder: "tbla" },
-          { id: 17, name: "ناصر القطامي", folder: "qtmy" },
-          { id: 18, name: "إبراهيم الأخضر", folder: "akhdr" },
-          { id: 19, name: "خالد الجليل", folder: "jlal" },
-          { id: 20, name: "عبد الله المطرود", folder: "mtrd" },
-          { id: 21, name: "عبد الباري الثبيتي", folder: "thbyty" },
-          { id: 22, name: "عبد الرشيد صوفي", folder: "sufi" },
-          { id: 23, name: "محمد البراك", folder: "brk" },
-          { id: 24, name: "محمود علي البنا", folder: "banna" },
-          { id: 25, name: "فتحي عبد الله", folder: "fathi" },
-          { id: 26, name: "عبد الله البعيم", folder: "baeem" },
-          { id: 27, name: "إبراهيم الجبرين", folder: "jbryn" },
-          { id: 28, name: "سعد الغامدي", folder: "s_gmd" },
-          { id: 29, name: "علي الحذيفي", folder: "hdhf" },
-          { id: 30, name: "محمد الحراق", folder: "hrq" },
-          { id: 31, name: "أحمد العجمي", folder: "ajmy2" },
-          { id: 32, name: "عبد الواحد زكي", folder: "zki" },
-          { id: 33, name: "محمد وهبان", folder: "whbn" },
-          { id: 34, name: "رعد الكردي", folder: "rd_krd" },
-          { id: 35, name: "محمد اللحيدان", folder: "lhydan" },
-          { id: 36, name: "خليفة الطنيجي", folder: "tnjy" },
-          { id: 37, name: "حسن صالح", folder: "h_salih" },
-          { id: 38, name: "طارق محمد", folder: "t_mhmd" },
-          { id: 39, name: "أنس العمادي", folder: "ans_amdy" },
-          { id: 40, name: "أبو بكر الشاطري", folder: "ab_sh" },
-          { id: 41, name: "محمد جبريل", folder: "jibreel" },
-          { id: 42, name: "أحمد الطرابلسي", folder: "tarabulsy" },
-        ];
-
-        function loadReciters() {
-          reciterSelect.innerHTML = '<option value="">اختر القارئ...</option>';
-          for (const rec of FALLBACK_RECITERS) {
-            const opt = document.createElement("option");
-            opt.value = JSON.stringify({
-              id: rec.id,
-              source: "fallback",
-              folder_url: `https://server8.mp3quran.net/${rec.folder}`,
-              name: rec.name,
-            });
-            opt.textContent = `${rec.name} (ترتيل)`;
-            reciterSelect.appendChild(opt);
+        // ---------- جلب القراء من Quran.com API (موثوق) ----------
+        async function loadReciters() {
+          reciterSelect.innerHTML =
+            '<option value="">جار تحميل القراء...</option>';
+          try {
+            const res = await fetch(
+              "https://api.quran.com/api/v4/resources/chapter_reciters?language=ar",
+            );
+            const data = await res.json();
+            if (data.reciters && data.reciters.length) {
+              reciterSelect.innerHTML =
+                '<option value="">اختر القارئ...</option>';
+              for (const rec of data.reciters) {
+                const opt = document.createElement("option");
+                opt.value = JSON.stringify({
+                  id: rec.id,
+                  source: "quran",
+                  name: rec.reciter_name,
+                });
+                opt.textContent = `${rec.reciter_name} (ترتيل)`;
+                reciterSelect.appendChild(opt);
+              }
+              // اختيار السديس بشكل افتراضي إن وجد
+              const defaultOpt = Array.from(reciterSelect.options).find(
+                (opt) =>
+                  opt.text.includes("السديس") ||
+                  opt.text.includes("Abdul Rahman Al-Sudais"),
+              );
+              if (defaultOpt) reciterSelect.value = defaultOpt.value;
+              else reciterSelect.selectedIndex = 1;
+            } else throw new Error("لا توجد قراء");
+          } catch (e) {
+            console.warn(
+              "فشل جلب القراء من Quran.com، استخدام قائمة احتياطية.",
+              e,
+            );
+            reciterSelect.innerHTML =
+              '<option value="">اختر القارئ (احتياطي)</option>';
+            const fallbackList = [
+              { id: 7, name: "عبد الرحمن السديس" },
+              { id: 8, name: "سعود الشريم" },
+              { id: 9, name: "مشاري العفاسي" },
+              { id: 10, name: "ماهر المعيقلي" },
+              { id: 11, name: "عبد الله الجهني" },
+              { id: 12, name: "محمد أيوب" },
+              { id: 13, name: "ناصر القطامي" },
+              { id: 14, name: "ياسر الدوسري" },
+              { id: 15, name: "علي جابر" },
+              { id: 16, name: "محمود خليل الحصري" },
+              { id: 17, name: "محمد صديق المنشاوي" },
+              { id: 18, name: "أحمد العجمي" },
+            ];
+            for (const rec of fallbackList) {
+              const opt = document.createElement("option");
+              opt.value = JSON.stringify({
+                id: rec.id,
+                source: "quran_fallback",
+                name: rec.name,
+              });
+              opt.textContent = `${rec.name} (ترتيل)`;
+              reciterSelect.appendChild(opt);
+            }
+            const defaultOpt = Array.from(reciterSelect.options).find((opt) =>
+              opt.text.includes("السديس"),
+            );
+            if (defaultOpt) reciterSelect.value = defaultOpt.value;
           }
-          const defaultOpt = Array.from(reciterSelect.options).find((opt) =>
-            opt.text.includes("السديس"),
-          );
-          if (defaultOpt) reciterSelect.value = defaultOpt.value;
         }
 
         function getSelectedReciterInfo() {
@@ -841,27 +825,33 @@
 
         async function loadSurahTimings(surahNumber) {
           const info = getSelectedReciterInfo();
-          if (!info || info.source !== "fallback") return false;
-          const padded = String(surahNumber).padStart(3, "0");
-          currentAudioUrl = `${info.folder_url}/${padded}.mp3`;
-          try {
-            const timingRes = await fetch(
-              `https://www.mp3quran.net/api/v3/ayat_timing?surah=${surahNumber}&read=${info.id}`,
-            );
-            const timingData = await timingRes.json();
-            if (Array.isArray(timingData) && timingData.length) {
-              currentTimings = timingData.map((t) => ({
-                verse_key: `${surahNumber}:${t.ayah}`,
-                start: t.start_time / 1000,
-                end: t.end_time / 1000,
-              }));
-            } else {
-              currentTimings = [];
+          if (!info) return false;
+          if (info.source === "quran" || info.source === "quran_fallback") {
+            const recitationId = info.id;
+            try {
+              const res = await fetch(
+                `https://api.quran.com/api/v4/chapter_recitations/${recitationId}/${surahNumber}?segments=true`,
+              );
+              const data = await res.json();
+              if (data.audio_file && data.audio_file.audio_url) {
+                currentAudioUrl = data.audio_file.audio_url;
+                if (
+                  data.audio_file.timestamps &&
+                  data.audio_file.timestamps.length
+                ) {
+                  currentTimings = data.audio_file.timestamps.map((t) => ({
+                    verse_key: t.verse_key,
+                    start: t.timestamp_from / 1000,
+                    end: t.timestamp_to / 1000,
+                  }));
+                } else currentTimings = [];
+                return true;
+              }
+            } catch (e) {
+              console.warn("فشل تحميل التلاوة من quran.com", e);
             }
-          } catch (e) {
-            currentTimings = [];
           }
-          return true;
+          return false;
         }
 
         function highlightAyah(surah, ayah) {
@@ -914,7 +904,7 @@
             ayah = selectedAyahNumber;
           const ok = await loadSurahTimings(surah);
           if (!ok || !currentAudioUrl) {
-            alert("التلاوة غير متوفرة لهذا القارئ");
+            alert("التلاوة غير متوفرة لهذا القارئ. حاول اختيار قارئ آخر.");
             closeAll();
             return;
           }
@@ -928,7 +918,8 @@
             const timing = currentTimings.find(
               (t) => t.verse_key === `${surah}:${ayah}`,
             );
-            audioPlayer.currentTime = timing ? timing.start : 0;
+            if (timing) audioPlayer.currentTime = timing.start;
+            else audioPlayer.currentTime = 0;
             await new Promise((r) =>
               audioPlayer.addEventListener("seeked", r, { once: true }),
             );
@@ -939,7 +930,7 @@
             audioSurahName.textContent = `سورة ${getSurahName(surah)}`;
             if (currentTimings.length) startTracking(surah, ayah);
           } catch (e) {
-            alert("تعذر التشغيل");
+            alert("حدث خطأ أثناء التشغيل. تأكد من اتصال الإنترنت.");
           }
           closeAll();
         };
@@ -951,7 +942,7 @@
           }
           const ok = await loadSurahTimings(112);
           if (!ok || !currentAudioUrl) {
-            alert("التلاوة التجريبية غير متوفرة");
+            alert("فشل تحميل التلاوة التجريبية. جرب قارئاً آخر.");
             return;
           }
           stopTracking();
@@ -1015,7 +1006,7 @@
           closeAll();
         };
 
-        // تحديث نص الزر بناءً على الصفحات المتبقية
+        // تحديث نص الزر الديناميكي
         function updateButtonText() {
           let remaining = TOTAL_PAGES - currentPage + 1;
           if (remaining <= 0) {
@@ -1025,15 +1016,10 @@
           }
           btn.classList.remove("hidden-btn");
           btn.style.display = "block";
-          let pagesToLoad = Math.min(5, remaining);
-          btn.textContent =
-            `تحميل ${pagesToLoad} صفحة إضافية` + (pagesToLoad !== 1 ? "" : ""); // صياغة عادية
-          // لضبط الإفراد والجمع يمكن تعديل النص حسب الرقم
-          if (pagesToLoad === 1) btn.textContent = "تحميل صفحة إضافية";
-          else if (pagesToLoad === 2) btn.textContent = "تحميل صفحتين إضافيتين";
-          else if (pagesToLoad === 3 || pagesToLoad === 4)
-            btn.textContent = `تحميل ${pagesToLoad} صفحات إضافية`;
-          else btn.textContent = `تحميل ${pagesToLoad} صفحات إضافية`;
+          let pages = Math.min(5, remaining);
+          if (pages === 1) btn.textContent = "تحميل صفحة إضافية";
+          else if (pages === 2) btn.textContent = "تحميل صفحتين إضافيتين";
+          else btn.textContent = `تحميل ${pages} صفحات إضافية`;
         }
 
         async function loadPage(pageNum) {
@@ -1081,7 +1067,6 @@
           }
           updateButtonText();
         }
-
         async function loadMorePages() {
           if (loading) return;
           if (currentPage > TOTAL_PAGES) {
@@ -1109,9 +1094,7 @@
           div.className = "surah-item";
           div.id = `surah-${idx}`;
           div.innerHTML = `<div><i class="fa-solid fa-book-open"></i></div><div>${idx + 1}. ${name}</div>`;
-          div.onclick = () => {
-            goToSurah(idx);
-          };
+          div.onclick = () => goToSurah(idx);
           surahListDiv.appendChild(div);
         });
         window.goToSurah = async function (idx) {
