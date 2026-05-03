@@ -31,31 +31,34 @@
     />
 
     <style>
+      @import url("https://fonts.googleapis.com/css2?family=Tajawal:wght@400;500;700&display=swap");
+
       :root {
         --primary-green: #6baa5e;
         --dark-green: #4a7c3f;
-        --light-green: #e8f3e6;
+        --soft-bg: #f4f7f4;
         --white: #ffffff;
-        --text-main: #2c3e2b;
-      }
-
-      * {
-        margin: 0;
-        padding: 0;
-        box-sizing: border-box;
+        --text-main: #333;
+        --pattern-url: url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' width='60' height='60' viewBox='0 0 60 60'%3E%3Cpath d='M30 0l5 15 15 5-15 5-5 15-5-15-15-5 15-5z' fill='%236baa5e' fill-opacity='0.03'/%3E%3C/svg%3E");
       }
 
       body {
-        font-family:
-          "Segoe UI",
-          "Tahoma",
-          system-ui,
-          -apple-system,
-          "Cairo",
-          sans-serif;
-        background: linear-gradient(135deg, #f0f7ef 0%, #e5f0e3 100%);
+        font-family: "Tajawal", sans-serif;
+        background: linear-gradient(
+          135deg,
+          #f4f7f4 0%,
+          #e8f3e6 50%,
+          #f4f7f4 100%
+        );
+        background-image: var(--pattern-url);
+        background-attachment: fixed;
+        margin: 0;
+        display: flex;
+        flex-direction: column;
         min-height: 100vh;
+        color: var(--text-main);
       }
+
 
       /* الهيدر */
       .main-header {
@@ -200,6 +203,20 @@
         color: #666;
         font-size: 0.9rem;
       }
+
+            /* هايلايت رابط الأذكار */
+      #links-menu a[href="index.html"] {
+        background: #f0f8f0;
+        border-right: 4px solid var(--primary-green);
+        color: var(--primary-green);
+        font-weight: bold;
+      }
+
+      #links-menu a[href="index.html"] .link-circle {
+        background: var(--primary-green);
+        color: white;
+      }
+
 
       @media (max-width: 768px) {
         .features {
