@@ -189,6 +189,9 @@
       .hadith-rawi {
         color: var(--dark-green);
         font-weight: 500;
+        display: flex;
+        align-items: center;
+        gap: 4px;
       }
 
       .hadith-sanad {
@@ -196,6 +199,9 @@
         font-size: 12px;
         word-break: break-word;
         flex: 1;
+        display: flex;
+        align-items: center;
+        gap: 4px;
       }
 
       .hadith-content {
@@ -272,6 +278,10 @@
         opacity: 0;
         transition: 0.3s;
         pointer-events: none;
+        white-space: nowrap;
+        display: flex;
+        align-items: center;
+        gap: 6px;
       }
 
       /* Loading Spinner */
@@ -462,7 +472,9 @@
       </div>
     </div>
 
-    <div id="tooltip" class="tooltip-msg">📋 تم نسخ الحديث</div>
+    <div id="tooltip" class="tooltip-msg">
+      <i class="fa-solid fa-clipboard"></i> تم نسخ الحديث
+    </div>
 
     <script>
       let allHadiths = [];
@@ -474,10 +486,11 @@
       const backBtn = document.getElementById("back-btn");
       const menuBtn = document.getElementById("menu-btn");
 
-      // دالة عرض رسالة منبثقة
+      // دالة عرض رسالة منبثقة (تقبل HTML)
       function showTooltip(msg) {
         const tooltip = document.getElementById("tooltip");
-        tooltip.textContent = msg || "📋 تم النسخ";
+        tooltip.innerHTML =
+          msg || '<i class="fa-solid fa-clipboard"></i> تم نسخ الحديث';
         tooltip.style.opacity = "1";
         setTimeout(() => {
           tooltip.style.opacity = "0";
@@ -488,9 +501,9 @@
       async function copyText(text) {
         try {
           await navigator.clipboard.writeText(text);
-          showTooltip("📋 تم نسخ الحديث");
+          showTooltip('<i class="fa-solid fa-clipboard"></i> تم نسخ الحديث');
         } catch (err) {
-          showTooltip("❌ فشل النسخ");
+          showTooltip('<i class="fa-solid fa-circle-xmark"></i> فشل النسخ');
         }
       }
 
@@ -601,8 +614,8 @@
         <div class="hadith-card" id="hadith-${hadith.id}">
           <div class="hadith-header">
             <span class="hadith-source">${hadith.source}</span>
-            <span class="hadith-rawi">👤 ${hadith.rawi}</span>
-            <span class="hadith-sanad" title="اضغط لنسخ السند" style="cursor:pointer" onclick="copyText('${hadith.sanad.replace(/'/g, "\\'")}')">📜 السند: ${hadith.sanad.substring(0, 80)}${hadith.sanad.length > 80 ? "..." : ""}</span>
+            <span class="hadith-rawi"><i class="fa-solid fa-user"></i> ${hadith.rawi}</span>
+            <span class="hadith-sanad" title="اضغط لنسخ السند" style="cursor:pointer" onclick="copyText('${hadith.sanad.replace(/'/g, "\\'")}')"><i class="fa-solid fa-scroll"></i> السند: ${hadith.sanad.substring(0, 80)}${hadith.sanad.length > 80 ? "..." : ""}</span>
             <button class="copy-btn" onclick="copyText('${hadith.hadith.replace(/'/g, "\\'")}')" title="نسخ المتن"><i class="fa-regular fa-copy"></i></button>
           </div>
           <div class="hadith-content">

@@ -237,6 +237,111 @@
         border-color: var(--primary-green);
       }
 
+      /* ===== قسم معلومات الموقع (تم تحسينه) ===== */
+      .location-info {
+        display: none;
+        background: #f9fdf8;
+        border: 1px solid #d0e8c9;
+        border-radius: 16px;
+        padding: 12px 18px;
+        margin-bottom: 25px;
+        display: flex;
+        align-items: center;
+        justify-content: space-between;
+        flex-wrap: wrap;
+        gap: 12px;
+      }
+
+      .location-info .loc-text {
+        display: flex;
+        align-items: center;
+        gap: 8px;
+        color: #4a5568;
+        font-size: 15px;
+        font-weight: 400;
+      }
+
+      .location-info .loc-text i {
+        color: var(--primary-green);
+        font-size: 18px;
+      }
+
+      /* ── زر تغيير الموقع (الستايل الجديد) ── */
+      .location-info button {
+        background: transparent;
+        border: 2px solid var(--primary-green);
+        color: var(--primary-green);
+        padding: 8px 24px;
+        border-radius: 50px;
+        cursor: pointer;
+        font-family: inherit;
+        font-size: 14px;
+        font-weight: 500;
+        display: inline-flex;
+        align-items: center;
+        gap: 8px;
+        transition: all 0.3s cubic-bezier(0.25, 0.8, 0.25, 1.2);
+        position: relative;
+        overflow: hidden;
+        letter-spacing: 0.3px;
+        backdrop-filter: blur(2px);
+        box-shadow: 0 2px 6px rgba(107, 170, 94, 0.08);
+      }
+
+      /* أيقونة الزر */
+      .location-info button i {
+        font-size: 15px;
+        transition: transform 0.3s ease;
+      }
+
+      /* تأثير خلفية متحرك عند hover */
+      .location-info button::before {
+        content: "";
+        position: absolute;
+        top: 0;
+        left: -100%;
+        width: 100%;
+        height: 100%;
+        background: linear-gradient(
+          120deg,
+          transparent,
+          rgba(255, 255, 255, 0.3),
+          transparent
+        );
+        transition: left 0.5s ease;
+      }
+
+      /* حالة hover */
+      .location-info button:hover {
+        background: var(--primary-green);
+        color: #ffffff;
+        border-color: var(--primary-green);
+        box-shadow: 0 8px 20px rgba(75, 130, 65, 0.25);
+        transform: translateY(-2px);
+      }
+
+      .location-info button:hover i {
+        transform: translateX(-3px) rotate(20deg);
+      }
+
+      .location-info button:hover::before {
+        left: 100%;
+      }
+
+      /* حالة الضغط (active) */
+      .location-info button:active {
+        transform: translateY(0);
+        box-shadow: 0 2px 8px rgba(75, 130, 65, 0.2);
+        background: var(--dark-green);
+        border-color: var(--dark-green);
+      }
+
+      /* تحسينات للتركيز (focus) */
+      .location-info button:focus-visible {
+        outline: 2px solid var(--primary-green);
+        outline-offset: 3px;
+      }
+
       /* responsive */
       @media (max-width: 768px) {
         .grid {
@@ -322,6 +427,17 @@
         <h2 id="header-title">أوقات الصلاة</h2>
       </div>
 
+      <!-- معلومات الموقع المحفوظة -->
+      <div id="locationInfo" class="location-info">
+        <div class="loc-text">
+          <i class="fa-solid fa-map-marker-alt"></i>
+          <span id="locationText"></span>
+        </div>
+        <button onclick="showLocationBox()">
+          <i class="fa-solid fa-pen"></i> تغيير الموقع
+        </button>
+      </div>
+
       <div id="locationBox" class="location-box" onclick="getLocation()">
         <i class="fa-solid fa-location-dot"></i>
         <h3>اضغط لتحديد موقعك</h3>
@@ -358,25 +474,96 @@
         return `${hours.toString().padStart(2, "0")}:${minutes.toString().padStart(2, "0")}:${seconds.toString().padStart(2, "0")}`;
       }
 
+      // الحصول على اسم مختصر للموقع (دولة - محافظة - مدينة/بلدة)
+      async function getShortAddress(lat, lng) {
+        try {
+          const res = await fetch(
+            `https://nominatim.openstreetmap.org/reverse?format=json&lat=${lat}&lon=${lng}&accept-language=ar`,
+            { headers: { "User-Agent": "IstiqamahPrayerApp/1.0" } },
+          );
+          const data = await res.json();
+          if (data && data.address) {
+            const addr = data.address;
+            const country = addr.country || "";
+            const state = addr.state || addr.region || addr.province || "";
+            const city =
+              addr.city || addr.town || addr.village || addr.hamlet || "";
+
+            const parts = [country, state, city].filter(Boolean);
+            if (parts.length >= 2) {
+              const uniqueParts = [];
+              for (const part of parts) {
+                if (!uniqueParts.includes(part)) uniqueParts.push(part);
+              }
+              return uniqueParts.join(" - ");
+            } else if (parts.length === 1) {
+              return parts[0];
+            }
+          }
+          return `${lat.toFixed(3)}, ${lng.toFixed(3)}`;
+        } catch (e) {
+          return `${lat.toFixed(3)}, ${lng.toFixed(3)}`;
+        }
+      }
+
+      // حفظ بيانات الموقع في localStorage
+      function saveLocation(lat, lng, address) {
+        localStorage.setItem(
+          "prayerLocation",
+          JSON.stringify({ lat, lng, address }),
+        );
+      }
+
+      // استرجاع بيانات الموقع من localStorage
+      function loadSavedLocation() {
+        const saved = localStorage.getItem("prayerLocation");
+        if (saved) {
+          try {
+            return JSON.parse(saved);
+          } catch (e) {}
+        }
+        return null;
+      }
+
+      // إظهار حقل تحديد الموقع وإخفاء العناصر الأخرى
+      function showLocationBox() {
+        document.getElementById("locationBox").style.display = "block";
+        document.getElementById("nextBox").style.display = "none";
+        document.getElementById("grid").innerHTML = "";
+        document.getElementById("locationInfo").style.display = "none";
+        timings = null;
+        selected = null;
+      }
+
+      // معالج النقر على زر تحديد الموقع (الموقع الحالي)
       function getLocation() {
         if (navigator.geolocation) {
-          navigator.geolocation.getCurrentPosition(success, () => {
-            alert("لم نتمكن من تحديد موقعك. تأكد من تفعيل خدمات الموقع.");
-          });
+          navigator.geolocation.getCurrentPosition(
+            async (pos) => {
+              const { latitude, longitude } = pos.coords;
+              const address = await getShortAddress(latitude, longitude);
+              saveLocation(latitude, longitude, address);
+              document.getElementById("locationText").innerText = address;
+              document.getElementById("locationBox").style.display = "none";
+              document.getElementById("locationInfo").style.display = "flex";
+              fetchPrayerTimes(latitude, longitude);
+            },
+            () => {
+              alert("لم نتمكن من تحديد موقعك. تأكد من تفعيل خدمات الموقع.");
+            },
+          );
         } else {
           alert("المتصفح لا يدعم تحديد الموقع");
         }
       }
 
-      function success(pos) {
-        const { latitude, longitude } = pos.coords;
+      function fetchPrayerTimes(lat, lng) {
         fetch(
-          `https://api.aladhan.com/v1/timings?latitude=${latitude}&longitude=${longitude}&method=4`,
+          `https://api.aladhan.com/v1/timings?latitude=${lat}&longitude=${lng}&method=4`,
         )
           .then((r) => r.json())
           .then((data) => {
             timings = data.data.timings;
-            document.getElementById("locationBox").style.display = "none";
             document.getElementById("nextBox").style.display = "block";
             render();
             update();
@@ -413,12 +600,10 @@
         const timerEl = document.getElementById("timer");
 
         if (diff < 0) {
-          // الصلاة قد مضت -> احسب كم مضى منذها
           const elapsed = now - target;
           timerEl.innerText = formatTime(elapsed);
           labelPrefix.innerText = "مضى على أذان";
         } else {
-          // الصلاة قادمة -> متبقى عليها
           timerEl.innerText = formatTime(diff);
           labelPrefix.innerText = "باقي على أذان";
         }
@@ -441,7 +626,6 @@
           t.setHours(h, m, 0);
           if (t > now) return key;
         }
-        // إن كانت جميع الصلوات قد مضت (مثلاً بعد العشاء) فاختر الفجر
         return "Fajr";
       }
 
@@ -453,6 +637,21 @@
         document.getElementById("links-menu").style.left = "-100%";
         document.getElementById("overlay").style.display = "none";
       }
+
+      // التهيئة: تحميل الموقع المحفوظ إن وجد، وإلا إظهار زر التحديد
+      (function init() {
+        const saved = loadSavedLocation();
+        if (saved) {
+          document.getElementById("locationBox").style.display = "none";
+          document.getElementById("locationInfo").style.display = "flex";
+          document.getElementById("locationText").innerText = saved.address;
+          fetchPrayerTimes(saved.lat, saved.lng);
+        } else {
+          document.getElementById("locationBox").style.display = "block";
+          document.getElementById("locationInfo").style.display = "none";
+          document.getElementById("nextBox").style.display = "none";
+        }
+      })();
     </script>
   </body>
 </html>
