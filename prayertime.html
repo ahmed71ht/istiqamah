@@ -39,7 +39,6 @@
         );
         background-image: var(--pattern-url);
         background-attachment: fixed;
-        margin: 0;
         display: flex;
         flex-direction: column;
         min-height: 100vh;
@@ -92,6 +91,7 @@
         padding: 20px 15px;
         transition: 0.3s ease;
         box-shadow: 5px 0 20px rgba(0, 0, 0, 0.15);
+        border-radius: 0 28px 28px 0;
       }
 
       .link-item {
@@ -328,7 +328,9 @@
       </div>
 
       <div id="nextBox">
-        <div>المتبقي لـ <strong id="name"></strong></div>
+        <div>
+          <span id="labelPrefix">المتبقي لـ</span> <strong id="name"></strong>
+        </div>
         <div id="timer">00:00:00</div>
         <div id="today-date"></div>
       </div>
@@ -347,6 +349,14 @@
 
       let timings = null;
       let selected = null;
+
+      // تنسيق الوقت بصيغة hh:mm:ss
+      function formatTime(ms) {
+        const hours = Math.floor(ms / 3600000);
+        const minutes = Math.floor((ms % 3600000) / 60000);
+        const seconds = Math.floor((ms % 60000) / 1000);
+        return `${hours.toString().padStart(2, "0")}:${minutes.toString().padStart(2, "0")}:${seconds.toString().padStart(2, "0")}`;
+      }
 
       function getLocation() {
         if (navigator.geolocation) {
@@ -397,14 +407,30 @@
         const [h, m] = timings[key].split(":").map(Number);
         let target = new Date();
         target.setHours(h, m, 0);
-        let diff = target - now;
-        if (diff < 0) diff = 0;
-        const hh = Math.floor(diff / 3600000);
-        const mm = Math.floor((diff % 3600000) / 60000);
-        const ss = Math.floor((diff % 60000) / 1000);
+
+        const diff = target - now;
+        const labelPrefix = document.getElementById("labelPrefix");
+        const timerEl = document.getElementById("timer");
+
+        if (diff < 0) {
+          // الصلاة قد مضت -> احسب كم مضى منذها
+          const elapsed = now - target;
+          timerEl.innerText = formatTime(elapsed);
+          labelPrefix.innerText = "مضى على أذان";
+        } else {
+          // الصلاة قادمة -> متبقى عليها
+          timerEl.innerText = formatTime(diff);
+          labelPrefix.innerText = "باقي على أذان";
+        }
+
         document.getElementById("name").innerText = names[key];
-        document.getElementById("timer").innerText =
-          `${hh.toString().padStart(2, "0")}:${mm.toString().padStart(2, "0")}:${ss.toString().padStart(2, "0")}`;
+        document.getElementById("today-date").innerText =
+          new Date().toLocaleDateString("ar-EG", {
+            weekday: "long",
+            year: "numeric",
+            month: "long",
+            day: "numeric",
+          });
       }
 
       function getNext() {
@@ -415,20 +441,8 @@
           t.setHours(h, m, 0);
           if (t > now) return key;
         }
+        // إن كانت جميع الصلوات قد مضت (مثلاً بعد العشاء) فاختر الفجر
         return "Fajr";
-      }
-
-      function setTodayDate() {
-        const el = document.getElementById("today-date");
-        if (el) {
-          const now = new Date();
-          el.innerText = now.toLocaleDateString("ar-EG", {
-            weekday: "long",
-            year: "numeric",
-            month: "long",
-            day: "numeric",
-          });
-        }
       }
 
       function openMenu() {
@@ -439,8 +453,6 @@
         document.getElementById("links-menu").style.left = "-100%";
         document.getElementById("overlay").style.display = "none";
       }
-
-      setTodayDate();
     </script>
   </body>
 </html>
