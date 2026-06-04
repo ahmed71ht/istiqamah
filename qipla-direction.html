@@ -121,13 +121,19 @@
         align-items: center;
         justify-content: center;
         color: var(--primary-green);
+        background: white;
       }
 
-      #links-menu a[href="#qibla"] {
+      .link-item.active {
         background: #f0f8f0;
         border-right: 4px solid var(--primary-green);
         color: var(--primary-green);
         font-weight: bold;
+      }
+
+      .link-item.active .link-circle {
+        background: var(--primary-green);
+        color: white;
       }
 
       .container {
@@ -164,35 +170,79 @@
         color: white;
       }
 
-      #links-menu a[href="qipla-direction.html"] {
-        background: #f0f8f0;
-        border-right: 4px solid var(--primary-green);
-        color: var(--primary-green);
-        font-weight: bold;
+      #header-title {
+        color: var(--dark-green);
+        font-size: 24px;
       }
 
-      #links-menu a[href="qipla-direction.html"] .link-circle {
-        background: var(--primary-green);
-        color: white;
-      }
-
-      .location-prompt {
-        background: var(--white);
-        border-radius: 20px;
-        padding: 32px 20px;
+      .loading-wrapper {
+        background: rgba(107, 170, 94, 0.08);
+        backdrop-filter: blur(4px);
+        border-radius: 28px;
+        margin: 20px 0;
+        padding: 35px 20px;
         text-align: center;
-        max-width: 400px;
-        margin: 20px auto;
-        box-shadow: 0 12px 28px rgba(0, 0, 0, 0.08);
-        border: 1px solid #e0eadd;
+        display: flex;
+        flex-direction: column;
+        align-items: center;
+        gap: 15px;
+        border: 1px dashed var(--primary-green);
+      }
+      .loading-spinner {
+        width: 50px;
+        height: 50px;
+        border: 5px solid #e0eadd;
+        border-top: 5px solid var(--primary-green);
+        border-radius: 50%;
+        animation: spin 0.8s linear infinite;
+      }
+      @keyframes spin {
+        0% {
+          transform: rotate(0deg);
+        }
+        100% {
+          transform: rotate(360deg);
+        }
+      }
+      .loading-text {
+        font-size: 20px;
+        font-weight: 500;
+        color: var(--dark-green);
+        letter-spacing: 1px;
+        display: flex;
+        align-items: center;
+        gap: 10px;
+      }
+      .loading-text i {
+        font-size: 24px;
+        animation: pulse 1.2s infinite;
+      }
+      @keyframes pulse {
+        0% {
+          opacity: 0.4;
+        }
+        100% {
+          opacity: 1;
+        }
+      }
+
+      .location-box {
+        text-align: center;
+        background: var(--white);
+        padding: 30px;
+        border-radius: 20px;
         cursor: pointer;
         transition: 0.3s;
+        border: 1px solid #e0eadd;
+        margin-bottom: 20px;
+        color: var(--text-main) !important;
       }
-      .location-prompt:hover {
+      .location-box:hover {
         transform: translateY(-5px);
         border-color: var(--primary-green);
         box-shadow: 0 10px 20px rgba(107, 170, 94, 0.1);
       }
+
       button {
         background: var(--primary-green);
         border: none;
@@ -211,7 +261,7 @@
         background: var(--dark-green);
       }
       .hidden {
-        display: none;
+        display: none !important;
       }
 
       .qibla-card {
@@ -249,7 +299,6 @@
         display: block;
       }
 
-      /* أيقونة الكعبة في وسط البوصلة */
       .compass-center-icon {
         position: absolute;
         top: 50%;
@@ -313,9 +362,27 @@
         gap: 8px;
       }
 
-      #header-title {
-        color: var(--dark-green);
-        font-size: 24px;
+      .link-circle {
+        width: 42px;
+        height: 42px;
+        border-radius: 50%;
+        border: 2px solid var(--primary-green);
+        display: flex;
+        align-items: center;
+        justify-content: center;
+        color: var(--primary-green);
+        background: white;
+      }
+
+      #links-menu a[href="qipla-direction.html"] {
+        background: #f0f7ef;
+        border-right: 4px solid var(--primary-green);
+        color: var(--primary-green);
+        font-weight: bold;
+      }
+      #links-menu a[href="qipla-direction.html"] .link-circle {
+        background: var(--primary-green);
+        color: white;
       }
 
       @media (max-width: 480px) {
@@ -348,7 +415,6 @@
   </head>
 
   <body>
-    <!-- القائمة الجانبية -->
     <div id="overlay" onclick="closeMenu()"></div>
 
     <div id="links-menu">
@@ -356,35 +422,36 @@
         <div class="link-circle"><i class="fa-solid fa-house"></i></div>
         الرئيسية
       </a>
-      <a href="azkar.html" class="link-item">
-        <div class="link-circle"><i class="fa-solid fa-hands-praying"></i></div>
+      <a href="azkar.html" class="link-item"
+        ><div class="link-circle">
+          <i class="fa-solid fa-hands-praying"></i>
+        </div>
         الأذكار
       </a>
-      <a href="quran.html" class="link-item">
-        <div class="link-circle"><i class="fa-solid fa-book"></i></div>
+      <a href="quran.html" class="link-item"
+        ><div class="link-circle"><i class="fa-solid fa-book-quran"></i></div>
         القرآن
       </a>
-      <a href="prayertime.html" class="link-item">
-        <div class="link-circle"><i class="fa-solid fa-clock"></i></div>
+      <a href="prayertime.html" class="link-item"
+        ><div class="link-circle"><i class="fa-solid fa-mosque"></i></div>
         أوقات الصلاة
       </a>
-      <a href="hadith.html" class="link-item">
-        <div class="link-circle"><i class="fa-solid fa-book-open"></i></div>
+      <a href="hadith.html" class="link-item"
+        ><div class="link-circle"><i class="fa-solid fa-book-open"></i></div>
         الأحاديث
       </a>
-      <a href="qipla-direction.html" class="link-item active-link">
-        <div class="link-circle">
+      <a href="qipla-direction.html" class="link-item"
+        ><div class="link-circle">
           <i class="fa-solid fa-location-arrow"></i>
         </div>
         إتجاه القبلة
       </a>
-      <a href="about.html" class="link-item active">
-        <div class="link-circle"><i class="fa-solid fa-circle-info"></i></div>
+      <a href="about.html" class="link-item"
+        ><div class="link-circle"><i class="fa-solid fa-circle-info"></i></div>
         حول التطبيق
       </a>
     </div>
 
-    <!-- الهيدر -->
     <header class="main-header">
       <div class="logo-area">
         <i class="fa-solid fa-mosque" style="color: var(--primary-green)"></i>
@@ -405,26 +472,34 @@
         <h2 id="header-title">اتجاه القبلة</h2>
       </div>
 
-      <!-- شاشة طلب الموقع -->
-      <div id="locationBox" class="location-prompt">
-        <!-- استبدال ايموجي الكعبة بأيقونة -->
-        <i
-          class="fa-solid fa-kaaba"
-          style="font-size: 52px; color: var(--primary-green)"
-        ></i>
-        <h3>اتجاه القبلة</h3>
-        <p style="color: #5f6b5a">حدد موقعك لحساب الاتجاه الدقيق</p>
-        <button id="requestLocationBtn">
-          <i class="fa-solid fa-location-dot"></i> تحديد الموقع
-        </button>
+      <div id="loadingIndicator" style="display: none">
+        <div class="loading-wrapper">
+          <div class="loading-spinner"></div>
+          <div class="loading-text">
+            <i class="fa-solid fa-circle-notch"></i>
+            <span>جار التحميل ...</span>
+          </div>
+          <p style="color: #4b6b3e; font-size: 14px">
+            يتم تجهيز البوصلة وتحديد الموقع
+          </p>
+        </div>
       </div>
 
-      <!-- واجهة البوصلة بعد تحديد الموقع -->
+      <div id="locationBox" class="location-box" onclick="requestLocation()">
+        <i
+          class="fa-solid fa-location-dot fa-2x"
+          style="margin-bottom: 8px; display: block"
+        ></i>
+        <h3>اضغط لتحديد موقعك فوراً</h3>
+        <p style="margin-top: 6px; font-size: 14px; color: #6c7a6e">
+          سنحسب اتجاه القبلة بدقة بعد التحديد
+        </p>
+      </div>
+
       <div id="qiblaUI" class="hidden">
         <div class="qibla-card">
           <div class="compass-wrapper">
             <canvas id="qiblaCanvas" width="280" height="280"></canvas>
-            <!-- أيقونة الكعبة بدلاً من الرسم النصي -->
             <i class="fa-solid fa-kaaba compass-center-icon"></i>
           </div>
           <div class="degree-badge">
@@ -459,7 +534,36 @@
         const statusBox = document.getElementById("statusBox");
         const canvas = document.getElementById("qiblaCanvas");
         const ctx = canvas.getContext("2d");
+        const loadingIndicator = document.getElementById("loadingIndicator");
         let animationId = null;
+
+        function showLoader(show = true, message = "جار التحميل ...") {
+          if (!loadingIndicator) return;
+          if (show) {
+            if (locationBox) locationBox.style.display = "none";
+            if (qiblaUI) qiblaUI.classList.add("hidden");
+            loadingIndicator.style.display = "block";
+            const textSpan =
+              loadingIndicator.querySelector(".loading-text span");
+            const msgParagraph = loadingIndicator.querySelector("p");
+            if (textSpan) textSpan.innerText = message;
+            if (msgParagraph)
+              msgParagraph.innerText = "يتم تجهيز البوصلة وتحديد الموقع";
+          } else {
+            loadingIndicator.style.display = "none";
+          }
+        }
+
+        function hideLoaderAndShowContent(showQibla = false) {
+          if (loadingIndicator) loadingIndicator.style.display = "none";
+          if (showQibla && qiblaUI) {
+            qiblaUI.classList.remove("hidden");
+            if (locationBox) locationBox.style.display = "none";
+          } else if (!showQibla && locationBox) {
+            locationBox.style.display = "block";
+            if (qiblaUI) qiblaUI.classList.add("hidden");
+          }
+        }
 
         function toRad(deg) {
           return (deg * Math.PI) / 180;
@@ -491,7 +595,6 @@
 
           ctx.clearRect(0, 0, size, size);
 
-          // خلفية البوصلة
           ctx.beginPath();
           ctx.arc(center, center, radius, 0, 2 * Math.PI);
           ctx.fillStyle = "#ffffff";
@@ -504,7 +607,6 @@
           ctx.translate(center, center);
           ctx.rotate(toRad(-deviceHeading));
 
-          // علامات الدرجات
           for (let deg = 0; deg < 360; deg += 30) {
             const rad = toRad(deg - 90);
             const inner = radius - 14;
@@ -517,7 +619,6 @@
             ctx.stroke();
           }
 
-          // الاتجاهات الأربعة
           const labels = [
             { a: 0, n: "N" },
             { a: 90, n: "E" },
@@ -535,7 +636,6 @@
             ctx.fillText(l.n, x, y);
           });
 
-          // سهم القبلة
           const targetRad = toRad(absoluteQibla - 90);
           const arrowLength = radius - 40;
           const endX = arrowLength * Math.cos(targetRad);
@@ -554,7 +654,6 @@
           ctx.lineCap = "round";
           ctx.stroke();
 
-          // رأس السهم
           const headSize = 16;
           ctx.save();
           ctx.translate(endX, endY);
@@ -568,9 +667,8 @@
           ctx.fill();
           ctx.restore();
 
-          ctx.restore(); // إنهاء التدوير
+          ctx.restore();
 
-          // دائرة داكنة خلف أيقونة الكعبة (الموجودة كعنصر HTML منفصل)
           ctx.beginPath();
           ctx.arc(center, center, 18, 0, 2 * Math.PI);
           ctx.fillStyle = "#2c3e2c";
@@ -602,7 +700,6 @@
             typeof DeviceOrientationEvent !== "undefined" &&
             typeof DeviceOrientationEvent.requestPermission === "function"
           ) {
-            // iOS: طلب صلاحية البوصلة مع زر بدلاً من ايموجي
             const btn = document.createElement("button");
             btn.innerHTML =
               '<i class="fa-solid fa-lock-open"></i> تفعيل البوصلة';
@@ -652,9 +749,7 @@
             return;
           }
 
-          if (locationBox) {
-            locationBox.innerHTML = `<p><i class="fa-solid fa-spinner fa-pulse"></i> جاري تحديد الإحداثيات...</p>`;
-          }
+          showLoader(true, "جار تحديد الموقع ...");
 
           navigator.geolocation.getCurrentPosition(
             (pos) => {
@@ -663,7 +758,8 @@
               absoluteQibla = computeQiblaAngle(userLat, userLng);
               qiblaDegreesSpan.innerText = Math.round(absoluteQibla);
 
-              locationBox.classList.add("hidden");
+              showLoader(false);
+              if (locationBox) locationBox.style.display = "none";
               qiblaUI.classList.remove("hidden");
 
               initCompass();
@@ -675,17 +771,23 @@
               animate();
             },
             (err) => {
-              alert("يرجى تفعيل خدمات الموقع والموافقة على الصلاحية");
-              location.reload();
+              console.error("Geolocation error", err);
+              let errorMsg =
+                "لم نتمكن من تحديد موقعك. تأكد من تفعيل خدمات الموقع.";
+              if (err.code === 1)
+                errorMsg = "الرجاء السماح بتحديد الموقع في المتصفح.";
+              else if (err.code === 2)
+                errorMsg = "تعذر تحديد الموقع، تأكد من الاتصال.";
+              alert(errorMsg);
+              showLoader(false);
+              if (locationBox) locationBox.style.display = "block";
+              qiblaUI.classList.add("hidden");
             },
-            { enableHighAccuracy: true },
+            { enableHighAccuracy: true, timeout: 12000 },
           );
         }
 
-        const locBtn = document.getElementById("requestLocationBtn");
-        if (locBtn) {
-          locBtn.addEventListener("click", requestLocation);
-        }
+        window.requestLocation = requestLocation;
 
         window.addEventListener("beforeunload", () => {
           if (animationId) cancelAnimationFrame(animationId);
@@ -701,6 +803,9 @@
         document.getElementById("links-menu").style.left = "-100%";
         document.getElementById("overlay").style.display = "none";
       }
+
+      window.openMenu = openMenu;
+      window.closeMenu = closeMenu;
     </script>
   </body>
 </html>
