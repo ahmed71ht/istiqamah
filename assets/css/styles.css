@@ -1,5 +1,18 @@
 @import url("https://fonts.googleapis.com/css2?family=Tajawal:wght@400;500;700;800&family=Amiri:wght@400;700&display=swap");
 
+* {
+  -webkit-user-select: none;
+  user-select: none;
+}
+
+*::selection {
+  background: transparent;
+}
+
+*::-moz-selection {
+  background: transparent;
+}
+
 :root {
   --primary: #1B7A4B;
   --primary-dark: #0F5C37;

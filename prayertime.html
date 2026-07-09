@@ -14,6 +14,20 @@
     />
     <link rel="stylesheet" href="assets/css/styles.css" />
     <style>
+      /* منع تحديد النصوص */
+      * {
+        -webkit-user-select: none;
+        -moz-user-select: none;
+        -ms-user-select: none;
+        user-select: none;
+
+        /* منع قائمة الضغط المطول على iPhone وSafari */
+        -webkit-touch-callout: none;
+
+        /* إزالة تمييز اللمس على أندرويد وChrome */
+        -webkit-tap-highlight-color: transparent;
+      }
+
       body {
         display: flex;
         flex-direction: column;
@@ -284,7 +298,6 @@
           margin: 20px auto;
         }
       }
-
     </style>
   </head>
   <body>
@@ -340,7 +353,12 @@
         <h1>استقامة</h1>
       </div>
       <div class="header-actions">
-        <button class="theme-toggle" id="themeToggle" onclick="toggleTheme()" title="الوضع الليلي / النهاري">
+        <button
+          class="theme-toggle"
+          id="themeToggle"
+          onclick="toggleTheme()"
+          title="الوضع الليلي / النهاري"
+        >
           <i class="fa-solid fa-moon"></i>
         </button>
         <button class="header-btn" onclick="openMenu()">
@@ -365,7 +383,20 @@
         </button>
       </div>
 
-      <div id="offlineNotice" style="display:none; background:#fff3cd; color:#856404; padding:10px 16px; border-radius:12px; margin-bottom:12px; text-align:center; font-size:0.85rem; border:1px solid #ffeeba;"></div>
+      <div
+        id="offlineNotice"
+        style="
+          display: none;
+          background: #fff3cd;
+          color: #856404;
+          padding: 10px 16px;
+          border-radius: 12px;
+          margin-bottom: 12px;
+          text-align: center;
+          font-size: 0.85rem;
+          border: 1px solid #ffeeba;
+        "
+      ></div>
 
       <!-- صندوق تحديد الموقع (يظهر عند عدم وجود موقع) -->
       <div id="locationBox" class="location-box" onclick="requestLocation()">
@@ -525,17 +556,23 @@
         if (!el) return;
         el.innerHTML = `<i class="fa-solid fa-wifi-slash"></i> ${msg}`;
         el.style.display = "block";
-        setTimeout(() => { el.style.display = "none"; }, 5000);
+        setTimeout(() => {
+          el.style.display = "none";
+        }, 5000);
       }
 
       // ===== Cached timings for offline =====
       function saveTimingsCache(lat, lng, timingsData) {
         try {
-          localStorage.setItem("prayerTimingsCache", JSON.stringify({
-            lat, lng,
-            timings: timingsData,
-            date: new Date().toISOString(),
-          }));
+          localStorage.setItem(
+            "prayerTimingsCache",
+            JSON.stringify({
+              lat,
+              lng,
+              timings: timingsData,
+              date: new Date().toISOString(),
+            }),
+          );
         } catch (_) {}
       }
       function loadTimingsCache(lat, lng) {
@@ -585,7 +622,8 @@
             },
             (error) => {
               console.error("Geolocation error", error);
-              let errorMsg = "لم نتمكن من تحديد موقعك. تأكد من تفعيل خدمات الموقع.";
+              let errorMsg =
+                "لم نتمكن من تحديد موقعك. تأكد من تفعيل خدمات الموقع.";
               if (error.code === 1)
                 errorMsg = "الرجاء السماح بتحديد الموقع في المتصفح.";
               else if (error.code === 2)
@@ -767,9 +805,12 @@
       window.openMenu = openMenu;
 
       // ===== Dark Mode =====
-      (function() {
+      (function () {
         var saved = localStorage.getItem("istiqamah-theme");
-        if (saved === "dark" || (!saved && window.matchMedia("(prefers-color-scheme: dark)").matches)) {
+        if (
+          saved === "dark" ||
+          (!saved && window.matchMedia("(prefers-color-scheme: dark)").matches)
+        ) {
           document.documentElement.setAttribute("data-theme", "dark");
         }
       })();
@@ -787,11 +828,14 @@
           if (btn) btn.innerHTML = '<i class="fa-solid fa-sun"></i>';
         }
       }
-      (function() {
+      (function () {
         var btn = document.getElementById("themeToggle");
         if (btn) {
-          var isDark = document.documentElement.getAttribute("data-theme") === "dark";
-          btn.innerHTML = isDark ? '<i class="fa-solid fa-sun"></i>' : '<i class="fa-solid fa-moon"></i>';
+          var isDark =
+            document.documentElement.getAttribute("data-theme") === "dark";
+          btn.innerHTML = isDark
+            ? '<i class="fa-solid fa-sun"></i>'
+            : '<i class="fa-solid fa-moon"></i>';
         }
       })();
 
@@ -813,7 +857,8 @@
             timings = cachedTimings;
             document.getElementById("locationBox").style.display = "none";
             document.getElementById("locationInfo").style.display = "flex";
-            document.getElementById("locationText").innerText = savedLoc.address;
+            document.getElementById("locationText").innerText =
+              savedLoc.address;
             document.getElementById("nextBox").style.display = "block";
             hideLoaderAndShowContent();
             renderPrayerCards();
@@ -846,6 +891,10 @@
         window.getLocation = requestLocation; // دعم قديم
       }
     </script>
-    <script>if("serviceWorker" in navigator){navigator.serviceWorker.register("sw.js");}</script>
+    <script>
+      if ("serviceWorker" in navigator) {
+        navigator.serviceWorker.register("sw.js");
+      }
+    </script>
   </body>
 </html>

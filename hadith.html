@@ -13,6 +13,20 @@
     <style>
       @import url("https://fonts.googleapis.com/css2?family=Amiri:wght@400;700&display=swap");
 
+      /* منع تحديد النصوص */
+      * {
+        -webkit-user-select: none;
+        -moz-user-select: none;
+        -ms-user-select: none;
+        user-select: none;
+
+        /* منع قائمة الضغط المطول على iPhone وSafari */
+        -webkit-touch-callout: none;
+
+        /* إزالة تمييز اللمس على أندرويد وChrome */
+        -webkit-tap-highlight-color: transparent;
+      }
+
       #back-btn {
         display: none;
       }
@@ -322,7 +336,12 @@
         <h1>استقامة</h1>
       </div>
       <div class="header-actions">
-        <button class="theme-toggle" id="themeToggle" onclick="toggleTheme()" title="الوضع الليلي / النهاري">
+        <button
+          class="theme-toggle"
+          id="themeToggle"
+          onclick="toggleTheme()"
+          title="الوضع الليلي / النهاري"
+        >
           <i class="fa-solid fa-moon"></i>
         </button>
         <button class="header-btn" onclick="toggleMenu()">
@@ -336,7 +355,7 @@
         <button id="back-btn" onclick="loadCategories()">
           <i class="fa-solid fa-arrow-right"></i>
         </button>
-        <button id="menu-btn" onclick="toggleMenu()" style="display:none">
+        <button id="menu-btn" onclick="toggleMenu()" style="display: none">
           <i class="fa-solid fa-bars"></i>
         </button>
         <h2 id="header-title">الأحاديث النبوية</h2>
@@ -443,7 +462,7 @@
           else if (category.includes("قدر")) icon = "fa-clock";
           else icon = "fa-book";
 
-           html += `
+          html += `
          <div class="category-card" onclick="loadCategoryHadiths('${category.replace(/'/g, "\\'")}')">
           <div class="category-icon">
             <i class="fa-solid ${icon}"></i>
@@ -552,9 +571,12 @@
       }
 
       // ===== Dark Mode =====
-      (function() {
+      (function () {
         var saved = localStorage.getItem("istiqamah-theme");
-        if (saved === "dark" || (!saved && window.matchMedia("(prefers-color-scheme: dark)").matches)) {
+        if (
+          saved === "dark" ||
+          (!saved && window.matchMedia("(prefers-color-scheme: dark)").matches)
+        ) {
           document.documentElement.setAttribute("data-theme", "dark");
         }
       })();
@@ -572,11 +594,14 @@
           if (btn) btn.innerHTML = '<i class="fa-solid fa-sun"></i>';
         }
       }
-      (function() {
+      (function () {
         var btn = document.getElementById("themeToggle");
         if (btn) {
-          var isDark = document.documentElement.getAttribute("data-theme") === "dark";
-          btn.innerHTML = isDark ? '<i class="fa-solid fa-sun"></i>' : '<i class="fa-solid fa-moon"></i>';
+          var isDark =
+            document.documentElement.getAttribute("data-theme") === "dark";
+          btn.innerHTML = isDark
+            ? '<i class="fa-solid fa-sun"></i>'
+            : '<i class="fa-solid fa-moon"></i>';
         }
       })();
 
@@ -603,6 +628,10 @@
       // بدء التحميل
       loadData();
     </script>
-    <script>if("serviceWorker" in navigator){navigator.serviceWorker.register("sw.js");}</script>
+    <script>
+      if ("serviceWorker" in navigator) {
+        navigator.serviceWorker.register("sw.js");
+      }
+    </script>
   </body>
 </html>

@@ -27,6 +27,20 @@
         --transition-smooth: 0.35s cubic-bezier(0.4, 0, 0.2, 1);
       }
 
+      /* منع تحديد النصوص */
+      * {
+        -webkit-user-select: none;
+        -moz-user-select: none;
+        -ms-user-select: none;
+        user-select: none;
+
+        /* منع قائمة الضغط المطول على iPhone وSafari */
+        -webkit-touch-callout: none;
+
+        /* إزالة تمييز اللمس على أندرويد وChrome */
+        -webkit-tap-highlight-color: transparent;
+      }
+
       body {
         padding-bottom: 90px;
       }
@@ -293,12 +307,12 @@
         transform: translateY(-1px);
       }
       .ayah.red-marker {
-        background-color: var(--red-marker);
+        background-color: #ffe9e91a;
         border-right: 6px solid var(--red-border);
         animation: markerPulse 2.5s ease-in-out infinite;
       }
       .ayah.green-marker {
-        background-color: var(--green-marker);
+        background-color: #5b9f5b24;
         border-right: 6px solid var(--green-border);
         animation: markerPulse 2.5s ease-in-out infinite;
       }
@@ -491,7 +505,7 @@
         right: -100%;
         width: 280px;
         height: 100%;
-        background: rgba(255,255,255,0.95);
+        background: rgba(255, 255, 255, 0.95);
         backdrop-filter: blur(14px);
         z-index: 3000;
         padding: 20px 16px;
@@ -508,42 +522,42 @@
         max-height: 80vh;
         overflow-y: auto;
       }
-        .surah-item {
-          display: flex;
-          align-items: center;
-          gap: 14px;
-          padding: 12px;
-          border-radius: 28px;
-          background: var(--bg-card);
-          border: 1px solid #e3dccc;
-          cursor: pointer;
-          transition: 0.2s ease;
-        }
-        .surah-item:hover {
-          background: #eff7ea;
-          transform: translateX(-3px);
-          box-shadow: 0 2px 8px rgba(0, 0, 0, 0.04);
-        }
-        .surah-item.active {
-          background: #e0f0da;
-          border-right: 4px solid var(--primary-green);
-          font-weight: 700;
-        }
-        .dl-btn {
-          background: none;
-          border: none;
-          font-size: 0.85rem;
-          color: var(--text-muted, #888);
-          cursor: pointer;
-          padding: 6px 10px;
-          margin-right: auto;
-          border-radius: 20px;
-          transition: 0.2s;
-        }
-        .dl-btn:hover {
-          background: rgba(27,122,75,0.08);
-          color: var(--primary-green, #1B7A4B);
-        }
+      .surah-item {
+        display: flex;
+        align-items: center;
+        gap: 14px;
+        padding: 12px;
+        border-radius: 28px;
+        background: var(--bg-card);
+        border: 1px solid #e3dccc;
+        cursor: pointer;
+        transition: 0.2s ease;
+      }
+      .surah-item:hover {
+        background: #eff7ea;
+        transform: translateX(-3px);
+        box-shadow: 0 2px 8px rgba(0, 0, 0, 0.04);
+      }
+      .surah-item.active {
+        background: #e0f0da;
+        border-right: 4px solid var(--primary-green);
+        font-weight: 700;
+      }
+      .dl-btn {
+        background: none;
+        border: none;
+        font-size: 0.85rem;
+        color: var(--text-muted, #888);
+        cursor: pointer;
+        padding: 6px 10px;
+        margin-right: auto;
+        border-radius: 20px;
+        transition: 0.2s;
+      }
+      .dl-btn:hover {
+        background: rgba(27, 122, 75, 0.08);
+        color: var(--primary-green, #1b7a4b);
+      }
       .link-item:hover .link-circle {
         transform: rotate(-5deg);
       }
@@ -891,7 +905,12 @@
         <h1>المصحف الشريف</h1>
       </div>
       <div class="header-actions">
-        <button class="theme-toggle" id="themeToggle" onclick="toggleTheme()" title="الوضع الليلي / النهاري">
+        <button
+          class="theme-toggle"
+          id="themeToggle"
+          onclick="toggleTheme()"
+          title="الوضع الليلي / النهاري"
+        >
           <i class="fa-solid fa-moon"></i>
         </button>
         <button class="header-btn" onclick="toggleSurah()" title="قائمة السور">
@@ -997,8 +1016,22 @@
         </button>
       </div>
 
-      <div id="offlineNotice" style="display:none; background:#fff3cd; color:#856404; padding:12px 20px; border-radius:12px; margin-bottom:16px; text-align:center; font-size:0.9rem; border:1px solid #ffeeba;">
-        <i class="fa-solid fa-wifi-slash"></i> أنت غير متصل بالإنترنت. يتم عرض النص المحمّل مسبقاً.
+      <div
+        id="offlineNotice"
+        style="
+          display: none;
+          background: #fff3cd;
+          color: #856404;
+          padding: 12px 20px;
+          border-radius: 12px;
+          margin-bottom: 16px;
+          text-align: center;
+          font-size: 0.9rem;
+          border: 1px solid #ffeeba;
+        "
+      >
+        <i class="fa-solid fa-wifi-slash"></i> أنت غير متصل بالإنترنت. يتم عرض
+        النص المحمّل مسبقاً.
       </div>
 
       <div id="verses">جاري التحميل...</div>
@@ -1285,9 +1318,12 @@
       }
 
       // ===== Dark Mode =====
-      (function() {
+      (function () {
         var saved = localStorage.getItem("istiqamah-theme");
-        if (saved === "dark" || (!saved && window.matchMedia("(prefers-color-scheme: dark)").matches)) {
+        if (
+          saved === "dark" ||
+          (!saved && window.matchMedia("(prefers-color-scheme: dark)").matches)
+        ) {
           document.documentElement.setAttribute("data-theme", "dark");
         }
       })();
@@ -1305,11 +1341,14 @@
           if (btn) btn.innerHTML = '<i class="fa-solid fa-sun"></i>';
         }
       }
-      (function() {
+      (function () {
         var btn = document.getElementById("themeToggle");
         if (btn) {
-          var isDark = document.documentElement.getAttribute("data-theme") === "dark";
-          btn.innerHTML = isDark ? '<i class="fa-solid fa-sun"></i>' : '<i class="fa-solid fa-moon"></i>';
+          var isDark =
+            document.documentElement.getAttribute("data-theme") === "dark";
+          btn.innerHTML = isDark
+            ? '<i class="fa-solid fa-sun"></i>'
+            : '<i class="fa-solid fa-moon"></i>';
         }
       })();
 
@@ -1584,7 +1623,7 @@
           }
           let html = "";
           if (matched.length > 0 && filterText !== "") {
-            html += `<div style="padding:8px 16px; background:#f8fff5; font-size:0.75rem; color:#aaa; border-bottom:1px solid #d0e0c5;">
+            html += `<div style="padding:8px 16px; font-size:0.75rem; color:#aaa; border-bottom:1px solid #d0e0c5;">
               <i class="fa-solid fa-magnifying-glass"></i> نتائج البحث (${matched.length})
             </div>`;
           }
@@ -1596,7 +1635,7 @@
               </div>`;
           });
           if (unmatched.length > 0 && filterText !== "") {
-            html += `<div style="padding:8px 16px; background:#f8fff5; font-size:0.75rem; color:#aaa; border-top:1px solid #e0e0d0; margin-top:4px;">
+            html += `<div style="padding:8px 16px; font-size:0.75rem; color:#aaa; border-top:1px solid #e0e0d0; margin-top:4px;">
               <i class="fa-solid fa-book"></i> جميع القراء (${unmatched.length})
             </div>`;
             unmatched.forEach((rec) => {
@@ -1789,41 +1828,69 @@
           const dv = new DataView(buf);
           let off = 0;
           function varint() {
-            let v = 0, s = 0, b;
-            do { b = dv.getUint8(off++); v |= (b & 0x7F) << s; s += 7; } while (b & 0x80);
+            let v = 0,
+              s = 0,
+              b;
+            do {
+              b = dv.getUint8(off++);
+              v |= (b & 0x7f) << s;
+              s += 7;
+            } while (b & 0x80);
             return v;
           }
           const prefix = surahNumber + ":";
           const result = [];
           while (off < buf.byteLength) {
-            const tag = varint(), fn = tag >> 3, wt = tag & 7;
+            const tag = varint(),
+              fn = tag >> 3,
+              wt = tag & 7;
             if (wt !== 2) continue;
-            const len = varint(), end = off + len;
-            if (fn !== 1) { off = end; continue; }
+            const len = varint(),
+              end = off + len;
+            if (fn !== 1) {
+              off = end;
+              continue;
+            }
             let key = "";
             while (off < end) {
-              const iTag = varint(), iFn = iTag >> 3, iWt = iTag & 7;
+              const iTag = varint(),
+                iFn = iTag >> 3,
+                iWt = iTag & 7;
               if (iWt !== 2) continue;
-              const iLen = varint(), iEnd = off + iLen;
+              const iLen = varint(),
+                iEnd = off + iLen;
               if (iFn === 1) {
                 key = new TextDecoder().decode(new Uint8Array(buf, off, iLen));
                 off = iEnd;
               } else if (iFn === 2) {
-                let firstFrom = -1, lastTo = -1;
+                let firstFrom = -1,
+                  lastTo = -1;
                 while (off < iEnd) {
-                  const sTag = varint(), sFn = sTag >> 3, sWt = sTag & 7;
+                  const sTag = varint(),
+                    sFn = sTag >> 3,
+                    sWt = sTag & 7;
                   if (sWt !== 2) continue;
-                  const sLen = varint(), sEnd = off + sLen;
+                  const sLen = varint(),
+                    sEnd = off + sLen;
                   while (off < sEnd) {
-                    const wTag = varint(), wFn = wTag >> 3, wWt = wTag & 7;
+                    const wTag = varint(),
+                      wFn = wTag >> 3,
+                      wWt = wTag & 7;
                     const wVal = wWt === 0 ? varint() : 0;
-                    if (wFn === 3 && wWt === 0 && firstFrom < 0) firstFrom = wVal;
+                    if (wFn === 3 && wWt === 0 && firstFrom < 0)
+                      firstFrom = wVal;
                     if (wFn === 4 && wWt === 0) lastTo = wVal;
                   }
                 }
                 if (key.startsWith(prefix) && firstFrom >= 0 && lastTo >= 0)
-                  result.push({ verse_key: key, start: firstFrom / 1000, end: lastTo / 1000 });
-              } else { off = iEnd; }
+                  result.push({
+                    verse_key: key,
+                    start: firstFrom / 1000,
+                    end: lastTo / 1000,
+                  });
+              } else {
+                off = iEnd;
+              }
             }
           }
           return result;
@@ -2172,6 +2239,7 @@
             selectedAyahElement.classList.remove("red-marker");
             removeMarker(surah, ayah);
           } else {
+            document.querySelectorAll(".ayah.red-marker").forEach(el => el.classList.remove("red-marker"));
             selectedAyahElement.classList.remove("green-marker");
             selectedAyahElement.classList.add("red-marker");
             addMarker("red", surah, ayah);
@@ -2190,6 +2258,7 @@
             selectedAyahElement.classList.remove("green-marker");
             removeMarker(surah, ayah);
           } else {
+            document.querySelectorAll(".ayah.green-marker").forEach(el => el.classList.remove("green-marker"));
             selectedAyahElement.classList.remove("red-marker");
             selectedAyahElement.classList.add("green-marker");
             addMarker("green", surah, ayah);
@@ -2317,7 +2386,8 @@
           const btn = item.querySelector(".dl-btn");
           if (!btn) return;
           if (state === "done") {
-            btn.innerHTML = '<i class="fa-solid fa-check" style="color:#1B7A4B"></i>';
+            btn.innerHTML =
+              '<i class="fa-solid fa-check" style="color:#1B7A4B"></i>';
             btn.title = "تم التحميل";
           } else if (state === "progress") {
             btn.innerHTML =
@@ -2559,6 +2629,10 @@
         updateToggleButtonUI();
       });
     </script>
-    <script>if("serviceWorker" in navigator){navigator.serviceWorker.register("sw.js");}</script>
+    <script>
+      if ("serviceWorker" in navigator) {
+        navigator.serviceWorker.register("sw.js");
+      }
+    </script>
   </body>
 </html>

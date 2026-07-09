@@ -12,6 +12,20 @@
         box-sizing: border-box;
       }
 
+      /* منع تحديد النصوص */
+      * {
+        -webkit-user-select: none;
+        -moz-user-select: none;
+        -ms-user-select: none;
+        user-select: none;
+
+        /* منع قائمة الضغط المطول على iPhone وSafari */
+        -webkit-touch-callout: none;
+
+        /* إزالة تمييز اللمس على أندرويد وChrome */
+        -webkit-tap-highlight-color: transparent;
+      }
+
       body {
         font-family:
           system-ui,
@@ -61,7 +75,7 @@
         width: 96px;
         height: 96px;
         fill: none;
-        stroke: #1B7A4B;
+        stroke: #1b7a4b;
         stroke-width: 1.8;
         stroke-linecap: round;
         stroke-linejoin: round;
@@ -83,7 +97,7 @@
       }
 
       .retry-btn {
-        background: #1B7A4B;
+        background: #1b7a4b;
         border: none;
         padding: 0.85rem 2.5rem;
         font-size: 1.1rem;

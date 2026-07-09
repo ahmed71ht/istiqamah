@@ -15,6 +15,20 @@
     <link rel="stylesheet" href="assets/css/styles.css" />
 
     <style>
+      /* منع تحديد النصوص */
+      * {
+        -webkit-user-select: none;
+        -moz-user-select: none;
+        -ms-user-select: none;
+        user-select: none;
+
+        /* منع قائمة الضغط المطول على iPhone وSafari */
+        -webkit-touch-callout: none;
+
+        /* إزالة تمييز اللمس على أندرويد وChrome */
+        -webkit-tap-highlight-color: transparent;
+      }
+
       body {
         display: flex;
         flex-direction: column;
@@ -359,7 +373,20 @@
         </div>
       </div>
 
-      <div id="offlineNotice" style="display:none; background:#fff3cd; color:#856404; padding:10px 16px; border-radius:12px; margin-bottom:12px; text-align:center; font-size:0.85rem; border:1px solid #ffeeba;"></div>
+      <div
+        id="offlineNotice"
+        style="
+          display: none;
+          background: #fff3cd;
+          color: #856404;
+          padding: 10px 16px;
+          border-radius: 12px;
+          margin-bottom: 12px;
+          text-align: center;
+          font-size: 0.85rem;
+          border: 1px solid #ffeeba;
+        "
+      ></div>
 
       <div id="locationBox" class="location-box" onclick="requestLocation()">
         <i
@@ -624,7 +651,9 @@
           if (!el) return;
           el.innerHTML = `<i class="fa-solid fa-wifi-slash"></i> ${msg}`;
           el.style.display = "block";
-          setTimeout(() => { el.style.display = "none"; }, 5000);
+          setTimeout(() => {
+            el.style.display = "none";
+          }, 5000);
         }
 
         function requestLocation() {
@@ -662,7 +691,8 @@
             },
             (err) => {
               console.error("Geolocation error", err);
-              let errorMsg = "لم نتمكن من تحديد موقعك. تأكد من تفعيل خدمات الموقع.";
+              let errorMsg =
+                "لم نتمكن من تحديد موقعك. تأكد من تفعيل خدمات الموقع.";
               if (err.code === 1)
                 errorMsg = "الرجاء السماح بتحديد الموقع في المتصفح.";
               else if (err.code === 2)
@@ -731,6 +761,10 @@
       window.openMenu = openMenu;
       window.closeMenu = closeMenu;
     </script>
-    <script>if("serviceWorker" in navigator){navigator.serviceWorker.register("sw.js");}</script>
+    <script>
+      if ("serviceWorker" in navigator) {
+        navigator.serviceWorker.register("sw.js");
+      }
+    </script>
   </body>
 </html>
