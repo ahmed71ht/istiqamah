@@ -1,4 +1,4 @@
-const CACHE_NAME = "istiqamah-v2.0.0";
+const CACHE_NAME = "istiqamah-v2.1.0";
 const QURAN_CACHE = "quran-text-v1";
 const BASE = self.location.pathname.replace(/\/sw\.js$/, '') || '';
 
@@ -28,50 +28,42 @@ const urlsToCache = [
 
 self.addEventListener("install", (e) => {
   e.waitUntil(
-    caches.open(CACHE_NAME).then((cache) => cache.addAll(urlsToCache)),
+    caches.open(CACHE_NAME).then((cache) => {
+      return Promise.all(
+        urlsToCache.map((url) =>
+          cache.add(url).catch(() => {/* skip failed */})
+        )
+      );
+    })
   );
   self.skipWaiting();
 });
 
 self.addEventListener("activate", (e) => {
   e.waitUntil(
-    caches
-      .keys()
-      .then((keys) =>
-        Promise.all(
-          keys
-            .filter((key) => key !== CACHE_NAME && key !== QURAN_CACHE)
-            .map((key) => caches.delete(key)),
-        ),
-      ),
+    caches.keys().then((keys) =>
+      Promise.all(
+        keys
+          .filter((key) => key !== CACHE_NAME && key !== QURAN_CACHE)
+          .map((key) => caches.delete(key))
+      )
+    ).then(() => self.clients.claim())
   );
-  self.clients.claim();
 });
 
 self.addEventListener("fetch", (e) => {
-  const url = e.request.url;
+  const url = new URL(e.request.url);
 
-  if (url.includes("api.alquran.cloud")) {
-    e.respondWith(
-      fetch(e.request)
-        .then((response) => {
-          const clone = response.clone();
-          caches.open(QURAN_CACHE).then((cache) => cache.put(e.request, clone));
-          return response;
-        })
-        .catch(() =>
-          caches.match(e.request).then(
-            (cached) => cached || new Response("", { status: 503 }),
-          ),
-        ),
-    );
-    return;
-  }
+  // Exclude non-GET and browser extension requests
+  if (e.request.method !== "GET") return;
+  if (url.protocol === "chrome-extension:" || url.protocol === "moz-extension:") return;
 
+  // API: network-first, fallback to cache
   if (
-    url.includes("api.aladhan.com") ||
-    url.includes("nominatim.openstreetmap.org") ||
-    url.includes("cdn.mualim.app")
+    url.hostname === "api.alquran.cloud" ||
+    url.hostname === "api.aladhan.com" ||
+    url.hostname === "nominatim.openstreetmap.org" ||
+    url.hostname === "cdn.mualim.app"
   ) {
     e.respondWith(
       fetch(e.request)
@@ -82,17 +74,18 @@ self.addEventListener("fetch", (e) => {
         })
         .catch(() =>
           caches.match(e.request).then(
-            (cached) => cached || new Response("", { status: 503 }),
-          ),
-        ),
+            (cached) => cached || new Response(JSON.stringify({ error: "offline" }), { status: 503, headers: { "Content-Type": "application/json" } })
+          )
+        )
     );
     return;
   }
 
+  // CDN fonts/icons: cache-first
   if (
-    url.includes("cdnjs.cloudflare.com") ||
-    url.includes("fonts.googleapis.com") ||
-    url.includes("fonts.gstatic.com")
+    url.hostname === "cdnjs.cloudflare.com" ||
+    url.hostname === "fonts.googleapis.com" ||
+    url.hostname === "fonts.gstatic.com"
   ) {
     e.respondWith(
       caches.match(e.request).then((cached) => {
@@ -101,23 +94,32 @@ self.addEventListener("fetch", (e) => {
           caches.open(CACHE_NAME).then((cache) => cache.put(e.request, clone));
           return response;
         }).catch(() => new Response("", { status: 408 }));
-      }),
+      })
     );
     return;
   }
 
+  // Navigation requests
   if (e.request.mode === "navigate") {
     e.respondWith(
       fetch(e.request).catch(() => {
-        return caches.match(e.request) || caches.match(`${BASE}/offline.html`);
-      }),
+        return caches.match(e.request).then((cached) => {
+          if (cached) return cached;
+          // Try index.html variant for root path
+          if (url.pathname === BASE + "/" || url.pathname === BASE) {
+            return caches.match(BASE + "/index.html");
+          }
+          return caches.match(BASE + "/offline.html");
+        });
+      })
     );
     return;
   }
 
+  // Static assets: cache-first
   e.respondWith(
     caches.match(e.request).then((cached) => {
       return cached || fetch(e.request).catch(() => new Response("", { status: 408 }));
-    }),
+    })
   );
 });
