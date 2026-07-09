@@ -4,97 +4,22 @@
     <meta charset="UTF-8" />
     <meta name="viewport" content="width=device-width, initial-scale=1.0" />
     <title>تطبيق استقامة - منصة الأذكار</title>
+    <meta name="theme-color" content="#1B7A4B" />
     <link
       rel="stylesheet"
       href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css"
     />
+    <link rel="stylesheet" href="assets/css/styles.css" />
     <style>
-      /* ========== نسخة CSS كاملة غير معدلة (كما في السابق) ========== */
-      @import url("https://fonts.googleapis.com/css2?family=Tajawal:wght@400;500;700&display=swap");
-      @import url("https://fonts.googleapis.com/css2?family=Amiri:wght@400;700;800&family=Tajawal:wght@400;500;700&display=swap");
-
-      :root {
-        --primary-green: #6baa5e;
-        --dark-green: #4a7c3f;
-        --soft-bg: #f4f7f4;
-        --white: #ffffff;
-        --text-main: #333;
-        --pattern-url: url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' width='60' height='60' viewBox='0 0 60 60'%3E%3Cpath d='M30 0l5 15 15 5-15 5-5 15-5-15-15-5 15-5z' fill='%236baa5e' fill-opacity='0.03'/%3E%3C/svg%3E");
-      }
-
-      * {
-        box-sizing: border-box;
-        margin: 0;
-        padding: 0;
-      }
+      /* ===== أذكار - تصميم حصري ===== */
+      @import url("https://fonts.googleapis.com/css2?family=Amiri:wght@400;700&display=swap");
 
       body {
-        font-family: "Tajawal", sans-serif;
-        background: linear-gradient(
-          135deg,
-          #f4f7f4 0%,
-          #e8f3e6 50%,
-          #f4f7f4 100%
-        );
-        background-image: var(--pattern-url);
-        background-attachment: fixed;
-        min-height: 100vh;
-        color: var(--text-main);
         padding-bottom: 80px;
       }
 
-      .main-header {
-        background: var(--white);
-        padding: 1rem 5%;
-        display: flex;
-        justify-content: space-between;
-        align-items: center;
-        box-shadow: 0 2px 10px rgba(0, 0, 0, 0.05);
-        position: sticky;
-        top: 0;
-        z-index: 1000;
-        border-bottom: 3px solid var(--primary-green);
-      }
-      .logo-area {
-        display: flex;
-        align-items: center;
-        gap: 12px;
-      }
-      .logo-area h1 {
-        font-size: 22px;
-        color: var(--primary-green);
-        margin: 0;
-      }
-
-      .container {
-        max-width: 1000px;
-        margin: 40px auto;
-        padding: 0 20px;
-        width: 100%;
-      }
-
-      .section-title {
-        display: flex;
-        align-items: center;
-        gap: 15px;
-        margin-bottom: 30px;
-      }
       #back-btn {
-        background: var(--white);
-        border: 1px solid var(--primary-green);
-        color: var(--primary-green);
-        width: 40px;
-        height: 40px;
-        border-radius: 50%;
         display: none;
-        align-items: center;
-        justify-content: center;
-        cursor: pointer;
-        transition: 0.3s;
-      }
-      #back-btn:hover {
-        background: var(--primary-green);
-        color: white;
       }
 
       .page-navigation {
@@ -108,12 +33,12 @@
         width: 44px;
         height: 44px;
         border-radius: 50%;
-        background: var(--primary-green);
+        background: var(--primary);
         color: white;
         border: none;
         font-size: 1.2rem;
         cursor: pointer;
-        box-shadow: 0 6px 18px rgba(107, 170, 94, 0.3);
+        box-shadow: 0 6px 18px rgba(27, 122, 75, 0.3);
         transition: all 0.25s ease;
         display: flex;
         align-items: center;
@@ -132,10 +57,10 @@
       .page-indicator {
         font-weight: 700;
         color: var(--primary-green);
-        background: white;
+        background: var(--bg-card);
         padding: 8px 20px;
         border-radius: 30px;
-        border: 1px solid #d0e0c2;
+        border: 1px solid var(--glass-border);
         font-size: 1rem;
         box-shadow: 0 2px 8px rgba(0, 0, 0, 0.04);
         min-width: 100px;
@@ -148,18 +73,18 @@
         gap: 20px;
       }
       .category-card {
-        background: var(--white);
+        background: var(--bg-card);
         padding: 30px;
         border-radius: 20px;
         text-align: center;
         cursor: pointer;
         transition: 0.3s;
-        border: 1px solid #e0eadd;
+        border: 1px solid var(--glass-border);
       }
       .category-card:hover {
         transform: translateY(-5px);
         border-color: var(--primary-green);
-        box-shadow: 0 10px 20px rgba(107, 170, 94, 0.1);
+        box-shadow: 0 10px 20px rgba(27, 122, 75, 0.1);
       }
       .category-icon {
         font-size: 40px;
@@ -173,7 +98,7 @@
       }
 
       .zekr-card {
-        background: var(--white);
+        background: var(--bg-card);
         margin-bottom: 20px;
         padding: 25px;
         border-radius: 15px;
@@ -209,7 +134,7 @@
         font-size: 1.4rem;
         line-height: 1.8;
         margin-bottom: 20px;
-        color: #222;
+        color: var(--text-primary);
       }
       .zekr-footer {
         display: flex;
@@ -219,7 +144,7 @@
         padding-top: 15px;
       }
       .counter-badge {
-        background: var(--primary-green);
+        background: var(--primary);
         color: white;
         padding: 5px 20px;
         border-radius: 50px;
@@ -228,7 +153,7 @@
       }
       .zekr-desc {
         font-size: 12px;
-        color: #888;
+        color: var(--text-muted);
         max-width: 70%;
       }
       .zekr-card.done {
@@ -242,7 +167,7 @@
         border-radius: 40px;
         padding: 40px 25px;
         text-align: center;
-        box-shadow: 0 15px 30px rgba(107, 170, 94, 0.15);
+        box-shadow: 0 15px 30px rgba(27, 122, 75, 0.15);
         animation: popIn 0.5s cubic-bezier(0.175, 0.885, 0.32, 1.275) forwards;
       }
       @keyframes popIn {
@@ -305,75 +230,6 @@
         background: #f1c0c3;
       }
 
-      #overlay {
-        position: fixed;
-        inset: 0;
-        background: rgba(0, 0, 0, 0.4);
-        display: none;
-        z-index: 2500;
-      }
-      #links-menu {
-        position: fixed;
-        top: 0;
-        left: -100%;
-        width: 280px;
-        height: 100%;
-        background: white;
-        z-index: 10000;
-        padding: 20px 15px;
-        transition: 0.3s;
-        box-shadow: 5px 0 20px rgba(0, 0, 0, 0.15);
-        border-radius: 0 28px 28px 0;
-      }
-      .link-item {
-        display: flex;
-        align-items: center;
-        gap: 12px;
-        padding: 12px;
-        border-bottom: 1px solid #eee;
-        text-decoration: none;
-        color: black;
-        transition: 0.2s;
-      }
-      .link-item:hover {
-        background: #f0f7ef;
-        padding-right: 18px;
-      }
-      .link-circle {
-        width: 42px;
-        height: 42px;
-        border-radius: 50%;
-        border: 2px solid var(--primary-green);
-        display: flex;
-        align-items: center;
-        justify-content: center;
-        color: var(--primary-green);
-        background: white;
-      }
-
-      .link-item.active {
-        background: var(--light-green);
-        border-right: 4px solid var(--primary-green);
-        color: var(--primary-green);
-      }
-
-      #menu-btn {
-        background: var(--white);
-        border: 1px solid var(--primary-green);
-        color: var(--primary-green);
-        width: 40px;
-        height: 40px;
-        border-radius: 50%;
-        display: flex;
-        align-items: center;
-        justify-content: center;
-        cursor: pointer;
-      }
-      #menu-btn:hover {
-        background: var(--primary-green);
-        color: white;
-      }
-
       #navModeToggle {
         position: fixed;
         bottom: 25px;
@@ -383,7 +239,7 @@
         height: 52px;
         border-radius: 50%;
         background: linear-gradient(135deg, #ffffff, #f8fdf5);
-        border: 2px solid rgba(107, 170, 94, 0.4);
+        border: 2px solid rgba(27, 122, 75, 0.4);
         box-shadow: 0 8px 24px rgba(0, 0, 0, 0.1);
         cursor: pointer;
         display: flex;
@@ -396,16 +252,17 @@
       }
 
       #links-menu a[href="azkar.html"] {
-        background: #f0f8f0;
-        border-right: 4px solid var(--primary-green);
-        color: var(--primary-green);
-        font-weight: bold;
+        background: var(--primary-soft);
+        border-right: 3px solid var(--primary);
+        color: var(--primary-dark);
+        font-weight: 700;
+      }
+      #links-menu a[href="azkar.html"] .link-circle {
+        background: var(--primary);
+        color: white;
+        border-color: var(--primary);
       }
 
-      #links-menu a[href="azkar.html"] .link-circle {
-        background: var(--primary-green);
-        color: white;
-      }
       @keyframes floatBtn {
         0%,
         100% {
@@ -439,6 +296,48 @@
         transform: translateY(0);
       }
 
+      [data-theme="dark"] .zekr-card {
+        background: var(--bg-card);
+        border-color: var(--glass-border);
+      }
+      [data-theme="dark"] .zekr-desc {
+        color: var(--text-secondary);
+      }
+      [data-theme="dark"] .zekr-counter {
+        background: rgba(27, 122, 75, 0.1);
+        color: var(--primary-light);
+      }
+      [data-theme="dark"] .category-card {
+        background: var(--bg-card);
+        border-color: var(--glass-border);
+      }
+      [data-theme="dark"] .category-card:hover {
+        background: rgba(27, 122, 75, 0.12);
+      }
+      [data-theme="dark"] .congrats-card {
+        background: var(--glass-bg-strong);
+        border-color: var(--glass-border);
+      }
+      [data-theme="dark"] .zekr-card.done {
+        border-right-color: var(--text-muted);
+        background: rgba(27, 122, 75, 0.05);
+      }
+      [data-theme="dark"] .zekr-card.done .zekr-content,
+      [data-theme="dark"] .zekr-card.done .zekr-desc {
+        color: var(--text-muted);
+      }
+      [data-theme="dark"] .zekr-footer {
+        border-top-color: var(--glass-border);
+      }
+      [data-theme="dark"] .nav-arrow {
+        background: var(--bg-card);
+        border-color: var(--glass-border);
+        color: var(--text-primary);
+      }
+      [data-theme="dark"] .nav-arrow:hover {
+        background: rgba(27, 122, 75, 0.12);
+      }
+
       @media (max-width: 768px) {
         .categories-grid {
           grid-template-columns: 1fr;
@@ -459,6 +358,13 @@
   <body>
     <div id="overlay" onclick="closeAll()"></div>
     <div id="links-menu">
+      <div class="menu-header-area">
+        <div class="menu-logo"><i class="fa-solid fa-mosque"></i></div>
+        <span class="menu-title">استقامة</span>
+        <button class="menu-close-btn" onclick="closeAll()">
+          <i class="fa-solid fa-xmark"></i>
+        </button>
+      </div>
       <a href="index.html" class="link-item"
         ><div class="link-circle"><i class="fa-solid fa-house"></i></div>
         الرئيسية</a
@@ -470,7 +376,7 @@
         الأذكار</a
       >
       <a href="quran.html" class="link-item"
-        ><div class="link-circle"><i class="fa-solid fa-book"></i></div>
+        ><div class="link-circle"><i class="fa-solid fa-book-quran"></i></div>
         القرآن</a
       >
       <a href="prayertime.html" class="link-item"
@@ -485,7 +391,7 @@
         ><div class="link-circle">
           <i class="fa-solid fa-location-arrow"></i>
         </div>
-        إتجاه القبلة</a
+        اتجاه القبلة</a
       >
       <a href="about.html" class="link-item"
         ><div class="link-circle"><i class="fa-solid fa-circle-info"></i></div>
@@ -495,28 +401,28 @@
 
     <header class="main-header">
       <div class="logo-area">
-        <i
-          class="fa-solid fa-mosque"
-          style="color: var(--primary-green); font-size: 24px"
-        ></i>
-        <h1>تطبيق استقامة</h1>
+        <div class="logo-icon-wrapper">
+          <i class="fa-solid fa-mosque"></i>
+        </div>
+        <h1>استقامة</h1>
       </div>
-      <nav>
-        <i
-          class="fa-solid fa-bars"
-          onclick="toggleLinks()"
-          style="font-size: 20px; cursor: pointer"
-        ></i>
-      </nav>
+      <div class="header-actions">
+        <button class="theme-toggle" id="themeToggle" onclick="toggleTheme()" title="الوضع الليلي / النهاري">
+          <i class="fa-solid fa-moon"></i>
+        </button>
+        <button class="header-btn" onclick="toggleLinks()">
+          <i class="fa-solid fa-bars"></i>
+        </button>
+      </div>
     </header>
 
     <div class="container">
       <div class="section-title">
-        <button id="menu-btn" onclick="toggleLinks()">
-          <i class="fa-solid fa-bars"></i>
-        </button>
         <button id="back-btn" onclick="loadCategories()">
           <i class="fa-solid fa-arrow-right"></i>
+        </button>
+        <button id="menu-btn" onclick="toggleLinks()" style="display:none">
+          <i class="fa-solid fa-bars"></i>
         </button>
         <h2 id="header-title">قسم الأذكار</h2>
       </div>
@@ -831,10 +737,10 @@
           text =
             "اللهم تقبّل منا إنك أنت السميع العليم<br>جعلك الله من الذاكرين والذاكرات";
           buttonsHtml = `
-            <button class="btn-reset" style="background: var(--primary-green); color: white; margin: 10px;" onclick="dismissCongrats()">
+            <button class="btn-reset" style="background: var(--primary); color: white; margin: 10px;" onclick="dismissCongrats()">
               <i class="fa-solid fa-arrow-right"></i> الرجوع للذكر الأخير
             </button>
-            <button class="btn-reset" style="background: var(--primary-green); color: white; margin: 10px;" onclick="resetCurrentProgress()">
+            <button class="btn-reset" style="background: var(--primary); color: white; margin: 10px;" onclick="resetCurrentProgress()">
               <i class="fa-solid fa-rotate-right"></i> إعادة الأذكار من البداية
             </button>
           `;
@@ -842,10 +748,10 @@
           title = "لقد وصلت إلى نهاية الأذكار";
           text = "أتممت الاطلاع على جميع أذكار هذا القسم<br>بارك الله فيك";
           buttonsHtml = `
-            <button class="btn-reset" style="background: var(--primary-green); color: white; margin: 10px;" onclick="dismissCongrats()">
+            <button class="btn-reset" style="background: var(--primary); color: white; margin: 10px;" onclick="dismissCongrats()">
               <i class="fa-solid fa-arrow-right"></i> الرجوع للذكر الأخير
             </button>
-            <button class="btn-reset" style="background: var(--primary-green); color: white; margin: 10px;" onclick="loadCategories()">
+            <button class="btn-reset" style="background: var(--primary); color: white; margin: 10px;" onclick="loadCategories()">
               <i class="fa-solid fa-list"></i> العودة لقائمة الأذكار
             </button>
           `;
@@ -1098,6 +1004,35 @@
       window.closeAll = closeAll;
       window.toggleLinks = toggleLinks;
       window.loadCategories = loadCategories;
+
+      // ===== Dark Mode =====
+      (function() {
+        var saved = localStorage.getItem("istiqamah-theme");
+        if (saved === "dark" || (!saved && window.matchMedia("(prefers-color-scheme: dark)").matches)) {
+          document.documentElement.setAttribute("data-theme", "dark");
+        }
+      })();
+      function toggleTheme() {
+        var html = document.documentElement;
+        var btn = document.getElementById("themeToggle");
+        var isDark = html.getAttribute("data-theme") === "dark";
+        if (isDark) {
+          html.removeAttribute("data-theme");
+          localStorage.setItem("istiqamah-theme", "light");
+          if (btn) btn.innerHTML = '<i class="fa-solid fa-moon"></i>';
+        } else {
+          html.setAttribute("data-theme", "dark");
+          localStorage.setItem("istiqamah-theme", "dark");
+          if (btn) btn.innerHTML = '<i class="fa-solid fa-sun"></i>';
+        }
+      }
+      (function() {
+        var btn = document.getElementById("themeToggle");
+        if (btn) {
+          var isDark = document.documentElement.getAttribute("data-theme") === "dark";
+          btn.innerHTML = isDark ? '<i class="fa-solid fa-sun"></i>' : '<i class="fa-solid fa-moon"></i>';
+        }
+      })();
       window.loadAzkar = loadAzkar;
       window.updateCountByIndex = updateCountByIndex;
       window.dismissCongrats = dismissCongrats;

@@ -7,191 +7,57 @@
       content="width=device-width, initial-scale=1.0, viewport-fit=cover"
     />
     <title>تطبيق استقامة - أوقات الصلاة | تحميل فوري</title>
+    <meta name="theme-color" content="#1B7A4B" />
     <link
       rel="stylesheet"
       href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css"
     />
+    <link rel="stylesheet" href="assets/css/styles.css" />
     <style>
-      @import url("https://fonts.googleapis.com/css2?family=Tajawal:wght@400;500;700&display=swap");
-
-      :root {
-        --primary-green: #6baa5e;
-        --dark-green: #4a7c3f;
-        --soft-bg: #f4f7f4;
-        --white: #ffffff;
-        --text-main: #333;
-        --pattern-url: url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' width='60' height='60' viewBox='0 0 60 60'%3E%3Cpath d='M30 0l5 15 15 5-15 5-5 15-5-15-15-5 15-5z' fill='%236baa5e' fill-opacity='0.03'/%3E%3C/svg%3E");
-      }
-
-      * {
-        margin: 0;
-        padding: 0;
-        box-sizing: border-box;
-      }
-
       body {
-        font-family: "Tajawal", sans-serif;
-        background: linear-gradient(
-          135deg,
-          #f4f7f4 0%,
-          #e8f3e6 50%,
-          #f4f7f4 100%
-        );
-        background-image: var(--pattern-url);
-        background-attachment: fixed;
         display: flex;
         flex-direction: column;
         min-height: 100vh;
-        color: var(--text-main);
-      }
-
-      /* الهيدر العلوي */
-      .main-header {
-        background: var(--white);
-        padding: 1rem 5%;
-        display: flex;
-        justify-content: space-between;
-        align-items: center;
-        box-shadow: 0 2px 10px rgba(0, 0, 0, 0.05);
-        position: sticky;
-        top: 0;
-        z-index: 1000;
-        border-bottom: 3px solid var(--primary-green);
-      }
-
-      .logo-area {
-        display: flex;
-        align-items: center;
-        gap: 12px;
-      }
-
-      .logo-area h1 {
-        font-size: 22px;
-        color: var(--primary-green);
-        margin: 0;
-      }
-
-      /* القائمة الجانبية */
-      #overlay {
-        position: fixed;
-        inset: 0;
-        background: rgba(0, 0, 0, 0.4);
-        display: none;
-        z-index: 2500;
-      }
-
-      #links-menu {
-        position: fixed;
-        top: 0;
-        left: -100%;
-        width: 280px;
-        height: 100%;
-        background: white;
-        z-index: 3000;
-        padding: 20px 15px;
-        transition: 0.3s ease;
-        box-shadow: 5px 0 20px rgba(0, 0, 0, 0.15);
-        border-radius: 0 28px 28px 0;
-      }
-
-      .link-item {
-        display: flex;
-        align-items: center;
-        gap: 12px;
-        padding: 12px;
-        border-bottom: 1px solid #eee;
-        text-decoration: none;
-        color: black;
-        transition: 0.2s;
-      }
-
-      .link-item:hover {
-        background: #f0f7ef;
-        padding-right: 18px;
-      }
-
-      .link-circle {
-        width: 42px;
-        height: 42px;
-        border-radius: 50%;
-        border: 2px solid var(--primary-green);
-        display: flex;
-        align-items: center;
-        justify-content: center;
-        color: var(--primary-green);
-        background: white;
       }
 
       #links-menu a[href="prayertime.html"] {
-        background: #f0f7ef;
-        border-right: 4px solid var(--primary-green);
-        color: var(--primary-green);
-        font-weight: bold;
+        background: var(--primary-soft);
+        border-right: 3px solid var(--primary);
+        color: var(--primary-dark);
+        font-weight: 700;
       }
       #links-menu a[href="prayertime.html"] .link-circle {
-        background: var(--primary-green);
+        background: var(--primary);
         color: white;
-      }
-
-      /* الحاوية الرئيسية */
-      .container {
-        max-width: 1000px;
-        margin: 40px auto;
-        padding: 0 20px;
-        flex: 1;
-        width: 100%;
-      }
-
-      .section-title {
-        display: flex;
-        align-items: center;
-        gap: 15px;
-        margin-bottom: 30px;
-      }
-
-      #menu-btn {
-        background: var(--white);
-        border: 1px solid var(--primary-green);
-        color: var(--primary-green);
-        width: 40px;
-        height: 40px;
-        border-radius: 50%;
-        display: flex;
-        align-items: center;
-        justify-content: center;
-        cursor: pointer;
-        transition: 0.3s;
-      }
-      #menu-btn:hover {
-        background: var(--primary-green);
-        color: white;
+        border-color: var(--primary);
       }
 
       #header-title {
-        color: var(--dark-green);
-        font-size: 24px;
+        font-size: 22px;
+        font-weight: 700;
+        color: var(--text-primary);
       }
 
       /* صندوق تحديد الموقع */
       .location-box {
         text-align: center;
-        background: var(--white);
+        background: var(--bg-card);
         padding: 30px;
         border-radius: 20px;
         cursor: pointer;
         transition: 0.3s;
-        border: 1px solid #e0eadd;
+        border: 1px solid var(--glass-border);
         margin-bottom: 20px;
       }
       .location-box:hover {
         transform: translateY(-5px);
         border-color: var(--primary-green);
-        box-shadow: 0 10px 20px rgba(107, 170, 94, 0.1);
+        box-shadow: 0 10px 20px rgba(27, 122, 75, 0.1);
       }
 
       /* مؤشر التحميل (الجديد) */
       .loading-wrapper {
-        background: rgba(107, 170, 94, 0.08);
+        background: rgba(27, 122, 75, 0.08);
         backdrop-filter: blur(4px);
         border-radius: 28px;
         margin: 20px 0;
@@ -246,7 +112,7 @@
         text-align: center;
         margin-bottom: 25px;
         display: none;
-        background: var(--white);
+        background: var(--bg-card);
         padding: 20px;
         border-radius: 15px;
         border-right: 6px solid var(--primary-green);
@@ -260,7 +126,7 @@
       #today-date {
         margin-top: 8px;
         font-size: 13px;
-        color: #888;
+        color: var(--text-muted);
         font-weight: 400;
       }
 
@@ -271,18 +137,18 @@
         gap: 20px;
       }
       .card {
-        background: var(--white);
+        background: var(--bg-card);
         padding: 25px;
         border-radius: 20px;
         text-align: center;
         cursor: pointer;
         transition: 0.3s;
-        border: 1px solid #e0eadd;
+        border: 1px solid var(--glass-border);
       }
       .card:hover {
         transform: translateY(-5px);
         border-color: var(--primary-green);
-        box-shadow: 0 10px 20px rgba(107, 170, 94, 0.1);
+        box-shadow: 0 10px 20px rgba(27, 122, 75, 0.1);
       }
       .card.active {
         background: #f0f8f0;
@@ -292,8 +158,8 @@
       /* قسم معلومات الموقع */
       .location-info {
         display: none;
-        background: #f9fdf8;
-        border: 1px solid #d0e8c9;
+        background: var(--bg-card-hover);
+        border: 1px solid var(--glass-border);
         border-radius: 16px;
         padding: 12px 18px;
         margin-bottom: 25px;
@@ -335,7 +201,7 @@
         overflow: hidden;
         letter-spacing: 0.3px;
         backdrop-filter: blur(2px);
-        box-shadow: 0 2px 6px rgba(107, 170, 94, 0.08);
+        box-shadow: 0 2px 6px rgba(27, 122, 75, 0.08);
       }
       .location-info button i {
         font-size: 15px;
@@ -357,7 +223,7 @@
         transition: left 0.5s ease;
       }
       .location-info button:hover {
-        background: var(--primary-green);
+        background: var(--primary);
         color: #ffffff;
         border-color: var(--primary-green);
         box-shadow: 0 8px 20px rgba(75, 130, 65, 0.25);
@@ -380,6 +246,36 @@
         outline-offset: 3px;
       }
 
+      [data-theme="dark"] .card {
+        background: var(--bg-card);
+        border-color: var(--glass-border);
+      }
+      [data-theme="dark"] .card.active {
+        background: rgba(27, 122, 75, 0.15);
+      }
+      [data-theme="dark"] .location-box {
+        background: var(--bg-card);
+        border-color: var(--glass-border);
+      }
+      [data-theme="dark"] .location-info {
+        background: var(--bg-card);
+        border-color: var(--glass-border);
+      }
+      [data-theme="dark"] .location-info div {
+        background: var(--bg-card-hover);
+        border-color: var(--glass-border);
+      }
+      [data-theme="dark"] #nextBox {
+        background: var(--bg-card);
+        border-color: var(--glass-border);
+      }
+      [data-theme="dark"] .city-label {
+        color: var(--text-muted);
+      }
+      [data-theme="dark"] .time-remaining {
+        color: var(--primary-light);
+      }
+
       @media (max-width: 768px) {
         .grid {
           grid-template-columns: 1fr;
@@ -389,23 +285,19 @@
         }
       }
 
-      a,
-      button,
-      [role="button"],
-      .clickable {
-        -webkit-tap-highlight-color: transparent;
-      }
-      * {
-        -webkit-tap-highlight-color: transparent;
-        -webkit-user-select: none;
-        user-select: none;
-      }
     </style>
   </head>
   <body>
     <div id="overlay" onclick="closeMenu()"></div>
 
     <div id="links-menu">
+      <div class="menu-header-area">
+        <div class="menu-logo"><i class="fa-solid fa-mosque"></i></div>
+        <span class="menu-title">استقامة</span>
+        <button class="menu-close-btn" onclick="closeMenu()">
+          <i class="fa-solid fa-xmark"></i>
+        </button>
+      </div>
       <a href="index.html" class="link-item">
         <div class="link-circle"><i class="fa-solid fa-house"></i></div>
         الرئيسية
@@ -432,7 +324,7 @@
         ><div class="link-circle">
           <i class="fa-solid fa-location-arrow"></i>
         </div>
-        إتجاه القبلة
+        اتجاه القبلة
       </a>
       <a href="about.html" class="link-item"
         ><div class="link-circle"><i class="fa-solid fa-circle-info"></i></div>
@@ -442,24 +334,23 @@
 
     <header class="main-header">
       <div class="logo-area">
-        <i
-          class="fa-solid fa-mosque"
-          style="color: var(--primary-green); font-size: 24px"
-        ></i>
-        <h1>تطبيق استقامة</h1>
+        <div class="logo-icon-wrapper">
+          <i class="fa-solid fa-mosque"></i>
+        </div>
+        <h1>استقامة</h1>
       </div>
-      <i
-        class="fa-solid fa-bars"
-        onclick="openMenu()"
-        style="font-size: 20px; cursor: pointer"
-      ></i>
+      <div class="header-actions">
+        <button class="theme-toggle" id="themeToggle" onclick="toggleTheme()" title="الوضع الليلي / النهاري">
+          <i class="fa-solid fa-moon"></i>
+        </button>
+        <button class="header-btn" onclick="openMenu()">
+          <i class="fa-solid fa-bars"></i>
+        </button>
+      </div>
     </header>
 
     <div class="container">
       <div class="section-title">
-        <div id="menu-btn" onclick="openMenu()">
-          <i class="fa-solid fa-bars"></i>
-        </div>
         <h2 id="header-title">أوقات الصلاة</h2>
       </div>
 
@@ -473,6 +364,8 @@
           <i class="fa-solid fa-pen"></i> تغيير الموقع
         </button>
       </div>
+
+      <div id="offlineNotice" style="display:none; background:#fff3cd; color:#856404; padding:10px 16px; border-radius:12px; margin-bottom:12px; text-align:center; font-size:0.85rem; border:1px solid #ffeeba;"></div>
 
       <!-- صندوق تحديد الموقع (يظهر عند عدم وجود موقع) -->
       <div id="locationBox" class="location-box" onclick="requestLocation()">
@@ -626,11 +519,42 @@
         selected = null;
       }
 
+      // ===== Offline notice =====
+      function showOfflineMsg(msg) {
+        const el = document.getElementById("offlineNotice");
+        if (!el) return;
+        el.innerHTML = `<i class="fa-solid fa-wifi-slash"></i> ${msg}`;
+        el.style.display = "block";
+        setTimeout(() => { el.style.display = "none"; }, 5000);
+      }
+
+      // ===== Cached timings for offline =====
+      function saveTimingsCache(lat, lng, timingsData) {
+        try {
+          localStorage.setItem("prayerTimingsCache", JSON.stringify({
+            lat, lng,
+            timings: timingsData,
+            date: new Date().toISOString(),
+          }));
+        } catch (_) {}
+      }
+      function loadTimingsCache(lat, lng) {
+        try {
+          const raw = localStorage.getItem("prayerTimingsCache");
+          if (!raw) return null;
+          const data = JSON.parse(raw);
+          if (data.lat === lat && data.lng === lng) return data.timings;
+        } catch (_) {}
+        return null;
+      }
+
       // دالة طلب الموقع مع إظهار تحميل فوري فور النقر
       function requestLocation() {
-        // إظهار رسالة "جار التحميل" فوراً قبل أي عملية
+        if (navigator.onLine === false) {
+          showOfflineMsg("يتطلب تحديد الموقع اتصالاً بالإنترنت");
+          return;
+        }
         showLoader(true, "جار التحميل ... يتم تحديد موقعك");
-        // إخفاء locationBox حتى لا يظهر
         const locBox = document.getElementById("locationBox");
         if (locBox) locBox.style.display = "none";
 
@@ -654,27 +578,26 @@
                 await fetchPrayerTimes(latitude, longitude);
               } catch (err) {
                 console.error(err);
-                alert("حدث خطأ أثناء جلب بيانات الموقع، حاول مجدداً.");
-                showLocationBox(); // الرجوع إلى تحديد الموقع
+                showOfflineMsg("حدث خطأ أثناء جلب بيانات الموقع، حاول مجدداً.");
+                showLocationBox();
                 hideLoaderAndShowContent();
               }
             },
             (error) => {
               console.error("Geolocation error", error);
-              let errorMsg =
-                "لم نتمكن من تحديد موقعك. تأكد من تفعيل خدمات الموقع.";
+              let errorMsg = "لم نتمكن من تحديد موقعك. تأكد من تفعيل خدمات الموقع.";
               if (error.code === 1)
                 errorMsg = "الرجاء السماح بتحديد الموقع في المتصفح.";
               else if (error.code === 2)
                 errorMsg = "تعذر تحديد الموقع، تأكد من الاتصال.";
-              alert(errorMsg);
+              showOfflineMsg(errorMsg);
               showLocationBox();
               hideLoaderAndShowContent();
             },
             { enableHighAccuracy: true, timeout: 12000 },
           );
         } else {
-          alert("المتصفح لا يدعم تحديد الموقع الجغرافي");
+          showOfflineMsg("المتصفح لا يدعم تحديد الموقع الجغرافي");
           showLocationBox();
           hideLoaderAndShowContent();
         }
@@ -682,8 +605,28 @@
 
       // جلب أوقات الصلاة مع إظهار تحميل مستمر حتى الرد
       async function fetchPrayerTimes(lat, lng) {
-        // نضمن ظهور مؤشر التحميل في حالة لم يظهر
         showLoader(true, "جار تحميل أوقات الصلاة ...");
+
+        const cachedTimings = loadTimingsCache(lat, lng);
+        if (cachedTimings) {
+          timings = cachedTimings;
+          hideLoaderAndShowContent();
+          document.getElementById("locationBox").style.display = "none";
+          document.getElementById("nextBox").style.display = "block";
+          renderPrayerCards();
+          if (updateInterval) clearInterval(updateInterval);
+          updateTimerAndNext();
+          updateInterval = setInterval(updateTimerAndNext, 1000);
+          return;
+        }
+
+        if (navigator.onLine === false) {
+          hideLoaderAndShowContent();
+          showOfflineMsg("يتطلب تحميل الأوقات اتصالاً بالإنترنت");
+          showLocationBox();
+          timings = null;
+          return;
+        }
 
         try {
           const apiUrl = `https://api.aladhan.com/v1/timings?latitude=${lat}&longitude=${lng}&method=4`;
@@ -693,12 +636,11 @@
 
           if (data && data.data && data.data.timings) {
             timings = data.data.timings;
-            // إخفاء مؤشر التحميل وعرض المحتوى
+            saveTimingsCache(lat, lng, timings);
             hideLoaderAndShowContent();
             document.getElementById("locationBox").style.display = "none";
             document.getElementById("nextBox").style.display = "block";
             renderPrayerCards();
-            // تحديث العد التنازلي
             if (updateInterval) clearInterval(updateInterval);
             updateTimerAndNext();
             updateInterval = setInterval(updateTimerAndNext, 1000);
@@ -707,11 +649,9 @@
           }
         } catch (err) {
           console.error("fetch error:", err);
-          alert(
-            "⚠️ فشل تحميل أوقات الصلاة. تأكد من اتصالك بالإنترنت وحاول مجدداً.",
-          );
-          showLocationBox(); // إظهار مربع الموقع مرة أخرى
           hideLoaderAndShowContent();
+          showOfflineMsg("فشل تحميل الأوقات. تحقق من اتصالك بالإنترنت.");
+          showLocationBox();
           timings = null;
         }
       }
@@ -829,6 +769,35 @@
       window.closeMenu = closeMenu;
       window.openMenu = openMenu;
 
+      // ===== Dark Mode =====
+      (function() {
+        var saved = localStorage.getItem("istiqamah-theme");
+        if (saved === "dark" || (!saved && window.matchMedia("(prefers-color-scheme: dark)").matches)) {
+          document.documentElement.setAttribute("data-theme", "dark");
+        }
+      })();
+      function toggleTheme() {
+        var html = document.documentElement;
+        var btn = document.getElementById("themeToggle");
+        var isDark = html.getAttribute("data-theme") === "dark";
+        if (isDark) {
+          html.removeAttribute("data-theme");
+          localStorage.setItem("istiqamah-theme", "light");
+          if (btn) btn.innerHTML = '<i class="fa-solid fa-moon"></i>';
+        } else {
+          html.setAttribute("data-theme", "dark");
+          localStorage.setItem("istiqamah-theme", "dark");
+          if (btn) btn.innerHTML = '<i class="fa-solid fa-sun"></i>';
+        }
+      }
+      (function() {
+        var btn = document.getElementById("themeToggle");
+        if (btn) {
+          var isDark = document.documentElement.getAttribute("data-theme") === "dark";
+          btn.innerHTML = isDark ? '<i class="fa-solid fa-sun"></i>' : '<i class="fa-solid fa-moon"></i>';
+        }
+      })();
+
       function openMenu() {
         document.getElementById("links-menu").style.left = "0";
         document.getElementById("overlay").style.display = "block";
@@ -842,19 +811,31 @@
       (function init() {
         const savedLoc = loadSavedLocation();
         if (savedLoc && savedLoc.lat && savedLoc.lng) {
-          // يوجد موقع محفوظ: نظهر أولاً مؤشر تحميل ثم نحمل الأوقات فوراً
+          const cachedTimings = loadTimingsCache(savedLoc.lat, savedLoc.lng);
+          if (cachedTimings && navigator.onLine === false) {
+            timings = cachedTimings;
+            document.getElementById("locationBox").style.display = "none";
+            document.getElementById("locationInfo").style.display = "flex";
+            document.getElementById("locationText").innerText = savedLoc.address;
+            document.getElementById("nextBox").style.display = "block";
+            hideLoaderAndShowContent();
+            renderPrayerCards();
+            if (updateInterval) clearInterval(updateInterval);
+            updateTimerAndNext();
+            updateInterval = setInterval(updateTimerAndNext, 1000);
+            showOfflineMsg("آخر تحديث للأوقات من اتصال سابق");
+            return;
+          }
           showLoader(true, "جار التحميل الفوري للأوقات ...");
           document.getElementById("locationBox").style.display = "none";
           document.getElementById("locationInfo").style.display = "flex";
           document.getElementById("locationText").innerText = savedLoc.address;
-          // جلب الأوقات مع التحميل
           fetchPrayerTimes(savedLoc.lat, savedLoc.lng).catch(() => {
-            alert("تعذر تحميل الأوقات المحفوظة، حاول تحديث الموقع.");
+            showOfflineMsg("تعذر تحميل الأوقات المحفوظة، حاول تحديث الموقع.");
             showLocationBox();
             hideLoaderAndShowContent();
           });
         } else {
-          // لا يوجد موقع: عرض صندوق تحديد الموقع فقط وضبط الحالة
           document.getElementById("locationBox").style.display = "block";
           document.getElementById("locationInfo").style.display = "none";
           document.getElementById("nextBox").style.display = "none";
