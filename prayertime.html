@@ -704,20 +704,17 @@
         let targetTime = new Date();
         targetTime.setHours(hour, minute, 0, 0);
 
-        const diffMs = targetTime - now;
+        let diffMs = targetTime - now;
         const timerElement = document.getElementById("timer");
         const labelPrefixSpan = document.getElementById("labelPrefix");
         const nameSpan = document.getElementById("name");
 
         if (diffMs < 0) {
-          // الوقت مضى: نعرض الوقت المنقضي
-          const elapsed = now - targetTime;
-          timerElement.innerText = formatTime(elapsed);
-          labelPrefixSpan.innerText = "مضى على أذان";
-        } else {
-          timerElement.innerText = formatTime(diffMs);
-          labelPrefixSpan.innerText = "باقي على أذان";
+          targetTime = new Date(targetTime.getTime() + 86400000);
+          diffMs = targetTime - now;
         }
+        timerElement.innerText = formatTime(diffMs);
+        labelPrefixSpan.innerText = "باقي على أذان";
         nameSpan.innerText = names[currentKey] || currentKey;
 
         // تحديث التاريخ
