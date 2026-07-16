@@ -228,13 +228,72 @@
       @media (max-width: 768px) {
         .categories-grid {
           grid-template-columns: 1fr;
+          gap: 12px;
+        }
+        .category-card {
+          padding: 18px;
+        }
+        .category-icon {
+          font-size: 30px;
+          margin-bottom: 10px;
+        }
+        .category-card strong {
+          font-size: 15px;
+        }
+        .hadith-card {
+          margin-bottom: 14px;
+        }
+        .hadith-header {
+          padding: 10px 14px;
+          gap: 10px;
         }
         .hadith-content {
+          padding: 14px;
           font-size: 16px;
+          margin-bottom: 12px;
+        }
+        .topic-badges {
+          padding: 0 14px 10px 14px;
+          gap: 6px;
+        }
+        .explanation-section {
+          padding: 0 14px 14px 14px;
+        }
+        .explanation-text {
+          padding: 10px 12px;
         }
         .hadith-header {
           flex-direction: column;
           align-items: flex-start;
+        }
+      }
+      @media (max-width: 480px) {
+        .category-card {
+          padding: 12px;
+        }
+        .category-icon {
+          font-size: 24px;
+          margin-bottom: 6px;
+        }
+        .category-card strong {
+          font-size: 13px;
+        }
+        .category-count {
+          font-size: 11px;
+          margin-top: 4px;
+        }
+        .hadith-content {
+          font-size: 15px;
+          padding: 12px;
+        }
+        .hadith-header {
+          padding: 8px 12px;
+        }
+        .topic-badges {
+          padding: 0 12px 8px 12px;
+        }
+        .explanation-section {
+          padding: 0 12px 12px 12px;
         }
       }
 
