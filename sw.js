@@ -16,6 +16,8 @@ const urlsToCache = [
   `${BASE}/azkar.json`,
   `${BASE}/muslim.json`,
   `${BASE}/assets/css/styles.css`,
+  `${BASE}/assets/css/quran.css`,
+  `${BASE}/assets/js/quran.js`,
   `${BASE}/icons/icon-72.png`,
   `${BASE}/icons/icon-96.png`,
   `${BASE}/icons/icon-128.png`,
