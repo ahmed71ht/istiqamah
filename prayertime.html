@@ -321,19 +321,206 @@
         }
       }
       @media (max-width: 480px) {
-        .card {
-          padding: 14px;
+        body {
+          overflow-y: auto;
+          overflow-x: hidden;
         }
-        .location-box {
-          padding: 14px;
+
+        .container {
+          padding: 10px 8px;
         }
+
+        #header-title {
+          font-size: clamp(16px, 4.5vw, 20px);
+        }
+
+        .location-info {
+          padding: 6px 10px;
+          margin-bottom: 10px;
+          gap: 4px;
+          flex-wrap: wrap;
+        }
+        .location-info .loc-text {
+          font-size: clamp(11px, 3.2vw, 14px);
+        }
+        .location-info .loc-text i {
+          font-size: 14px;
+        }
+        .location-info button {
+          font-size: 11px;
+          padding: 5px 12px;
+          gap: 4px;
+        }
+        .location-info button i {
+          font-size: 12px;
+        }
+
+        #nextBox {
+          padding: 10px;
+          margin-bottom: 10px;
+          border-radius: 10px;
+          border-right-width: 4px;
+        }
+        #nextBox div:first-child {
+          font-size: clamp(11px, 3vw, 13px);
+        }
+
         #timer {
-          font-size: 22px;
+          font-size: clamp(24px, 8.5vw, 30px);
+          word-break: break-all;
+        }
+
+        #today-date {
+          font-size: clamp(10px, 2.8vw, 12px);
+          margin-top: 3px;
+        }
+
+        .grid {
+          grid-template-columns: 1fr;
+          gap: 6px;
+        }
+
+        .card {
+          padding: 10px 14px;
+          border-radius: 12px;
+          display: flex;
+          align-items: center;
+          justify-content: space-between;
+          flex-direction: row;
+        }
+        .card strong {
+          font-size: clamp(13px, 3.5vw, 15px);
+        }
+        .card div {
+          font-size: clamp(13px, 3.5vw, 15px);
+          direction: ltr;
+        }
+
+        .location-box {
+          padding: 10px;
+          border-radius: 12px;
+          margin-bottom: 10px;
+        }
+        .location-box h3 {
+          font-size: clamp(13px, 3.5vw, 15px);
+        }
+        .location-box p {
+          font-size: clamp(11px, 3vw, 13px) !important;
+        }
+        .location-box i.fa-location-dot {
+          font-size: 1.5rem !important;
+          margin-bottom: 4px !important;
+        }
+
+        .loading-wrapper {
+          padding: 18px 10px;
+          margin: 10px 0;
+          gap: 8px;
+        }
+        .loading-spinner {
+          width: 32px;
+          height: 32px;
+          border-width: 3px;
+        }
+        .loading-text {
+          font-size: 14px;
+          gap: 6px;
+        }
+        .loading-text i {
+          font-size: 18px;
+        }
+
+        .loc-text span {
+          white-space: nowrap;
+          overflow: hidden;
+          text-overflow: ellipsis;
+          max-width: 55vw;
+        }
+      }
+      @media (max-width: 360px) {
+        .container {
+          padding: 8px 5px;
+        }
+
+        #header-title {
+          font-size: 15px;
+        }
+
+        #timer {
+          font-size: 20px;
+        }
+
+        .card {
+          padding: 8px 10px;
+          border-radius: 10px;
+          gap: 4px;
+        }
+        .card strong {
+          font-size: 12px;
+        }
+        .card div {
+          font-size: 12px;
+        }
+
+        .location-info {
+          padding: 4px 8px;
+        }
+        .location-info .loc-text {
+          font-size: 10px;
+        }
+        .location-info button {
+          font-size: 10px;
+          padding: 4px 10px;
+        }
+
+        #nextBox {
+          padding: 8px;
+        }
+
+        .location-box {
+          padding: 8px;
+        }
+        .location-box h3 {
+          font-size: 12px;
+        }
+        .location-box p {
+          font-size: 10px !important;
         }
       }
     </style>
-  </head>
+      <style>
+      #page-loader {
+        position: fixed;
+        inset: 0;
+        z-index: 999999;
+        display: flex;
+        align-items: center;
+        justify-content: center;
+        background: #f5f1ea;
+        transition: opacity 0.5s ease, visibility 0.5s ease;
+      }
+      #page-loader.hidden {
+        opacity: 0;
+        visibility: hidden;
+        pointer-events: none;
+      }
+      .loader-ring {
+        width: 44px;
+        height: 44px;
+        border-radius: 50%;
+        border: 3px solid rgba(201, 160, 61, 0.12);
+        border-top-color: #1b7a4b;
+        border-right-color: #c9a03d;
+        animation: loaderSpin 0.85s cubic-bezier(0.4, 0, 0.2, 1) infinite;
+        box-shadow: 0 0 30px rgba(27, 122, 75, 0.06);
+      }
+      @keyframes loaderSpin {
+        to { transform: rotate(360deg); }
+      }
+          [data-theme="dark"] #page-loader { background: #0e2017; }
+      </style></head>
   <body>
+    <div id="page-loader"><div class="loader-ring"></div></div>
     <div id="overlay" onclick="closeMenu()"></div>
 
     <div id="links-menu">
@@ -928,6 +1115,18 @@
       if ("serviceWorker" in navigator) {
         navigator.serviceWorker.register("sw.js");
       }
+    </script>
+      <script>
+      (function(){
+        window.addEventListener("load", function(){
+          var pl = document.getElementById("page-loader");
+          if (pl) pl.classList.add("hidden");
+        });
+        setTimeout(function(){
+          var pl = document.getElementById("page-loader");
+          if (pl) pl.classList.add("hidden");
+        }, 6000);
+      })();
     </script>
   </body>
 </html>

@@ -343,8 +343,39 @@
         border-color: var(--primary);
       }
     </style>
-  </head>
+      <style>
+      #page-loader {
+        position: fixed;
+        inset: 0;
+        z-index: 999999;
+        display: flex;
+        align-items: center;
+        justify-content: center;
+        background: #f5f1ea;
+        transition: opacity 0.5s ease, visibility 0.5s ease;
+      }
+      #page-loader.hidden {
+        opacity: 0;
+        visibility: hidden;
+        pointer-events: none;
+      }
+      .loader-ring {
+        width: 44px;
+        height: 44px;
+        border-radius: 50%;
+        border: 3px solid rgba(201, 160, 61, 0.12);
+        border-top-color: #1b7a4b;
+        border-right-color: #c9a03d;
+        animation: loaderSpin 0.85s cubic-bezier(0.4, 0, 0.2, 1) infinite;
+        box-shadow: 0 0 30px rgba(27, 122, 75, 0.06);
+      }
+      @keyframes loaderSpin {
+        to { transform: rotate(360deg); }
+      }
+          [data-theme="dark"] #page-loader { background: #0e2017; }
+      </style></head>
   <body>
+    <div id="page-loader"><div class="loader-ring"></div></div>
     <div id="overlay" onclick="closeMenu()"></div>
 
     <div id="links-menu">
@@ -691,6 +722,18 @@
       if ("serviceWorker" in navigator) {
         navigator.serviceWorker.register("sw.js");
       }
+    </script>
+      <script>
+      (function(){
+        window.addEventListener("load", function(){
+          var pl = document.getElementById("page-loader");
+          if (pl) pl.classList.add("hidden");
+        });
+        setTimeout(function(){
+          var pl = document.getElementById("page-loader");
+          if (pl) pl.classList.add("hidden");
+        }, 6000);
+      })();
     </script>
   </body>
 </html>

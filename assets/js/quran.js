@@ -1109,32 +1109,45 @@
           var url =
               "https://api.alquran.cloud/v1/page/" + pageNum + "/quran-uthmani",
             offEl = document.getElementById("offlineNotice"),
-            res;
+            data, fromCache = false;
           try {
-            res = await fetch(url);
-            if (!res.ok) throw new Error("HTTP " + res.status);
-            if (offEl) offEl.style.display = "none";
-            caches
-              .open(SURAH_CACHE)
-              .then(function (c) {
-                c.put(url, res.clone());
-              })
-              .catch(function () {});
-          } catch (e) {
+            var cache = await caches.open(SURAH_CACHE),
+              cached = await cache.match(url);
+            if (cached && cached.ok) {
+              data = await cached.json();
+              if (data && data.data && data.data.ayahs) {
+                fromCache = true;
+                if (offEl) offEl.style.display = "block";
+              }
+            }
+          } catch (_) {}
+          if (!data) {
             try {
+              var ac = new AbortController(),
+                to = setTimeout(function () {
+                  ac.abort();
+                }, 5000);
+              var res = await fetch(url, { signal: ac.signal });
+              clearTimeout(to);
+              if (!res.ok) throw new Error("HTTP " + res.status);
+              if (offEl) offEl.style.display = "none";
+              caches
+                .open(SURAH_CACHE)
+                .then(function (c) {
+                  c.put(url, res.clone());
+                })
+                .catch(function () {});
+              data = await res.json();
+            } catch (e) {
               var cache = await caches.open(SURAH_CACHE),
                 cached = await cache.match(url);
               if (cached && cached.ok) {
-                res = cached;
+                data = await cached.json();
                 if (offEl) offEl.style.display = "block";
               } else throw e;
-            } catch (_) {
-              if (offEl) offEl.style.display = "block";
-              throw e;
             }
           }
-          var data = await res.json(),
-            html = '<div class="page" data-page="' + pageNum + '">',
+          var html = '<div class="page" data-page="' + pageNum + '">',
             ayahs = data.data.ayahs;
           if (!ayahs.length) return;
           var firstSurahId = ayahs[0].surah.number;
@@ -1181,6 +1194,15 @@
           html += '<div class="page-number-bottom">' + pageNum + "</div></div>";
           disp.insertAdjacentHTML("beforeend", html);
           setTimeout(applyAllStoredMarkers, 100);
+          if (fromCache) {
+            var ac2 = new AbortController();
+            setTimeout(function () { ac2.abort(); }, 5000);
+            fetch(url, { signal: ac2.signal })
+              .then(function (r) {
+                if (r.ok) caches.open(SURAH_CACHE).then(function (c) { c.put(url, r); }).catch(function () {});
+              })
+              .catch(function () {});
+          }
         }
         async function cachePageOnly(pageNum) {
           var url =
@@ -1189,7 +1211,12 @@
             var cache = await caches.open(SURAH_CACHE),
               existing = await cache.match(url);
             if (!existing) {
-              var res = await fetch(url);
+              var ac = new AbortController(),
+                to = setTimeout(function () {
+                  ac.abort();
+                }, 5000);
+              var res = await fetch(url, { signal: ac.signal });
+              clearTimeout(to);
               if (res.ok) cache.put(url, res.clone());
             }
           } catch (_) {}
@@ -1231,13 +1258,15 @@
           disp.innerHTML = "";
           lastSurah = null;
           cp = 1;
-          await loadPages(Math.min(5, TOTAL_PAGES));
+          await loadPages(Math.min(2, TOTAL_PAGES));
           updateButtonText();
           applyAllStoredMarkers();
           afterPagesAdded();
           setupVirtualScroll();
           manageVisiblePages();
           backgroundCachePages();
+          var pl = document.getElementById("page-loader");
+          if (pl) pl.classList.add("hidden");
         }
         function backgroundCachePages() {
           var pg = 1,
@@ -1680,6 +1709,10 @@
         loadInitial();
         loadReciters();
         setupReciterSearch();
+        setTimeout(function () {
+          var pl = document.getElementById("page-loader");
+          if (pl) pl.classList.add("hidden");
+        }, 6000);
       })();
       document
         .getElementById("navModeToggle")
