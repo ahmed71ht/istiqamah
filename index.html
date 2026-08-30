@@ -1,4 +1,4 @@
-<!doctype html>
+﻿<!doctype html>
 <html lang="ar" dir="rtl">
   <head>
     <meta charset="UTF-8" />
@@ -34,86 +34,741 @@
     <link rel="stylesheet" href="assets/css/styles.css" />
 
     <style>
-      *{-webkit-user-select:none;-moz-user-select:none;-ms-user-select:none;user-select:none;-webkit-touch-callout:none;-webkit-tap-highlight-color:transparent}
-      .hero{position:relative;text-align:center;padding:40px 20px 20px;max-width:1000px;margin:0 auto}
-      .hero-card{position:relative;padding:48px 32px 40px;background:var(--glass-bg-strong);backdrop-filter:blur(24px) saturate(1.6);-webkit-backdrop-filter:blur(24px) saturate(1.6);border-radius:var(--radius-xl);border:1px solid var(--glass-border);box-shadow:0 20px 60px rgba(0,0,0,0.06);overflow:hidden}
-      .hero-card::before{content:"";position:absolute;inset:-1px;border-radius:var(--radius-xl);padding:1px;background:linear-gradient(135deg,transparent 20%,var(--primary-lighter),var(--primary),transparent 60%);-webkit-mask:linear-gradient(#fff 0 0) content-box,linear-gradient(#fff 0 0);-webkit-mask-composite:xor;mask-composite:exclude;opacity:0.5;pointer-events:none}
-      .hero-card-bg{position:absolute;inset:0;overflow:hidden;border-radius:var(--radius-xl);pointer-events:none}
-      .hero-card-bg .shape{position:absolute;border-radius:50%;opacity:0.06}
-      .hero-card-bg .shape-1{width:300px;height:300px;background:var(--primary);top:-80px;right:-80px;animation:shapeFloat1 12s ease-in-out infinite}
-      .hero-card-bg .shape-2{width:200px;height:200px;background:var(--primary-dark);bottom:-60px;left:-60px;animation:shapeFloat2 15s ease-in-out infinite}
-      .hero-card-bg .shape-3{width:120px;height:120px;background:var(--primary-light);top:40%;left:20%;animation:shapeFloat3 10s ease-in-out infinite}
-      @keyframes shapeFloat1{0%,100%{transform:translate(0,0) scale(1)}50%{transform:translate(-20px,20px) scale(1.1)}}
-      @keyframes shapeFloat2{0%,100%{transform:translate(0,0) scale(1)}50%{transform:translate(25px,-15px) scale(1.15)}}
-      @keyframes shapeFloat3{0%,100%{transform:translate(0,0) scale(1)}50%{transform:translate(-10px,-30px) scale(1.2)}}
-      .hero-content{position:relative;z-index:1}
-      .hero-icon-wrap{width:80px;height:80px;margin:0 auto 20px;background:linear-gradient(135deg,var(--primary),var(--primary-dark));border-radius:22px;display:flex;align-items:center;justify-content:center;color:white;font-size:34px;box-shadow:0 12px 40px var(--primary-glow);animation:heroBounce 3s ease-in-out infinite;position:relative}
-      .hero-icon-wrap::after{content:"";position:absolute;inset:-4px;border-radius:26px;background:linear-gradient(135deg,var(--primary-lighter),transparent,var(--primary));z-index:-1;opacity:0.3;animation:heroPulse 3s ease-in-out infinite}
-      @keyframes heroBounce{0%,100%{transform:translateY(0)}50%{transform:translateY(-10px)}}
-      @keyframes heroPulse{0%,100%{opacity:0.3;transform:scale(1)}50%{opacity:0.6;transform:scale(1.05)}}
-      .hero-badge{display:inline-flex;align-items:center;gap:6px;padding:6px 18px;border-radius:var(--radius-full);font-size:0.78rem;font-weight:500;color:var(--primary-dark);background:var(--primary-soft);border:1px solid var(--border-medium);margin-bottom:16px}
-      .hero h2{font-size:2.2rem;font-weight:800;color:var(--text-primary);margin-bottom:12px;letter-spacing:-0.5px;line-height:1.3}
-      .hero h2 .highlight{background:linear-gradient(135deg,var(--primary),var(--primary-dark));-webkit-background-clip:text;background-clip:text;color:transparent}
-      .hero p{color:var(--text-secondary);font-size:1.05rem;max-width:480px;margin:0 auto;line-height:1.7}
-      .hero-actions{display:flex;justify-content:center;gap:12px;margin-top:28px;flex-wrap:wrap}
-      .hero-btn{padding:12px 32px;border-radius:var(--radius-full);font-family:"Tajawal",sans-serif;font-weight:600;font-size:0.9rem;cursor:pointer;transition:var(--transition);text-decoration:none;display:inline-flex;align-items:center;gap:8px}
-      .hero-btn-primary{background:linear-gradient(135deg,var(--primary),var(--primary-dark));color:white;border:none;box-shadow:0 8px 24px var(--primary-glow)}
-      .hero-btn-primary:hover{transform:translateY(-3px);box-shadow:0 12px 36px var(--primary-glow-strong)}
-      .hero-btn-secondary{background:var(--glass-bg);backdrop-filter:blur(8px);border:1px solid var(--glass-border);color:var(--text-secondary)}
-      .hero-btn-secondary:hover{background:var(--glass-bg-strong);border-color:var(--primary);color:var(--primary-dark);transform:translateY(-3px)}
-      .stats-section{max-width:1000px;margin:28px auto 0;padding:0 20px}
-      .stats-grid{display:grid;grid-template-columns:2.2fr 1fr;gap:12px}
-      .stat-card{text-align:center;padding:24px 16px 20px;background:var(--glass-bg);backdrop-filter:blur(16px) saturate(1.4);-webkit-backdrop-filter:blur(16px) saturate(1.4);border-radius:var(--radius-md);border:1px solid var(--glass-border);box-shadow:var(--glass-shadow);transition:var(--transition)}
-      .stat-card:hover{transform:translateY(-4px);box-shadow:var(--glass-shadow-hover)}
-      .stat-hero{padding:20px 16px 16px;position:relative;overflow:hidden}
-      .stat-hero::before{content:"";position:absolute;inset:0;background:radial-gradient(ellipse at 30% 50%,rgba(27,122,75,0.06) 0%,transparent 70%);pointer-events:none}
-      .stat-next-label{font-size:0.72rem;color:var(--text-muted);font-weight:600;letter-spacing:0.5px;margin-bottom:4px}
-      .stat-prayer-name{font-size:1.6rem;font-weight:800;color:var(--primary);line-height:1.3}
-      .stat-countdown{font-size:2.4rem;font-weight:800;font-variant-numeric:tabular-nums;background:linear-gradient(135deg,var(--primary),var(--primary-dark));-webkit-background-clip:text;background-clip:text;color:transparent;line-height:1.2;margin:4px 0 2px;direction:ltr}
-      .stat-prayer-time{font-size:0.85rem;color:var(--text-secondary);font-weight:500}
-      .stat-location{font-size:0.65rem;color:var(--text-muted);margin-top:6px;white-space:nowrap;overflow:hidden;text-overflow:ellipsis}
-      .stat-number{font-size:1.6rem;font-weight:800;background:linear-gradient(135deg,var(--primary),var(--primary-dark));-webkit-background-clip:text;background-clip:text;color:transparent;line-height:1.2}
-      .stat-label{font-size:0.78rem;color:var(--text-muted);margin-top:6px;font-weight:500}
-      .stat-gregorian{font-size:0.7rem;color:var(--text-muted);margin-top:4px}
-      .prayer-times-row{display:grid;grid-template-columns:repeat(5,1fr);gap:8px;margin-top:10px;padding:0 20px;max-width:1000px;margin-left:auto;margin-right:auto}
-      .pt-item{text-align:center;background:var(--glass-bg);backdrop-filter:blur(12px) saturate(1.3);-webkit-backdrop-filter:blur(12px) saturate(1.3);border-radius:var(--radius-sm);border:1px solid var(--glass-border);padding:10px 4px 8px;transition:var(--transition)}
-      .pt-item.pt-next{background:var(--primary);border-color:var(--primary);color:white}
-      .pt-item.pt-next .pt-label,.pt-item.pt-next .pt-time{color:white}
-      .pt-label{display:block;font-size:0.68rem;color:var(--text-muted);font-weight:600;margin-bottom:3px}
-      .pt-time{display:block;font-size:0.95rem;font-weight:700;color:var(--text-primary);direction:ltr}
-      .location-cta{text-align:center;margin:20px auto 0;max-width:400px;padding:20px;background:var(--glass-bg);backdrop-filter:blur(12px);border-radius:var(--radius-md);border:1px solid var(--glass-border)}
-      .location-cta a{display:inline-block;margin-top:10px;padding:10px 24px;background:var(--primary);color:white;border-radius:var(--radius-full);text-decoration:none;font-weight:600;font-size:0.9rem}
-      .quick-btn{display:flex;flex-direction:column;align-items:center;gap:8px;padding:18px 8px 14px;background:var(--glass-bg);backdrop-filter:blur(12px) saturate(1.3);-webkit-backdrop-filter:blur(12px) saturate(1.3);border:1px solid var(--glass-border);border-radius:var(--radius-md);cursor:pointer;transition:var(--transition);text-decoration:none;color:var(--text-secondary);box-shadow:var(--glass-shadow);transform-style:preserve-3d}
-      .quick-btn:hover{transform:translateY(-6px);border-color:var(--primary);box-shadow:0 16px 40px rgba(27,122,75,0.12);color:var(--primary-dark)}
-      .quick-btn:active{transform:scale(0.95)}
-      .quick-btn .qb-icon{width:46px;height:46px;border-radius:var(--radius-sm);display:flex;align-items:center;justify-content:center;font-size:1.2rem;color:var(--primary);background:var(--primary-soft);transition:var(--transition)}
-      .quick-btn:hover .qb-icon{background:linear-gradient(135deg,var(--primary),var(--primary-dark));color:white;transform:scale(1.1);box-shadow:0 8px 24px var(--primary-glow)}
-      .quick-btn span{font-size:0.68rem;font-weight:600}
-      .features{display:grid;grid-template-columns:repeat(auto-fit,minmax(280px,1fr));gap:18px;padding:28px 20px 0;max-width:1040px;margin:0 auto}
-      .feature-card{position:relative;padding:32px 24px 28px;background:var(--glass-bg);backdrop-filter:blur(16px) saturate(1.3);-webkit-backdrop-filter:blur(16px) saturate(1.3);border-radius:var(--radius-md);border:1px solid var(--glass-border);text-align:center;cursor:pointer;transition:var(--transition);box-shadow:var(--glass-shadow);transform-style:preserve-3d;overflow:hidden}
-      .feature-card::before{content:"";position:absolute;top:0;left:0;right:0;height:3px;background:linear-gradient(90deg,transparent,var(--primary),var(--primary-light),var(--primary),transparent);opacity:0;transition:opacity 0.4s ease}
-      .feature-card:hover::before{opacity:1}
-      .feature-card:hover{transform:translateY(-6px);border-color:var(--border-medium);box-shadow:0 20px 48px rgba(27,122,75,0.1)}
-      .feature-card .icon-wrap{width:60px;height:60px;margin:0 auto 18px;border-radius:var(--radius-sm);display:flex;align-items:center;justify-content:center;background:var(--primary-soft);transition:var(--transition)}
-      .feature-card:hover .icon-wrap{background:linear-gradient(135deg,var(--primary),var(--primary-dark));transform:scale(1.1) translateZ(20px);box-shadow:0 8px 24px var(--primary-glow)}
-      .feature-card i{font-size:24px;color:var(--primary);transition:var(--transition)}
-      .feature-card:hover i{color:white}
-      .feature-card h3{color:var(--text-primary);margin-bottom:8px;font-size:1.05rem;font-weight:700}
-      .feature-card p{color:var(--text-muted);font-size:0.85rem;line-height:1.6}
-      .feature-card .card-link{display:inline-flex;align-items:center;gap:6px;margin-top:16px;font-size:0.78rem;color:var(--primary);font-weight:600;opacity:0;transform:translateX(-10px);transition:var(--transition)}
-      .feature-card:hover .card-link{opacity:1;transform:translateX(0)}
-      .home-footer{max-width:1000px;margin:48px auto 0;padding:28px 20px 36px;text-align:center}
-      .home-footer .divider{width:60px;height:3px;margin:0 auto 24px;background:linear-gradient(90deg,transparent,var(--primary-lighter),var(--primary),transparent);border-radius:10px}
-      .home-footer p{color:var(--text-muted);font-size:0.78rem}
-      .home-footer .footer-icons{display:flex;justify-content:center;gap:24px;margin-bottom:14px}
-      .home-footer .footer-icons i{font-size:1.15rem;color:var(--primary-lighter);transition:var(--transition);cursor:default}
-      .home-footer .footer-icons i:hover{color:var(--primary);transform:translateY(-2px)}
-      #links-menu a[href="index.html"]{background:var(--primary-soft);border-right:3px solid var(--primary);color:var(--primary-dark);font-weight:700}
-      #links-menu a[href="index.html"] .link-circle{background:var(--primary);color:white;border-color:var(--primary)}
-      @media(max-width:768px){.hero{padding:24px 12px 12px}.hero-card{padding:36px 20px 32px;border-radius:var(--radius-lg)}.hero h2{font-size:1.6rem}.hero p{font-size:0.92rem}.hero-icon-wrap{width:64px;height:64px;font-size:26px;border-radius:18px}.hero-btn{padding:10px 24px;font-size:0.82rem}.stats-grid{grid-template-columns:1fr 1fr;gap:10px}.stat-hero{grid-column:1/-1}.stat-countdown{font-size:2rem}.stat-prayer-name{font-size:1.4rem}.stat-card{padding:18px 12px 16px}.prayer-times-row{grid-template-columns:repeat(5,1fr);gap:6px;padding:0 12px}.pt-item{padding:8px 2px 6px}.pt-time{font-size:0.85rem}.quick-btn{padding:14px 6px 12px}.quick-btn .qb-icon{width:40px;height:40px;font-size:1rem}.features{grid-template-columns:1fr;padding:20px 14px 0;gap:14px}.feature-card{padding:24px 18px 22px}}
-      @media(max-width:480px){.hero-card{padding:28px 16px 24px}.hero h2{font-size:1.4rem}.quick-btn .qb-icon{width:34px;height:34px;font-size:0.9rem}.quick-btn span{font-size:0.6rem}.stats-grid{grid-template-columns:1fr}.stat-countdown{font-size:1.8rem}.prayer-times-row{grid-template-columns:repeat(3,1fr)}.pt-item:nth-child(4),.pt-item:nth-child(5){display:none}.pt-time{font-size:0.8rem}.pt-label{font-size:0.62rem}}
+      * {
+        -webkit-user-select: none;
+        -moz-user-select: none;
+        -ms-user-select: none;
+        user-select: none;
+        -webkit-touch-callout: none;
+        -webkit-tap-highlight-color: transparent;
+      }
+      .hero {
+        position: relative;
+        text-align: center;
+        padding: 40px 20px 20px;
+        max-width: 1000px;
+        margin: 0 auto;
+      }
+      .hero-card {
+        position: relative;
+        padding: 48px 32px 40px;
+        background: var(--glass-bg-strong);
+        backdrop-filter: blur(24px) saturate(1.6);
+        -webkit-backdrop-filter: blur(24px) saturate(1.6);
+        border-radius: var(--radius-xl);
+        border: 1px solid var(--glass-border);
+        box-shadow: 0 20px 60px rgba(0, 0, 0, 0.06);
+        overflow: hidden;
+      }
+      .hero-card::before {
+        content: "";
+        position: absolute;
+        inset: -1px;
+        border-radius: var(--radius-xl);
+        padding: 1px;
+        background: linear-gradient(
+          135deg,
+          transparent 20%,
+          var(--primary-lighter),
+          var(--primary),
+          transparent 60%
+        );
+        -webkit-mask:
+          linear-gradient(#fff 0 0) content-box,
+          linear-gradient(#fff 0 0);
+        -webkit-mask-composite: xor;
+        mask-composite: exclude;
+        opacity: 0.5;
+        pointer-events: none;
+      }
+      .hero-card-bg {
+        position: absolute;
+        inset: 0;
+        overflow: hidden;
+        border-radius: var(--radius-xl);
+        pointer-events: none;
+      }
+      .hero-card-bg .shape {
+        position: absolute;
+        border-radius: 50%;
+        opacity: 0.06;
+      }
+      .hero-card-bg .shape-1 {
+        width: 300px;
+        height: 300px;
+        background: var(--primary);
+        top: -80px;
+        right: -80px;
+        animation: shapeFloat1 12s ease-in-out infinite;
+      }
+      .hero-card-bg .shape-2 {
+        width: 200px;
+        height: 200px;
+        background: var(--primary-dark);
+        bottom: -60px;
+        left: -60px;
+        animation: shapeFloat2 15s ease-in-out infinite;
+      }
+      .hero-card-bg .shape-3 {
+        width: 120px;
+        height: 120px;
+        background: var(--primary-light);
+        top: 40%;
+        left: 20%;
+        animation: shapeFloat3 10s ease-in-out infinite;
+      }
+      @keyframes shapeFloat1 {
+        0%,
+        100% {
+          transform: translate(0, 0) scale(1);
+        }
+        50% {
+          transform: translate(-20px, 20px) scale(1.1);
+        }
+      }
+      @keyframes shapeFloat2 {
+        0%,
+        100% {
+          transform: translate(0, 0) scale(1);
+        }
+        50% {
+          transform: translate(25px, -15px) scale(1.15);
+        }
+      }
+      @keyframes shapeFloat3 {
+        0%,
+        100% {
+          transform: translate(0, 0) scale(1);
+        }
+        50% {
+          transform: translate(-10px, -30px) scale(1.2);
+        }
+      }
+      .hero-content {
+        position: relative;
+        z-index: 1;
+      }
+      .hero-icon-wrap {
+        width: 80px;
+        height: 80px;
+        margin: 0 auto 20px;
+        background: linear-gradient(
+          135deg,
+          var(--primary),
+          var(--primary-dark)
+        );
+        border-radius: 22px;
+        display: flex;
+        align-items: center;
+        justify-content: center;
+        color: white;
+        font-size: 34px;
+        box-shadow: 0 12px 40px var(--primary-glow);
+        animation: heroBounce 3s ease-in-out infinite;
+        position: relative;
+      }
+      .hero-icon-wrap::after {
+        content: "";
+        position: absolute;
+        inset: -4px;
+        border-radius: 26px;
+        background: linear-gradient(
+          135deg,
+          var(--primary-lighter),
+          transparent,
+          var(--primary)
+        );
+        z-index: -1;
+        opacity: 0.3;
+        animation: heroPulse 3s ease-in-out infinite;
+      }
+      @keyframes heroBounce {
+        0%,
+        100% {
+          transform: translateY(0);
+        }
+        50% {
+          transform: translateY(-10px);
+        }
+      }
+      @keyframes heroPulse {
+        0%,
+        100% {
+          opacity: 0.3;
+          transform: scale(1);
+        }
+        50% {
+          opacity: 0.6;
+          transform: scale(1.05);
+        }
+      }
+      .hero-badge {
+        display: inline-flex;
+        align-items: center;
+        gap: 6px;
+        padding: 6px 18px;
+        border-radius: var(--radius-full);
+        font-size: 0.78rem;
+        font-weight: 500;
+        color: var(--primary-dark);
+        background: var(--primary-soft);
+        border: 1px solid var(--border-medium);
+        margin-bottom: 16px;
+      }
+      .hero h2 {
+        font-size: 2.2rem;
+        font-weight: 800;
+        color: var(--text-primary);
+        margin-bottom: 12px;
+        letter-spacing: -0.5px;
+        line-height: 1.3;
+      }
+      .hero h2 .highlight {
+        background: linear-gradient(
+          135deg,
+          var(--primary),
+          var(--primary-dark)
+        );
+        -webkit-background-clip: text;
+        background-clip: text;
+        color: transparent;
+      }
+      .hero p {
+        color: var(--text-secondary);
+        font-size: 1.05rem;
+        max-width: 480px;
+        margin: 0 auto;
+        line-height: 1.7;
+      }
+      .hero-actions {
+        display: flex;
+        justify-content: center;
+        gap: 12px;
+        margin-top: 28px;
+        flex-wrap: wrap;
+      }
+      .hero-btn {
+        padding: 12px 32px;
+        border-radius: var(--radius-full);
+        font-family: "Tajawal", sans-serif;
+        font-weight: 600;
+        font-size: 0.9rem;
+        cursor: pointer;
+        transition: var(--transition);
+        text-decoration: none;
+        display: inline-flex;
+        align-items: center;
+        gap: 8px;
+      }
+      .hero-btn-primary {
+        background: linear-gradient(
+          135deg,
+          var(--primary),
+          var(--primary-dark)
+        );
+        color: white;
+        border: none;
+        box-shadow: 0 8px 24px var(--primary-glow);
+      }
+      .hero-btn-primary:hover {
+        transform: translateY(-3px);
+        box-shadow: 0 12px 36px var(--primary-glow-strong);
+      }
+      .hero-btn-secondary {
+        background: var(--glass-bg);
+        backdrop-filter: blur(8px);
+        border: 1px solid var(--glass-border);
+        color: var(--text-secondary);
+      }
+      .hero-btn-secondary:hover {
+        background: var(--glass-bg-strong);
+        border-color: var(--primary);
+        color: var(--primary-dark);
+        transform: translateY(-3px);
+      }
+      .stats-section {
+        max-width: 1000px;
+        margin: 28px auto 0;
+        padding: 0 20px;
+      }
+      .stats-grid {
+        display: grid;
+        grid-template-columns: 2.2fr 1fr;
+        gap: 12px;
+      }
+      .stat-card {
+        text-align: center;
+        padding: 24px 16px 20px;
+        background: var(--glass-bg);
+        backdrop-filter: blur(16px) saturate(1.4);
+        -webkit-backdrop-filter: blur(16px) saturate(1.4);
+        border-radius: var(--radius-md);
+        border: 1px solid var(--glass-border);
+        box-shadow: var(--glass-shadow);
+        transition: var(--transition);
+      }
+      .stat-card:hover {
+        transform: translateY(-4px);
+        box-shadow: var(--glass-shadow-hover);
+      }
+      .stat-hero {
+        padding: 20px 16px 16px;
+        position: relative;
+        overflow: hidden;
+      }
+      .stat-hero::before {
+        content: "";
+        position: absolute;
+        inset: 0;
+        background: radial-gradient(
+          ellipse at 30% 50%,
+          rgba(27, 122, 75, 0.06) 0%,
+          transparent 70%
+        );
+        pointer-events: none;
+      }
+      .stat-next-label {
+        font-size: 0.72rem;
+        color: var(--text-muted);
+        font-weight: 600;
+        letter-spacing: 0.5px;
+        margin-bottom: 4px;
+      }
+      .stat-prayer-name {
+        font-size: 1.6rem;
+        font-weight: 800;
+        color: var(--primary);
+        line-height: 1.3;
+      }
+      .stat-countdown {
+        font-size: 2.4rem;
+        font-weight: 800;
+        font-variant-numeric: tabular-nums;
+        background: linear-gradient(
+          135deg,
+          var(--primary),
+          var(--primary-dark)
+        );
+        -webkit-background-clip: text;
+        background-clip: text;
+        color: transparent;
+        line-height: 1.2;
+        margin: 4px 0 2px;
+        direction: ltr;
+      }
+      .stat-prayer-time {
+        font-size: 0.85rem;
+        color: var(--text-secondary);
+        font-weight: 500;
+      }
+      .stat-location {
+        font-size: 0.65rem;
+        color: var(--text-muted);
+        margin-top: 6px;
+        white-space: nowrap;
+        overflow: hidden;
+        text-overflow: ellipsis;
+      }
+      .stat-number {
+        font-size: 1.6rem;
+        font-weight: 800;
+        background: linear-gradient(
+          135deg,
+          var(--primary),
+          var(--primary-dark)
+        );
+        -webkit-background-clip: text;
+        background-clip: text;
+        color: transparent;
+        line-height: 1.2;
+      }
+      .stat-label {
+        font-size: 0.78rem;
+        color: var(--text-muted);
+        margin-top: 6px;
+        font-weight: 500;
+      }
+      .stat-gregorian {
+        font-size: 0.7rem;
+        color: var(--text-muted);
+        margin-top: 4px;
+      }
+      .prayer-times-row {
+        display: grid;
+        grid-template-columns: repeat(5, 1fr);
+        gap: 8px;
+        margin-top: 10px;
+        padding: 0 20px;
+        max-width: 1000px;
+        margin-left: auto;
+        margin-right: auto;
+      }
+      .pt-item {
+        text-align: center;
+        background: var(--glass-bg);
+        backdrop-filter: blur(12px) saturate(1.3);
+        -webkit-backdrop-filter: blur(12px) saturate(1.3);
+        border-radius: var(--radius-sm);
+        border: 1px solid var(--glass-border);
+        padding: 10px 4px 8px;
+        transition: var(--transition);
+      }
+      .pt-item.pt-next {
+        background: var(--primary);
+        border-color: var(--primary);
+        color: white;
+      }
+      .pt-item.pt-next .pt-label,
+      .pt-item.pt-next .pt-time {
+        color: white;
+      }
+      .pt-label {
+        display: block;
+        font-size: 0.68rem;
+        color: var(--text-muted);
+        font-weight: 600;
+        margin-bottom: 3px;
+      }
+      .pt-time {
+        display: block;
+        font-size: 0.95rem;
+        font-weight: 700;
+        color: var(--text-primary);
+        direction: ltr;
+      }
+      .location-cta {
+        text-align: center;
+        margin: 20px auto 0;
+        max-width: 400px;
+        padding: 20px;
+        background: var(--glass-bg);
+        backdrop-filter: blur(12px);
+        border-radius: var(--radius-md);
+        border: 1px solid var(--glass-border);
+      }
+      .location-cta a {
+        display: inline-block;
+        margin-top: 10px;
+        padding: 10px 24px;
+        background: var(--primary);
+        color: white;
+        border-radius: var(--radius-full);
+        text-decoration: none;
+        font-weight: 600;
+        font-size: 0.9rem;
+      }
+      .quick-btn {
+        display: flex;
+        flex-direction: column;
+        align-items: center;
+        gap: 8px;
+        padding: 18px 8px 14px;
+        background: var(--glass-bg);
+        backdrop-filter: blur(12px) saturate(1.3);
+        -webkit-backdrop-filter: blur(12px) saturate(1.3);
+        border: 1px solid var(--glass-border);
+        border-radius: var(--radius-md);
+        cursor: pointer;
+        transition: var(--transition);
+        text-decoration: none;
+        color: var(--text-secondary);
+        box-shadow: var(--glass-shadow);
+        transform-style: preserve-3d;
+      }
+      .quick-btn:hover {
+        transform: translateY(-6px);
+        border-color: var(--primary);
+        box-shadow: 0 16px 40px rgba(27, 122, 75, 0.12);
+        color: var(--primary-dark);
+      }
+      .quick-btn:active {
+        transform: scale(0.95);
+      }
+      .quick-btn .qb-icon {
+        width: 46px;
+        height: 46px;
+        border-radius: var(--radius-sm);
+        display: flex;
+        align-items: center;
+        justify-content: center;
+        font-size: 1.2rem;
+        color: var(--primary);
+        background: var(--primary-soft);
+        transition: var(--transition);
+      }
+      .quick-btn:hover .qb-icon {
+        background: linear-gradient(
+          135deg,
+          var(--primary),
+          var(--primary-dark)
+        );
+        color: white;
+        transform: scale(1.1);
+        box-shadow: 0 8px 24px var(--primary-glow);
+      }
+      .quick-btn span {
+        font-size: 0.68rem;
+        font-weight: 600;
+      }
+      .features {
+        display: grid;
+        grid-template-columns: repeat(auto-fit, minmax(280px, 1fr));
+        gap: 18px;
+        padding: 28px 20px 0;
+        max-width: 1040px;
+        margin: 0 auto;
+      }
+      .feature-card {
+        position: relative;
+        padding: 32px 24px 28px;
+        background: var(--glass-bg);
+        backdrop-filter: blur(16px) saturate(1.3);
+        -webkit-backdrop-filter: blur(16px) saturate(1.3);
+        border-radius: var(--radius-md);
+        border: 1px solid var(--glass-border);
+        text-align: center;
+        cursor: pointer;
+        transition: var(--transition);
+        box-shadow: var(--glass-shadow);
+        transform-style: preserve-3d;
+        overflow: hidden;
+      }
+      .feature-card::before {
+        content: "";
+        position: absolute;
+        top: 0;
+        left: 0;
+        right: 0;
+        height: 3px;
+        background: linear-gradient(
+          90deg,
+          transparent,
+          var(--primary),
+          var(--primary-light),
+          var(--primary),
+          transparent
+        );
+        opacity: 0;
+        transition: opacity 0.4s ease;
+      }
+      .feature-card:hover::before {
+        opacity: 1;
+      }
+      .feature-card:hover {
+        transform: translateY(-6px);
+        border-color: var(--border-medium);
+        box-shadow: 0 20px 48px rgba(27, 122, 75, 0.1);
+      }
+      .feature-card .icon-wrap {
+        width: 60px;
+        height: 60px;
+        margin: 0 auto 18px;
+        border-radius: var(--radius-sm);
+        display: flex;
+        align-items: center;
+        justify-content: center;
+        background: var(--primary-soft);
+        transition: var(--transition);
+      }
+      .feature-card:hover .icon-wrap {
+        background: linear-gradient(
+          135deg,
+          var(--primary),
+          var(--primary-dark)
+        );
+        transform: scale(1.1) translateZ(20px);
+        box-shadow: 0 8px 24px var(--primary-glow);
+      }
+      .feature-card i {
+        font-size: 24px;
+        color: var(--primary);
+        transition: var(--transition);
+      }
+      .feature-card:hover i {
+        color: white;
+      }
+      .feature-card h3 {
+        color: var(--text-primary);
+        margin-bottom: 8px;
+        font-size: 1.05rem;
+        font-weight: 700;
+      }
+      .feature-card p {
+        color: var(--text-muted);
+        font-size: 0.85rem;
+        line-height: 1.6;
+      }
+      .feature-card .card-link {
+        display: inline-flex;
+        align-items: center;
+        gap: 6px;
+        margin-top: 16px;
+        font-size: 0.78rem;
+        color: var(--primary);
+        font-weight: 600;
+        opacity: 0;
+        transform: translateX(-10px);
+        transition: var(--transition);
+      }
+      .feature-card:hover .card-link {
+        opacity: 1;
+        transform: translateX(0);
+      }
+      .home-footer {
+        max-width: 1000px;
+        margin: 48px auto 0;
+        padding: 28px 20px 36px;
+        text-align: center;
+      }
+      .home-footer .divider {
+        width: 60px;
+        height: 3px;
+        margin: 0 auto 24px;
+        background: linear-gradient(
+          90deg,
+          transparent,
+          var(--primary-lighter),
+          var(--primary),
+          transparent
+        );
+        border-radius: 10px;
+      }
+      .home-footer p {
+        color: var(--text-muted);
+        font-size: 0.78rem;
+      }
+      .home-footer .footer-icons {
+        display: flex;
+        justify-content: center;
+        gap: 24px;
+        margin-bottom: 14px;
+      }
+      .home-footer .footer-icons i {
+        font-size: 1.15rem;
+        color: var(--primary-lighter);
+        transition: var(--transition);
+        cursor: default;
+      }
+      .home-footer .footer-icons i:hover {
+        color: var(--primary);
+        transform: translateY(-2px);
+      }
+      #links-menu a[href="index.html"] {
+        background: var(--primary-soft);
+        border-right: 3px solid var(--primary);
+        color: var(--primary-dark);
+        font-weight: 700;
+      }
+      #links-menu a[href="index.html"] .link-circle {
+        background: var(--primary);
+        color: white;
+        border-color: var(--primary);
+      }
+      @media (max-width: 768px) {
+        .hero {
+          padding: 24px 12px 12px;
+        }
+        .hero-card {
+          padding: 36px 20px 32px;
+          border-radius: var(--radius-lg);
+        }
+        .hero h2 {
+          font-size: 1.6rem;
+        }
+        .hero p {
+          font-size: 0.92rem;
+        }
+        .hero-icon-wrap {
+          width: 64px;
+          height: 64px;
+          font-size: 26px;
+          border-radius: 18px;
+        }
+        .hero-btn {
+          padding: 10px 24px;
+          font-size: 0.82rem;
+        }
+        .stats-grid {
+          grid-template-columns: 1fr 1fr;
+          gap: 10px;
+        }
+        .stat-hero {
+          grid-column: 1/-1;
+        }
+        .stat-countdown {
+          font-size: 2rem;
+        }
+        .stat-prayer-name {
+          font-size: 1.4rem;
+        }
+        .stat-card {
+          padding: 18px 12px 16px;
+        }
+        .prayer-times-row {
+          grid-template-columns: repeat(5, 1fr);
+          gap: 6px;
+          padding: 0 12px;
+        }
+        .pt-item {
+          padding: 8px 2px 6px;
+        }
+        .pt-time {
+          font-size: 0.85rem;
+        }
+        .quick-btn {
+          padding: 14px 6px 12px;
+        }
+        .quick-btn .qb-icon {
+          width: 40px;
+          height: 40px;
+          font-size: 1rem;
+        }
+        .features {
+          grid-template-columns: 1fr;
+          padding: 20px 14px 0;
+          gap: 14px;
+        }
+        .feature-card {
+          padding: 24px 18px 22px;
+        }
+      }
+      @media (max-width: 480px) {
+        .hero-card {
+          padding: 28px 16px 24px;
+        }
+        .hero h2 {
+          font-size: 1.4rem;
+        }
+        .quick-btn .qb-icon {
+          width: 34px;
+          height: 34px;
+          font-size: 0.9rem;
+        }
+        .quick-btn span {
+          font-size: 0.6rem;
+        }
+        .stats-grid {
+          grid-template-columns: 1fr;
+        }
+        .stat-countdown {
+          font-size: 1.8rem;
+        }
+        .prayer-times-row {
+          grid-template-columns: repeat(3, 1fr);
+        }
+        .pt-item:nth-child(4),
+        .pt-item:nth-child(5) {
+          display: none;
+        }
+        .pt-time {
+          font-size: 0.8rem;
+        }
+        .pt-label {
+          font-size: 0.62rem;
+        }
+      }
     </style>
-      <style>
+    <style>
       #page-loader {
         position: fixed;
         inset: 0;
@@ -122,7 +777,9 @@
         align-items: center;
         justify-content: center;
         background: #f5f1ea;
-        transition: opacity 0.5s ease, visibility 0.5s ease;
+        transition:
+          opacity 0.5s ease,
+          visibility 0.5s ease;
       }
       #page-loader.hidden {
         opacity: 0;
@@ -140,10 +797,15 @@
         box-shadow: 0 0 30px rgba(27, 122, 75, 0.06);
       }
       @keyframes loaderSpin {
-        to { transform: rotate(360deg); }
+        to {
+          transform: rotate(360deg);
+        }
       }
-          [data-theme="dark"] #page-loader { background: #0e2017; }
-      </style></head>
+      [data-theme="dark"] #page-loader {
+        background: #0e2017;
+      }
+    </style>
+  </head>
   <body>
     <div id="page-loader"><div class="loader-ring"></div></div>
     <!-- Floating Orbs (background decoration) -->
@@ -172,16 +834,16 @@
         الأذكار
       </a>
       <a href="quran.html" class="link-item" onclick="closeMenu()">
-        <div class="link-circle"><i class="fa-solid fa-book-quran"></i></div>
+        <div class="link-circle"><i class="fa-solid fa-book-open"></i></div>
         القرآن
       </a>
       <a href="prayertime.html" class="link-item" onclick="closeMenu()">
         <div class="link-circle"><i class="fa-solid fa-mosque"></i></div>
         أوقات الصلاة
       </a>
-      <a href="hadith.html" class="link-item" onclick="closeMenu()">
-        <div class="link-circle"><i class="fa-solid fa-book-open"></i></div>
-        الأحاديث
+      <a href="rosary.html" class="link-item" onclick="closeMenu()">
+        <div class="link-circle"><svg viewBox="0 0 24 24" width="18" height="26" fill="none" xmlns="http://www.w3.org/2000/svg" aria-hidden="true"><g fill="currentColor"><circle cx="12" cy="4.7" r="1.65"/><circle cx="12" cy="8.15" r="1.3"/><circle cx="12" cy="11.3" r="1.3"/><circle cx="12" cy="14.45" r="1.3"/><rect x="10.85" y="15.85" width="2.3" height="1.05" rx="0.52"/></g><g stroke="currentColor" stroke-width="1.25" stroke-linecap="round"><path d="M11 17V20.4"/><path d="M12.25 17V21"/><path d="M13.5 17V20.4"/></g></svg></div>
+        التسبيح
       </a>
       <a href="qipla-direction.html" class="link-item" onclick="closeMenu()">
         <div class="link-circle">
@@ -236,7 +898,7 @@
           </div>
           <h2>مرحباً بك في <span class="highlight">استقامة</span></h2>
           <p>
-            تطبيق إسلامي شامل يجمع لك الأذكار، القرآن، والأحاديث النبوية مع
+            تطبيق إسلامي شامل يجمع لك الأذكار، القرآن، والتسبيح مع
             أوقات الصلاة واتجاه القبلة
           </p>
           <div class="hero-actions">
@@ -321,7 +983,7 @@
         class="feature-card tilt-card"
         onclick="location.href = 'quran.html'"
       >
-        <div class="icon-wrap"><i class="fa-solid fa-book-quran"></i></div>
+        <div class="icon-wrap"><i class="fa-solid fa-book-open"></i></div>
         <h3>القرآن الكريم</h3>
         <p>تلاوة القرآن الكريم مع العديد من القراء وتفسير السور</p>
         <div class="card-link">
@@ -330,13 +992,13 @@
       </div>
       <div
         class="feature-card tilt-card"
-        onclick="location.href = 'hadith.html'"
+        onclick="location.href = 'rosary.html'"
       >
-        <div class="icon-wrap"><i class="fa-solid fa-book-open"></i></div>
-        <h3>الأحاديث النبوية</h3>
-        <p>مجموعة من الأحاديث الصحيحة من صحيح مسلم مع شرحها</p>
+        <div class="icon-wrap"><svg viewBox="0 0 24 24" width="26" height="26" fill="none" xmlns="http://www.w3.org/2000/svg" aria-hidden="true"><g fill="currentColor"><circle cx="12" cy="3.9" r="1.1"/><circle cx="14.35" cy="4.75" r="1.1"/><circle cx="16" cy="6.6" r="1.1"/><circle cx="16.65" cy="9" r="1.1"/><circle cx="15.45" cy="11.55" r="1.1"/><circle cx="13.65" cy="13.4" r="1.1"/><circle cx="10.35" cy="13.4" r="1.1"/><circle cx="8.55" cy="11.55" r="1.1"/><circle cx="7.35" cy="9" r="1.1"/><circle cx="8" cy="6.6" r="1.1"/><circle cx="9.65" cy="4.75" r="1.1"/><rect x="10.85" y="13.9" width="2.3" height="1.5" rx="0.6"/></g><g stroke="currentColor" stroke-width="1.15" stroke-linecap="round"><path d="M11.1 15.4V19.7"/><path d="M12.25 15.4V20.7"/><path d="M13.4 15.4V19.7"/></g></svg></div>
+        <h3>التسبيح</h3>
+        <p>سبّح واذكر الله مع عدّاد التسبيح الذكي وتتبع أذكارك اليومية</p>
         <div class="card-link">
-          استعرض الأحاديث <i class="fa-solid fa-arrow-left"></i>
+          ابدأ التسبيح <i class="fa-solid fa-arrow-left"></i>
         </div>
       </div>
       <div
@@ -367,7 +1029,7 @@
     <div class="home-footer">
       <div class="divider"></div>
       <div class="footer-icons">
-        <i class="fa-solid fa-book-quran"></i>
+        <i class="fa-solid fa-book-open"></i>
         <i class="fa-solid fa-hands-praying"></i>
         <i class="fa-solid fa-mosque"></i>
         <i class="fa-solid fa-location-arrow"></i>
@@ -379,46 +1041,240 @@
     </div>
 
     <script>
-      (function(){var s=localStorage.getItem("istiqamah-theme");if(s==="dark"||(!s&&window.matchMedia("(prefers-color-scheme:dark)").matches))document.documentElement.setAttribute("data-theme","dark")})();
-      function toggleTheme(){var h=document.documentElement,b=document.getElementById("themeToggle"),d=h.getAttribute("data-theme")==="dark";if(d){h.removeAttribute("data-theme");localStorage.setItem("istiqamah-theme","light");if(b)b.innerHTML='<i class="fa-solid fa-moon"></i>'}else{h.setAttribute("data-theme","dark");localStorage.setItem("istiqamah-theme","dark");if(b)b.innerHTML='<i class="fa-solid fa-sun"></i>'}}
-      (function(){var b=document.getElementById("themeToggle");if(b){var d=document.documentElement.getAttribute("data-theme")==="dark";b.innerHTML=d?'<i class="fa-solid fa-sun"></i>':'<i class="fa-solid fa-moon"></i>'}})();
-      function toggleMenu(){var m=document.getElementById("links-menu"),o=document.getElementById("overlay");m.style.left="0";o.style.display="block";setTimeout(function(){o.classList.add("show")},10)}
-      function closeMenu(){var m=document.getElementById("links-menu"),o=document.getElementById("overlay");m.style.left="-100%";o.classList.remove("show");setTimeout(function(){o.style.display="none"},300)}
-      (function(){var c=document.querySelectorAll(".tilt-card");if(!c.length)return;c.forEach(function(card){card.addEventListener("mousemove",function(e){var r=card.getBoundingClientRect(),x=e.clientX-r.left,y=e.clientY-r.top,cx=r.width/2,cy=r.height/2;card.style.transform="perspective(800px) rotateX("+((y-cy)/cy)*-5+"deg) rotateY("+((x-cx)/cx)*5+"deg) translateY(-4px)"});card.addEventListener("mouseleave",function(){card.style.transform=""})})})();
-      (function(){
-        var pn={Fajr:"الفجر",Sunrise:"الشروق",Dhuhr:"الظهر",Asr:"العصر",Maghrib:"المغرب",Isha:"العشاء"},o=["Fajr","Dhuhr","Asr","Maghrib","Isha"],cdI;
-        function pad(n){return n<10?"0"+n:n}
-        function loadCached(){try{var r=localStorage.getItem("prayerTimingsCache");if(!r)return null;var d=JSON.parse(r),t=Math.floor((Date.now()-new Date(new Date().getFullYear(),0,0))/864e5),c=Math.floor((new Date(d.date).getTime()-new Date(new Date().getFullYear(),0,0))/864e5);if(c===t)return d}catch(_){}return null}
-        function fetchTimes(lat,lng){return fetch("https://api.aladhan.com/v1/timings?latitude="+lat+"&longitude="+lng+"&method=4").then(function(r){return r.json()}).then(function(d){if(d&&d.data&&d.data.timings){var c={lat:lat,lng:lng,timings:d.data.timings,date:new Date().toISOString()};if(d.data.date){c.hijri=d.data.date.hijri;c.readable=d.data.date.readable}try{localStorage.setItem("prayerTimingsCache",JSON.stringify(c))}catch(_){}return c}return null})}
-        function updateDisplay(data){
-          var t=data&&data.timings;if(!t){document.getElementById("liveStats").innerHTML='<div class="location-cta"><i class="fa-solid fa-location-dot" style="font-size:2rem;color:var(--primary);display:block;margin-bottom:8px"></i><div style="font-weight:600;color:var(--text-primary)">حدد موقعك لمعرفة أوقات الصلاة</div><div style="font-size:0.8rem;color:var(--text-muted);margin-top:4px">اضبط الموقع من صفحة أوقات الصلاة أولاً</div><a href="prayertime.html"><i class="fa-solid fa-arrow-left"></i> فتح أوقات الصلاة</a></div>';return}
-          var h=data.hijri;if(h){document.getElementById("hijriDate").textContent=h.day+" "+h.month.ar+" "+h.year;document.getElementById("gregorianDate").textContent=data.readable||""}
-          o.forEach(function(k){var el=document.getElementById("pt-"+k);if(el&&t[k])el.textContent=t[k]});
-          var sl=null;try{sl=JSON.parse(localStorage.getItem("prayerLocation"))}catch(_){}if(sl&&sl.address)document.getElementById("prayerLocation").textContent=sl.address;
-          updateNextPrayer(t);if(cdI)clearInterval(cdI);cdI=setInterval(function(){updateNextPrayer(t)},1000);
+      (function () {
+        var s = localStorage.getItem("istiqamah-theme");
+        if (
+          s === "dark" ||
+          (!s && window.matchMedia("(prefers-color-scheme:dark)").matches)
+        )
+          document.documentElement.setAttribute("data-theme", "dark");
+      })();
+      function toggleTheme() {
+        var h = document.documentElement,
+          b = document.getElementById("themeToggle"),
+          d = h.getAttribute("data-theme") === "dark";
+        if (d) {
+          h.removeAttribute("data-theme");
+          localStorage.setItem("istiqamah-theme", "light");
+          if (b) b.innerHTML = '<i class="fa-solid fa-moon"></i>';
+        } else {
+          h.setAttribute("data-theme", "dark");
+          localStorage.setItem("istiqamah-theme", "dark");
+          if (b) b.innerHTML = '<i class="fa-solid fa-sun"></i>';
         }
-        function updateNextPrayer(t){
-          if(!t)return;var n=new Date(),cs=n.getHours()*3600+n.getMinutes()*60+n.getSeconds(),nk=null,ns=null;
-          for(var i=0;i<o.length;i++){var p=t[o[i]].split(":").map(Number),ts=p[0]*3600+p[1]*60;if(ts>cs){nk=o[i];ns=ts;break}}
-          if(!nk){nk=o[0];ns=0}
-          document.getElementById("prayerName").textContent=pn[nk];document.getElementById("prayerTime").textContent="موعدها "+t[nk];
-          document.querySelectorAll(".pt-item").forEach(function(el){el.classList.remove("pt-next")});
-          var ne=document.getElementById("pt-"+nk);if(ne)ne.closest(".pt-item").classList.add("pt-next");
-          var diff=ns===0?86400-cs:ns-cs;if(diff<0)diff+=86400;
-          document.getElementById("prayerCountdown").textContent=pad(Math.floor(diff/3600))+":"+pad(Math.floor(diff%3600/60))+":"+pad(diff%60);
+      }
+      (function () {
+        var b = document.getElementById("themeToggle");
+        if (b) {
+          var d =
+            document.documentElement.getAttribute("data-theme") === "dark";
+          b.innerHTML = d
+            ? '<i class="fa-solid fa-sun"></i>'
+            : '<i class="fa-solid fa-moon"></i>';
         }
-        function init(){var sl=null;try{sl=JSON.parse(localStorage.getItem("prayerLocation"))}catch(_){}var c=loadCached();if(c)updateDisplay(c);if(sl&&sl.lat&&sl.lng)fetchTimes(sl.lat,sl.lng).then(function(d){if(d)updateDisplay(d)}).catch(function(){});else if(!c)updateDisplay(null)}
+      })();
+      function toggleMenu() {
+        var m = document.getElementById("links-menu"),
+          o = document.getElementById("overlay");
+        m.style.left = "0";
+        o.style.display = "block";
+        setTimeout(function () {
+          o.classList.add("show");
+        }, 10);
+      }
+      function closeMenu() {
+        var m = document.getElementById("links-menu"),
+          o = document.getElementById("overlay");
+        m.style.left = "-100%";
+        o.classList.remove("show");
+        setTimeout(function () {
+          o.style.display = "none";
+        }, 300);
+      }
+      (function () {
+        var c = document.querySelectorAll(".tilt-card");
+        if (!c.length) return;
+        c.forEach(function (card) {
+          card.addEventListener("mousemove", function (e) {
+            var r = card.getBoundingClientRect(),
+              x = e.clientX - r.left,
+              y = e.clientY - r.top,
+              cx = r.width / 2,
+              cy = r.height / 2;
+            card.style.transform =
+              "perspective(800px) rotateX(" +
+              ((y - cy) / cy) * -5 +
+              "deg) rotateY(" +
+              ((x - cx) / cx) * 5 +
+              "deg) translateY(-4px)";
+          });
+          card.addEventListener("mouseleave", function () {
+            card.style.transform = "";
+          });
+        });
+      })();
+      (function () {
+        var pn = {
+            Fajr: "الفجر",
+            Sunrise: "الشروق",
+            Dhuhr: "الظهر",
+            Asr: "العصر",
+            Maghrib: "المغرب",
+            Isha: "العشاء",
+          },
+          o = ["Fajr", "Dhuhr", "Asr", "Maghrib", "Isha"],
+          cdI;
+        function pad(n) {
+          return n < 10 ? "0" + n : n;
+        }
+        function loadCached() {
+          try {
+            var r = localStorage.getItem("prayerTimingsCache");
+            if (!r) return null;
+            var d = JSON.parse(r),
+              t = Math.floor(
+                (Date.now() - new Date(new Date().getFullYear(), 0, 0)) / 864e5,
+              ),
+              c = Math.floor(
+                (new Date(d.date).getTime() -
+                  new Date(new Date().getFullYear(), 0, 0)) /
+                  864e5,
+              );
+            if (c === t) return d;
+          } catch (_) {}
+          return null;
+        }
+        function fetchTimes(lat, lng) {
+          return fetch(
+            "https://api.aladhan.com/v1/timings?latitude=" +
+              lat +
+              "&longitude=" +
+              lng +
+              "&method=4",
+          )
+            .then(function (r) {
+              return r.json();
+            })
+            .then(function (d) {
+              if (d && d.data && d.data.timings) {
+                var c = {
+                  lat: lat,
+                  lng: lng,
+                  timings: d.data.timings,
+                  date: new Date().toISOString(),
+                };
+                if (d.data.date) {
+                  c.hijri = d.data.date.hijri;
+                  c.readable = d.data.date.readable;
+                }
+                try {
+                  localStorage.setItem("prayerTimingsCache", JSON.stringify(c));
+                } catch (_) {}
+                return c;
+              }
+              return null;
+            });
+        }
+        function updateDisplay(data) {
+          var t = data && data.timings;
+          if (!t) {
+            document.getElementById("liveStats").innerHTML =
+              '<div class="location-cta"><i class="fa-solid fa-location-dot" style="font-size:2rem;color:var(--primary);display:block;margin-bottom:8px"></i><div style="font-weight:600;color:var(--text-primary)">حدد موقعك لمعرفة أوقات الصلاة</div><div style="font-size:0.8rem;color:var(--text-muted);margin-top:4px">اضبط الموقع من صفحة أوقات الصلاة أولاً</div><a href="prayertime.html"><i class="fa-solid fa-arrow-left"></i> فتح أوقات الصلاة</a></div>';
+            return;
+          }
+          var h = data.hijri;
+          if (h) {
+            document.getElementById("hijriDate").textContent =
+              h.day + " " + h.month.ar + " " + h.year;
+            document.getElementById("gregorianDate").textContent =
+              data.readable || "";
+          }
+          o.forEach(function (k) {
+            var el = document.getElementById("pt-" + k);
+            if (el && t[k]) el.textContent = t[k];
+          });
+          var sl = null;
+          try {
+            sl = JSON.parse(localStorage.getItem("prayerLocation"));
+          } catch (_) {}
+          if (sl && sl.address)
+            document.getElementById("prayerLocation").textContent = sl.address;
+          updateNextPrayer(t);
+          if (cdI) clearInterval(cdI);
+          cdI = setInterval(function () {
+            updateNextPrayer(t);
+          }, 1000);
+        }
+        function updateNextPrayer(t) {
+          if (!t) return;
+          var n = new Date(),
+            cs = n.getHours() * 3600 + n.getMinutes() * 60 + n.getSeconds(),
+            nk = null,
+            ns = null;
+          for (var i = 0; i < o.length; i++) {
+            var p = t[o[i]].split(":").map(Number),
+              ts = p[0] * 3600 + p[1] * 60;
+            if (ts > cs) {
+              nk = o[i];
+              ns = ts;
+              break;
+            }
+          }
+          if (!nk) {
+            nk = o[0];
+            ns = 0;
+          }
+          document.getElementById("prayerName").textContent = pn[nk];
+          document.getElementById("prayerTime").textContent = "موعدها " + t[nk];
+          document.querySelectorAll(".pt-item").forEach(function (el) {
+            el.classList.remove("pt-next");
+          });
+          var ne = document.getElementById("pt-" + nk);
+          if (ne) ne.closest(".pt-item").classList.add("pt-next");
+          var diff = ns === 0 ? 86400 - cs : ns - cs;
+          if (diff < 0) diff += 86400;
+          document.getElementById("prayerCountdown").textContent =
+            pad(Math.floor(diff / 3600)) +
+            ":" +
+            pad(Math.floor((diff % 3600) / 60)) +
+            ":" +
+            pad(diff % 60);
+        }
+        function init() {
+          var sl = null;
+          try {
+            sl = JSON.parse(localStorage.getItem("prayerLocation"));
+          } catch (_) {}
+          var c = loadCached();
+          if (c) updateDisplay(c);
+          if (sl && sl.lat && sl.lng)
+            fetchTimes(sl.lat, sl.lng)
+              .then(function (d) {
+                if (d) updateDisplay(d);
+              })
+              .catch(function () {});
+          else if (!c) updateDisplay(null);
+        }
         init();
       })();
-      if("serviceWorker" in navigator){navigator.serviceWorker.register("sw.js").then(function(){console.log("Service Worker registered")}).catch(function(e){console.log("Service Worker error:",e)})}
+      if ("serviceWorker" in navigator) {
+        navigator.serviceWorker
+          .register("sw.js")
+          .then(function () {
+            console.log("Service Worker registered");
+          })
+          .catch(function (e) {
+            console.log("Service Worker error:", e);
+          });
+      }
     </script>
-      <script>
-      (function(){
-        window.addEventListener("load", function(){
+    <script>
+      (function () {
+        window.addEventListener("load", function () {
           var pl = document.getElementById("page-loader");
           if (pl) pl.classList.add("hidden");
         });
-        setTimeout(function(){
+        setTimeout(function () {
           var pl = document.getElementById("page-loader");
           if (pl) pl.classList.add("hidden");
         }, 6000);

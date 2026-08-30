@@ -1,0 +1,489 @@
+<!DOCTYPE html>
+<html lang="ar" dir="rtl">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>القرآن الكريم — المصحف</title>
+<style>
+  :root{
+    --paper:#f3ead3;
+    --paper-edge:#e7d9b5;
+    --ink:#1a1a1a;
+    --gold:#9a7b2f;
+    --gold-deep:#7a5e1c;
+    --frame:#b89a4a;
+    --ornament:#c4a35a;
+    --header-bg:#efe2c0;
+    --shadow:rgba(60,40,0,.18);
+  }
+  *{box-sizing:border-box;}
+  html,body{margin:0;padding:0;}
+  body{
+    background:
+      radial-gradient(circle at 20% 10%, #2a2014 0%, #1a130a 55%, #110c05 100%);
+    min-height:100vh;
+    font-family:"Segoe UI",Tahoma,sans-serif;
+    color:#e9e2cf;
+    -webkit-font-smoothing:antialiased;
+  }
+
+  /* ===== Top toolbar ===== */
+  .toolbar{
+    position:sticky;top:0;z-index:50;
+    display:flex;align-items:center;gap:10px;flex-wrap:wrap;
+    padding:10px 16px;
+    background:linear-gradient(180deg,#1f180d,#161009);
+    border-bottom:1px solid var(--gold-deep);
+    box-shadow:0 4px 18px rgba(0,0,0,.5);
+  }
+  .toolbar .title{
+    font-weight:700;color:var(--ornament);font-size:15px;letter-spacing:.5px;
+    margin-inline-end:auto;white-space:nowrap;
+  }
+  .toolbar button,.toolbar select,.toolbar input{
+    font-family:inherit;font-size:13px;
+    background:#2a2113;color:#f0e7cf;
+    border:1px solid var(--gold-deep);border-radius:7px;
+    padding:7px 11px;cursor:pointer;transition:.15s;
+  }
+  .toolbar button:hover,.toolbar select:hover{border-color:var(--ornament);background:#342916;}
+  .toolbar button:disabled{opacity:.4;cursor:not-allowed;}
+  .toolbar input{width:64px;text-align:center;}
+  .toolbar label{font-size:12px;color:#bdae84;display:flex;align-items:center;gap:5px;}
+  .spinner{
+    width:15px;height:15px;border:2px solid #5a4a28;border-top-color:var(--ornament);
+    border-radius:50%;animation:spin .7s linear infinite;display:none;
+  }
+  .spinner.on{display:inline-block;}
+  @keyframes spin{to{transform:rotate(360deg);}}
+
+  .view-wrap{padding:18px 10px 60px;display:flex;flex-direction:column;align-items:center;gap:26px;}
+
+  /* ===== Mushaf page (frame on paper) ===== */
+  .page{
+    position:relative;
+    width:min(96vw,820px);
+    background:
+      radial-gradient(circle at 50% 0%, rgba(255,250,235,.5), transparent 60%),
+      linear-gradient(160deg,var(--paper),var(--paper-edge));
+    border-radius:6px;
+    box-shadow:0 10px 40px var(--shadow),0 2px 6px rgba(0,0,0,.3);
+    padding:30px;
+    counter-reset:pagecount;
+  }
+  /* double gold frame */
+  .page::before{
+    content:"";position:absolute;inset:14px;border:2px solid var(--frame);border-radius:4px;
+    pointer-events:none;
+    box-shadow:0 0 0 4px var(--paper),0 0 0 5px rgba(184,154,74,.45);
+  }
+  .page::after{
+    content:"";position:absolute;inset:20px;border:1px solid rgba(154,123,47,.4);
+    border-radius:3px;pointer-events:none;
+  }
+  .page-inner{position:relative;z-index:2;}
+
+  /* header row: surah name (center) + juz/page corners */
+  .page-head{
+    display:flex;justify-content:space-between;align-items:center;
+    color:var(--gold-deep);font-size:12px;font-weight:600;
+    margin-bottom:6px;padding:0 4px;min-height:18px;
+  }
+  .page-head .corner{opacity:.85;}
+  .page-head .center{color:var(--gold-deep);letter-spacing:.5px;}
+
+  /* The 15-line mushaf body.
+     QCF fonts are pre-shaped ligatures: each WORD glyph is drawn as one block.
+     Real mushaf justification comes from sizing the font so glyphs fill the line,
+     plus text-align:justify distributing the inter-word spacing evenly. */
+  .lines{
+    display:flex;flex-direction:column;justify-content:space-between;
+    min-height:80vh;gap:0;
+  }
+  .line{
+    display:block;            /* inline flow, not flex — avoids huge gaps */
+    width:100%;
+    /* justify EVERY line edge-to-edge (including the last) so all rows share
+       the same left/right margins, like a real printed mushaf block. */
+    direction:rtl;text-align:justify;text-align-last:justify;
+    /* QCF glyphs are tall; line-height keeps the 15-line density authentic */
+    font-size:clamp(22px,3.4vw,34px);
+    line-height:1.62;
+    padding:0 2px;
+    font-feature-settings:"liga" 0,"calt" 0;
+    letter-spacing:0;
+  }
+  /* QCF v4 words: inline so they justify naturally; non-breaking so a word
+     never splits across lines.
+     NOTE: color MUST be set to ink here. V4 fonts bake Tajweed colors into the
+     glyph (this color only tints the black silhouette layer, ignored by V4),
+     but V2 plain fonts take their color from CSS — without this they'd inherit
+     the light body color and vanish on the cream paper. */
+  .word{
+    display:inline-block;white-space:nowrap;
+    color:var(--ink);
+    cursor:pointer;transition:background .12s;
+    border-radius:6px;padding:0 1px;
+  }
+  .word:hover{background:rgba(154,123,47,.18);}
+  .word.active{background:rgba(154,123,47,.30);outline:1px dashed var(--gold);}
+
+  /* per-page QCF v4 font family name */
+  .lines .word{font-family:var(--qcf,"QCF4001"),serif;}
+
+  .center-line{text-align:center;text-align-last:center;}
+
+  /* Surah header band */
+  .surah-band{
+    display:flex;align-items:center;justify-content:center;gap:10px;
+    margin:6px 0;color:var(--gold-deep);
+  }
+  .surah-band .orn{
+    flex:1;height:14px;max-width:140px;
+    background:
+      linear-gradient(90deg,transparent,var(--ornament),transparent) center/100% 1.5px no-repeat,
+      radial-gradient(circle,var(--ornament) 22%,transparent 24%) center/8px 8px no-repeat;
+    opacity:.6;
+  }
+  .surah-band .name{font-family:"Amiri","Scheherazade New",serif;font-size:26px;font-weight:700;}
+
+  /* page footer (number medallion) */
+  .page-foot{
+    display:flex;justify-content:center;margin-top:10px;
+  }
+  .pageno{
+    width:34px;height:34px;border-radius:50%;
+    display:flex;align-items:center;justify-content:center;
+    font-size:13px;font-weight:700;color:var(--gold-deep);
+    border:1.5px solid var(--frame);
+    background:radial-gradient(circle,#fff8e7,#ecdcbb);
+    box-shadow:inset 0 0 4px rgba(154,123,47,.3);
+  }
+
+  /* loading shimmer for the page body */
+  .loading-lines .shim{
+    height:34px;margin:6px 0;border-radius:6px;
+    background:linear-gradient(90deg,rgba(154,123,47,.08),rgba(154,123,47,.18),rgba(154,123,47,.08));
+    background-size:200% 100%;animation:sh 1.2s infinite;
+  }
+  @keyframes sh{to{background-position:-200% 0;}}
+
+  /* Toast */
+  .toast{
+    position:fixed;bottom:22px;left:50%;transform:translateX(-50%);
+    background:#211a0e;color:#f0e7cf;border:1px solid var(--gold-deep);
+    padding:10px 16px;border-radius:8px;font-size:13px;z-index:100;
+    box-shadow:0 6px 20px rgba(0,0,0,.5);opacity:0;pointer-events:none;
+    transition:opacity .25s,bottom .25s;
+  }
+  .toast.show{opacity:1;bottom:30px;}
+
+  /* audio bar */
+  .audiobar{
+    position:fixed;bottom:0;left:0;right:0;z-index:60;
+    display:none;align-items:center;gap:12px;flex-wrap:wrap;
+    padding:9px 16px;background:linear-gradient(180deg,#1f180d,#100b05);
+    border-top:1px solid var(--gold-deep);
+  }
+  .audiobar.on{display:flex;}
+  .audiobar .now{color:var(--ornament);font-size:13px;flex:1;min-width:160px;}
+  .audiobar audio{height:34px;}
+
+  @media (max-width:560px){
+    .page{padding:18px;}
+    .page::before{inset:9px;}
+    .page::after{inset:14px;}
+    .toolbar .title{font-size:13px;}
+    .surah-band .name{font-size:21px;}
+  }
+</style>
+</head>
+<body>
+
+<div class="toolbar">
+  <span class="title">ﺍﻟﻘﺮﺁﻥ ﺍﻟﻜﺮﻳﻢ</span>
+  <button id="prevBtn" title="الصفحة السابقة">► السابق</button>
+  <label>صفحة
+    <input id="pageInput" type="number" min="1" max="604" value="1">
+  </label>
+  <button id="nextBtn" title="الصفحة التالية">التالي ◄</button>
+  <select id="surahSelect" title="اختر السورة"></select>
+  <label><input id="tajweedChk" type="checkbox" checked> تجويد</label>
+  <span id="spin" class="spinner" title="جارٍ التحميل"></span>
+</div>
+
+<div class="view-wrap">
+  <div class="page" id="page">
+    <div class="page-inner">
+      <div class="page-head">
+        <span class="corner" id="juzLabel">الجزء ١</span>
+        <span class="center" id="surahLabel">الفاتحة</span>
+        <span class="corner" id="hizbLabel">الحزب ١</span>
+      </div>
+      <div class="lines" id="lines">
+        <div class="loading-lines">
+          <div class="shim"></div><div class="shim"></div><div class="shim"></div>
+          <div class="shim"></div><div class="shim"></div><div class="shim"></div>
+        </div>
+      </div>
+      <div class="page-foot"><div class="pageno" id="pageno">1</div></div>
+    </div>
+  </div>
+</div>
+
+<div class="audiobar" id="audiobar">
+  <span class="now" id="nowplaying">—</span>
+  <audio id="audio" controls></audio>
+  <button id="closeAudio">✕</button>
+</div>
+
+<div class="toast" id="toast"></div>
+
+<script>
+"use strict";
+const API = "https://alfurqan.online/api/v1";
+const TOTAL_PAGES = 604;
+
+// Juz starts (page where each juz begins) — King Fahd 604-page mushaf
+const JUZ_START = [1,23,43,63,83,107,129,151,177,201,225,247,269,289,309,329,349,369,389,409,429,449,469,491,513,535,557,579,601,605];
+function pageToJuz(p){
+  let j=1;
+  for(let i=0;i<JUZ_START.length;i++){ if(p>=JUZ_START[i]) j=i+1; }
+  return Math.min(j,30);
+}
+// rough hizb label (every juz = 2 hizb)
+function pageToHizb(p){ return ((pageToJuz(p)-1)*2 + (p>=midJuz(p)?1:0))||1; }
+function midJuz(p){ const j=pageToJuz(p); const s=JUZ_START[j-1]; const e=JUZ_START[j]||605; return Math.floor((s+e)/2); }
+
+const state = { page:1, surahs:[], surahToPage:{}, reciters:[], tajweed:true, cacheText:{}, cacheLayout:{} };
+const el = id=>document.getElementById(id);
+
+function toast(msg){
+  const t=el("toast"); t.textContent=msg; t.classList.add("show");
+  clearTimeout(toast._t); toast._t=setTimeout(()=>t.classList.remove("show"),2200);
+}
+
+function setSpin(on){ el("spin").classList.toggle("on",on); }
+
+// ---- load surah list + map surah->first page ----
+async function loadSurahs(){
+  const r=await fetch(`${API}/surahs`);
+  const d=await r.json();
+  state.surahs=d.surahs;
+  const sel=el("surahSelect");
+  d.surahs.forEach(s=>{
+    const o=document.createElement("option");
+    o.value=s.number;
+    o.textContent=`${s.number}. ${s.name} — ${s.transliteration}`;
+    sel.appendChild(o);
+  });
+  // map: page number for each surah using layout of first ayah location
+  // We approximate: load each surah start page lazily via search? Instead compute from a static table fallback.
+}
+
+// ---- font management: inject per-page @font-face only once per page ----
+const loadedFonts = new Set();
+function ensureFont(pageNum){
+  if(loadedFonts.has(pageNum)) return;
+  loadedFonts.add(pageNum);
+  const fam = `QCF400${pad(pageNum)}`;
+  const url = state.tajweed
+    ? `${API}/quran-fonts/v4/${pageNum}`
+    : `${API}/quran-fonts/v2/${pageNum}`;
+  const css = `@font-face{font-family:"${fam}";src:url("${url}") format("truetype");font-display:block;}`;
+  const s=document.createElement("style");
+  s.id=`f-${pageNum}`; s.textContent=css;
+  document.head.appendChild(s);
+}
+function pad(n){return String(n).padStart(3,"0");}
+
+// ---- basmala fallback (manifest notes v2 codes are wrong for basmala) ----
+const BASMALA = "بِسْمِ ٱللَّهِ ٱلرَّحْمَـٰنِ ٱلرَّحِيمِ";
+
+// ---- render a page ----
+async function renderPage(pageNum){
+  pageNum=Math.max(1,Math.min(TOTAL_PAGES,pageNum));
+  state.page=pageNum;
+  el("pageInput").value=pageNum;
+  el("pageno").textContent=pageNum;
+  setSpin(true);
+  el("prevBtn").disabled = pageNum<=1;
+  el("nextBtn").disabled = pageNum>=TOTAL_PAGES;
+
+  // ensure the font for THIS page is loaded before drawing glyphs
+  const fam = `QCF400${pad(pageNum)}`;
+  el("page").style.setProperty("--qcf",`"${fam}"`);
+  ensureFont(pageNum);
+
+  // fetch layout (cached)
+  let layout = state.cacheLayout[pageNum];
+  if(!layout){
+    try{
+      const r=await fetch(`${API}/quran-fonts/layout/${pageNum}`);
+      layout=await r.json();
+      state.cacheLayout[pageNum]=layout;
+    }catch(e){
+      setSpin(false);
+      el("lines").innerHTML=`<div style="text-align:center;color:#7a5e1c;padding:40px">تعذّر تحميل الصفحة. تحقّق من الاتصال.</div>`;
+      toast("فشل تحميل الصفحة");
+      return;
+    }
+  }
+
+  // header labels
+  el("juzLabel").textContent = `الجزء ${toAr(pageToJuz(pageNum))}`;
+  const firstSurah = firstSurahOnPage(layout);
+  el("surahLabel").textContent = firstSurah ? surahName(firstSurah) : "";
+  el("hizbLabel").textContent = `الحزب ${toAr(pageToHizb(pageNum))}`;
+
+  // build lines
+  const linesWrap = el("lines");
+  linesWrap.innerHTML="";
+  const frag=document.createDocumentFragment();
+
+  layout.lines.forEach(line=>{
+    if(line.type==="surah-header"){
+      const band=document.createElement("div");
+      band.className="surah-band";
+      band.innerHTML=`<span class="orn"></span><span class="name">${line.text}</span><span class="orn"></span>`;
+      frag.appendChild(band);
+      return;
+    }
+    const row=document.createElement("div");
+    row.className="line " + (line.type==="basmala"?"center-line":"text-line");
+
+    if(line.type==="basmala" && (!line.words || line.words.length===0)){
+      // fallback basmala in a serif arabic font (no QCF glyph reliability)
+      row.innerHTML=`<span style="font-family:'Amiri',serif;font-size:30px;color:#1a1a1a;letter-spacing:1px">${BASMALA}</span>`;
+      frag.appendChild(row); return;
+    }
+
+    if(line.words && line.words.length){
+      line.words.forEach((w,i)=>{
+        const span=document.createElement("span");
+        span.className="word";
+        span.dataset.loc=w.location||"";
+        span.dataset.verse=w.location? w.location.split(":").slice(0,2).join(":") : "";
+        // a word's qpcV2 may contain multiple glyphs (e.g. a letter + stop mark);
+        // keep them joined. isEnd marks the ayah-end ornament.
+        span.textContent = (w.qpcV2||w.qpcV1||w.word||"");
+        row.appendChild(span);
+        // real space between words so text-align:justify can spread them evenly
+        if(i < line.words.length-1) row.appendChild(document.createTextNode(" "));
+      });
+    } else if(line.text){
+      row.textContent=line.text;
+    }
+    frag.appendChild(row);
+  });
+
+  linesWrap.appendChild(frag);
+
+  // wait for the font to actually be available, then redraw text (forces glyph use)
+  waitForFont(fam).then(()=>{
+    setSpin(false);
+    // force reflow so COLR layers paint
+    linesWrap.style.opacity="0.999";
+    requestAnimationFrame(()=>linesWrap.style.opacity="1");
+  });
+
+  updateSurahSelect();
+}
+
+function firstSurahOnPage(layout){
+  for(const l of layout.lines){ if(l.surah) return l.surah; }
+  // fallback: parse from word locations
+  for(const l of layout.lines){
+    if(l.words && l.words[0] && l.words[0].location){
+      return parseInt(l.words[0].location.split(":")[0],10);
+    }
+  }
+  return null;
+}
+function surahName(n){
+  const s=state.surahs.find(x=>x.number===n);
+  return s? s.name : "";
+}
+function updateSurahSelect(){
+  const s=firstSurahOnPage(state.cacheLayout[state.page]);
+  if(s){ const opt=[...el("surahSelect").options].find(o=>+o.value===s); if(opt) el("surahSelect").value=s; }
+}
+
+// wait until a font family is ready
+function waitForFont(family){
+  if(document.fonts && document.fonts.load){
+    return document.fonts.load(`32px "${family}"`).then(()=>document.fonts.ready).catch(()=>{});
+  }
+  return Promise.resolve();
+}
+
+// arabic-indic digits
+function toAr(n){
+  const m="٠١٢٣٤٥٦٧٨٩";
+  return String(n).replace(/\d/g,d=>m[+d]);
+}
+
+// ---- navigation ----
+function go(p){ history.replaceState(null,"",`#p${p}`); renderPage(p); }
+el("prevBtn").onclick=()=>{ if(state.page>1) go(state.page-1); };
+el("nextBtn").onclick=()=>{ if(state.page<TOTAL_PAGES) go(state.page+1); };
+el("pageInput").addEventListener("change",e=>{ const v=parseInt(e.target.value,10); if(v>=1&&v<=TOTAL_PAGES) go(v); });
+el("surahSelect").addEventListener("change",e=>{
+  const num=+e.target.value;
+  const p=SURAH_START_PAGE[num];
+  if(p) go(p);
+});
+
+// Authoritative surah -> first mushaf page (Hafs, 604-page Madani mushaf).
+// Verified against the alfurqan layout API: each page's surah-header matches.
+const SURAH_START_PAGE={
+  1:1,2:2,3:50,4:77,5:106,6:128,7:151,8:177,9:187,10:208,11:221,12:235,13:249,14:255,15:262,16:267,17:282,18:293,19:305,20:312,21:322,22:332,23:342,24:350,25:359,26:367,27:377,28:385,29:396,30:404,31:411,32:415,33:418,34:428,35:434,36:440,37:446,38:453,39:458,40:467,41:477,42:483,43:489,44:496,45:499,46:502,47:507,48:511,49:515,50:519,51:523,52:526,53:528,54:531,55:534,56:536,57:537,58:543,59:545,60:549,61:551,62:553,63:554,64:556,65:558,66:560,67:562,68:564,69:566,70:568,71:570,72:572,73:574,74:575,75:577,76:578,77:580,78:582,79:583,80:585,81:586,82:587,83:587,84:589,85:590,86:591,87:591,88:592,89:593,90:594,91:595,92:595,93:596,94:596,95:597,96:597,97:598,98:598,99:599,100:599,101:600,102:600,103:601,104:601,105:601,106:602,107:602,108:602,109:603,110:603,111:603,112:604,113:604,114:604
+};
+
+// ---- tajweed toggle ----
+el("tajweedChk").addEventListener("change",e=>{
+  state.tajweed=e.target.checked;
+  loadedFonts.clear();
+  [...document.querySelectorAll("style[id^='f-']")].forEach(s=>s.remove());
+  renderPage(state.page);
+  toast(state.tajweed?"تجويد ملوّن (V4)":"خط أسود (V2)");
+});
+
+// ---- keyboard nav ----
+document.addEventListener("keydown",e=>{
+  if(e.target.tagName==="INPUT"||e.target.tagName==="SELECT") return;
+  if(e.key==="ArrowRight") el("nextBtn").click();      // RTL: right = next
+  else if(e.key==="ArrowLeft") el("prevBtn").click();
+});
+
+// ---- audio: click a word -> play that ayah ----
+el("lines").addEventListener("click",async e=>{
+  const w=e.target.closest(".word");
+  if(!w) return;
+  const verse=w.dataset.verse;
+  if(!verse) return;
+  const [s,a]=verse.split(":");
+  await playAyah(+s,+a);
+});
+
+async function playAyah(surah,ayah){
+  try{
+    const reciter = "husary"; // default beautiful reciter
+    const url=`${API}/audio/${reciter}/surah/${surah}/ayah/${ayah}`;
+    const bar=el("audiobar"); bar.classList.add("on");
+    const a=el("audio"); a.src=url; a.play().catch(()=>{});
+    el("nowplaying").textContent=`${surahName(surah)} : ${toAr(ayah)}`;
+  }catch(e){ toast("تعذّر تشغيل الصوت"); }
+}
+el("closeAudio").onclick=()=>{ el("audio").pause(); el("audiobar").classList.remove("on"); };
+
+// ---- boot ----
+(async function init(){
+  await loadSurahs();
+  const h=location.hash.match(/p(\d+)/);
+  const start = h? Math.max(1,Math.min(TOTAL_PAGES,+h[1])) : 1;
+  renderPage(start);
+})();
+</script>
+</body>
+</html>

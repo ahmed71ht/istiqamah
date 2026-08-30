@@ -1,5 +1,6 @@
-const CACHE_NAME = "istiqamah-v2.1.0";
-const QURAN_CACHE = "quran-text-v1";
+const CACHE_VERSION = "v3.0.0";
+const CACHE_NAME = `istiqamah-${CACHE_VERSION}`;
+const QURAN_CACHE = `quran-cache-${CACHE_VERSION}`;
 const BASE = self.location.pathname.replace(/\/sw\.js$/, '') || '';
 
 const urlsToCache = [

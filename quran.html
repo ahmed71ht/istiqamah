@@ -1,4 +1,4 @@
-<!doctype html>
+﻿<!doctype html>
 <html lang="ar" dir="rtl">
   <head>
     <meta charset="UTF-8" />
@@ -24,24 +24,24 @@
       </div>
       <div class="header-actions">
         <button
+          class="header-btn"
+          onclick="openSurahIndex()"
+          title="فهرس السور"
+        >
+          <i class="fa-solid fa-magnifying-glass"></i></button
+        ><button
           class="theme-toggle"
           id="themeToggle"
           onclick="toggleTheme()"
           title="الوضع الليلي / النهاري"
         >
           <i class="fa-solid fa-moon"></i></button
-        ><button class="header-btn" onclick="toggleSurah()" title="قائمة السور">
-          <i class="fa-solid fa-list"></i></button
         ><button class="header-btn" onclick="toggleLinks()">
           <i class="fa-solid fa-bars"></i>
         </button>
       </div>
     </header>
     <div id="overlay" onclick="closeAll()"></div>
-    <div id="side-menu">
-      <h3 style="color: var(--primary-green)">فهرس السور</h3>
-      <div id="surah-list"></div>
-    </div>
     <div id="links-menu">
       <div class="menu-header-area">
         <div class="menu-logo"><i class="fa-solid fa-mosque"></i></div>
@@ -59,14 +59,14 @@
         </div>
         الأذكار</a
       ><a href="quran.html" class="link-item"
-        ><div class="link-circle"><i class="fa-solid fa-book-quran"></i></div>
+        ><div class="link-circle"><i class="fa-solid fa-book-open"></i></div>
         القرآن</a
       ><a href="prayertime.html" class="link-item"
         ><div class="link-circle"><i class="fa-solid fa-mosque"></i></div>
         أوقات الصلاة</a
-      ><a href="hadith.html" class="link-item"
-        ><div class="link-circle"><i class="fa-solid fa-book-open"></i></div>
-        الأحاديث</a
+      ><a href="rosary.html" class="link-item"
+        ><div class="link-circle"><svg viewBox="0 0 24 24" width="18" height="18" fill="none" xmlns="http://www.w3.org/2000/svg" aria-hidden="true"><g fill="currentColor"><circle cx="12" cy="3.9" r="1.1"/><circle cx="14.35" cy="4.75" r="1.1"/><circle cx="16" cy="6.6" r="1.1"/><circle cx="16.65" cy="9" r="1.1"/><circle cx="15.45" cy="11.55" r="1.1"/><circle cx="13.65" cy="13.4" r="1.1"/><circle cx="10.35" cy="13.4" r="1.1"/><circle cx="8.55" cy="11.55" r="1.1"/><circle cx="7.35" cy="9" r="1.1"/><circle cx="8" cy="6.6" r="1.1"/><circle cx="9.65" cy="4.75" r="1.1"/><rect x="10.85" y="13.9" width="2.3" height="1.5" rx="0.6"/></g><g stroke="currentColor" stroke-width="1.15" stroke-linecap="round"><path d="M11.1 15.4V19.7"/><path d="M12.25 15.4V20.7"/><path d="M13.4 15.4V19.7"/></g></svg></div>
+        التسبيح</a
       ><a href="qipla-direction.html" class="link-item"
         ><div class="link-circle">
           <i class="fa-solid fa-location-arrow"></i>
@@ -80,27 +80,32 @@
     <div class="container">
       <div class="reciter-bar" id="reciterBar">
         <div class="loading-indicator" id="loadingIndicator">
-          <i class="fa-solid fa-circle-notch fa-spin"></i
-          ><span id="loadingPercent">0%</span><span>جار التحميل...</span>
+          <i class="fa-solid fa-circle-notch fa-spin"></i>
+          <span id="loadingPercent">0%</span>
+          <span class="loading-text">جارٍ التحميل...</span>
+          <button type="button" class="loading-cancel" id="loadingCancel" onclick="cancelLoading()" aria-label="إلغاء التحميل"><i class="fa-solid fa-xmark"></i></button>
         </div>
         <button class="play-btn" id="playPauseBtn" onclick="togglePlay()">
           <i class="fa-solid fa-play"></i>
         </button>
-        <div class="audio-info">
-          <div class="audio-surah-name" id="audioSurahName"></div>
-          <div class="audio-ayah-info" id="audioAyahInfo"></div>
-        </div>
-        <div class="reciter-bar-info">
-          <span class="reciter-bar-name" id="reciterBarName"
-            >ماهر المعيقلي</span
-          >
-          <i class="fa-solid fa-chevron-down reciter-bar-arrow"></i>
+        <div class="reciter-text-col">
+          <div class="audio-info">
+            <div class="audio-surah-name" id="audioSurahName"></div>
+            <div class="audio-ayah-info" id="audioAyahInfo"></div>
+          </div>
+          <div class="reciter-bar-info">
+            <span class="reciter-bar-name" id="reciterBarName"
+              >ماهر المعيقلي</span
+            >
+          </div>
         </div>
       </div>
-      <div
-        class="reciter-select-wrapper custom-reciter-wrapper"
-      >
-        <button class="reciter-modal-close" id="reciterModalClose" title="إغلاق">
+      <div class="reciter-select-wrapper custom-reciter-wrapper">
+        <button
+          class="reciter-modal-close"
+          id="reciterModalClose"
+          title="إغلاق"
+        >
           <i class="fa-solid fa-xmark"></i>
         </button>
         <input
@@ -178,15 +183,36 @@
       <div id="verses">جاري التحميل...</div>
       <button id="loadMore"></button>
     </div>
+      <button
+        class="page-nav-side next"
+        id="nextPageSideBtn"
+        onclick="changeQuranPage(1)"
+        title="الصفحة التالية"
+        aria-label="الصفحة التالية"
+      >
+        <i class="fa-solid fa-chevron-left"></i>
+      </button>
+      <button
+        class="page-nav-side prev"
+        id="prevPageSideBtn"
+        onclick="changeQuranPage(-1)"
+        title="الصفحة السابقة"
+        aria-label="الصفحة السابقة"
+      >
+        <i class="fa-solid fa-chevron-right"></i>
+      </button>
+    <audio id="audioPlayer" preload="auto"></audio>
     <button
       id="navModeToggle"
+      class="mode-toggle-fab"
       title="تبديل وضع العرض"
       aria-label="تبديل وضع العرض بين التمرير والصفحة الواحدة"
     >
-      <i class="fa-solid fa-arrows-up-down"></i>
+      <i class="fa-solid fa-list"></i>
     </button>
-    <div id="navModeTooltip">وضع التمرير</div>
-    <audio id="audioPlayer" preload="auto"></audio>
+    <div id="navModeTooltip" class="mode-toggle-tip">وضع التمرير</div>
+    <div id="index-backdrop" onclick="closeSurahIndex()"></div>
+    <div id="surah-index" class="index-overlay" aria-hidden="true"></div>
     <div id="contextMenu" class="context-menu">
       <div class="menu-item" id="ctxPlay" onclick="playFromAyah()">
         <i class="fa-solid fa-headphones"></i> استماع من هذه الآية
@@ -196,6 +222,15 @@
       </div>
       <div class="menu-item" id="ctxRed" onclick="toggleRedMarker()">
         <i class="fa-solid fa-highlighter"></i> شريط أحمر
+      </div>
+      <div class="menu-item" id="ctxCopy" onclick="copyAyahText()">
+        <i class="fa-solid fa-copy"></i> نسخ الآية
+      </div>
+      <div class="menu-item" id="ctxTafsir" onclick="openTafsir()">
+        <i class="fa-solid fa-book"></i> التفسير
+      </div>
+      <div class="menu-item" id="ctxShare" onclick="shareAyah()">
+        <i class="fa-solid fa-share-alt"></i> مشاركة
       </div>
     </div>
     <script src="assets/js/quran.js"></script>
